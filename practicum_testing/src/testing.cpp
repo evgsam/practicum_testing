@@ -141,10 +141,92 @@ void EraseQuery(Query &q) {
 }
 
 
+void TestAddBus(Query &q,string &new_bus){
+	BusManager bm;
+	istringstream input;
+	input.str(new_bus);
+    input >> q;
+    bm.AddBus(q.bus, q.stops);
+}
+
+void Tests(Query &q){
+	vector <string> input_vector={"10\n",
+			"ALL_BUSES\n",
+			"BUSES_FOR_STOP Marushkino\n",
+			"STOPS_FOR_BUS 32K\n",
+			"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo\n",
+			"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n",
+			"BUSES_FOR_STOP Vnukovo\n",
+			"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n",
+			"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo\n",
+			"STOPS_FOR_BUS 272\n",
+			"ALL_BUSES\n"};
+	TestAddBus(q,input_vector[4]);
+	TestAddBus(q,input_vector[5]);
+	BusManager bm;
+	bm.GetAllBuses();
+
+}
+
+
+void TestBuiltin() {
+    istringstream iss;
+    iss.str("10\n"
+            "ALL_BUSES\n"
+            "BUSES_FOR_STOP Marushkino\n"
+            "STOPS_FOR_BUS 32K\n"
+            "NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo\n"
+            "NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n"
+            "BUSES_FOR_STOP Vnukovo\n"
+            "NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n"
+            "NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo\n"
+            "STOPS_FOR_BUS 272\n"
+            "ALL_BUSES ");
+
+    int query_count;
+    Query q;
+
+    iss >> query_count;
+
+    BusManager bm;
+    ostringstream oss;
+    for (int i = 0; i < query_count; ++i) {
+        iss >> q;
+        switch (q.type) {
+            case QueryType::NewBus:
+                bm.AddBus(q.bus, q.stops);
+                break;
+            case QueryType::BusesForStop:
+                oss << bm.GetBusesForStop(q.stop) << endl;
+                break;
+            case QueryType::StopsForBus:
+                oss << bm.GetStopsForBus(q.bus) << endl;
+                break;
+            case QueryType::AllBuses:
+                oss << bm.GetAllBuses() << endl;
+                break;
+        }
+    }
+    assert(oss.str() == "No buses\n"
+                        "No stop\n\n"
+                        "No bus\n"
+                        "32 32K\n"
+                        "Stop Vnukovo: 32 32K 950\n"
+                        "Stop Moskovsky: no interchange\n"
+                        "Stop Rumyantsevo: no interchange\n"
+                        "Stop Troparyovo: 950\n"
+                        "Bus 272: Vnukovo Moskovsky Rumyantsevo Troparyovo\n"
+                        "Bus 32: Tolstopaltsevo Marushkino Vnukovo\n"
+                        "Bus 32K: Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n"
+                        "Bus 950: Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n");
+}
+
 int main() {
-	int query_count;
+
+//int query_count;
 	Query q;
-	cin >> query_count;
+	Tests(q);
+	/*cin >> query_count;
 	BusManager bm;
 	for (int i = 0; i < query_count; ++i) {
 		cin >> q;
@@ -164,6 +246,7 @@ int main() {
 		}
 		EraseQuery(q);
 	}
+	*/
 }
 /*
  6
