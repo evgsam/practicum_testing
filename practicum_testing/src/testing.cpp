@@ -49,7 +49,7 @@ istream& operator>>(istream &is, Query &q) {
 }
 
 struct BusesForStopResponse {
-	// Наполните полями эту структуру
+	map<string, vector<string>> buses_to_stops;
 };
 
 ostream& operator<<(ostream &os, const BusesForStopResponse &r) {
@@ -58,6 +58,7 @@ ostream& operator<<(ostream &os, const BusesForStopResponse &r) {
 }
 
 struct StopsForBusResponse {
+	map<string, vector<string>> stops_to_buses;
 	// Наполните полями эту структуру
 };
 
@@ -77,35 +78,34 @@ ostream& operator<<(ostream &os, const AllBusesResponse &r) {
 
 class BusManager {
 private:
-	Query q_;
-	map<string, vector<string>> buses_to_stops, stops_to_buses;
+	map<string, vector<string>> buses_to_stops_, stops_to_buses_;
 public:
 	void AddBus(const string &bus, const vector<string> &stops) {
-		buses_to_stops[bus] = stops;
+		buses_to_stops_[bus] = stops;
 		for (const string &stop : stops) {
-			stops_to_buses[stop].push_back(bus);
+			stops_to_buses_[stop].push_back(bus);
 		}
 	}
 	BusesForStopResponse GetBusesForStop(const string &stop) const {
-		if (stops_to_buses.count(stop) == 0) {
+		if (stops_to_buses_.count(stop) == 0) {
 			cout << "No stop"s << endl;
 		} else {
-			for (const string &bus : stops_to_buses.at(stop)) {
+			for (const string &bus : stops_to_buses_.at(stop)) {
 				cout << bus << " "s;
 			}
 			cout << endl;
 		}
 	}
 	StopsForBusResponse GetStopsForBus(const string &bus) const {
-		if (buses_to_stops.count(bus) == 0) {
+		if (buses_to_stops_.count(bus) == 0) {
 			cout << "No bus"s << endl;
 		} else {
-			for (const string &stop : buses_to_stops.at(bus)) {
+			for (const string &stop : buses_to_stops_.at(bus)) {
 				cout << "Stop "s << stop << ": "s;
-				if (stops_to_buses.at(stop).size() == 1) {
+				if (stops_to_buses_.at(stop).size() == 1) {
 					cout << "no interchange"s;
 				} else {
-					for (const string &other_bus : stops_to_buses.at(stop)) {
+					for (const string &other_bus : stops_to_buses_.at(stop)) {
 						if (bus != other_bus) {
 							cout << other_bus << " "s;
 						}
@@ -117,10 +117,10 @@ public:
 	}
 
 	AllBusesResponse GetAllBuses() const {
-		if (buses_to_stops.empty()) {
+		if (buses_to_stops_.empty()) {
 			cout << "No buses"s << endl;
 		} else {
-			for (const auto &bus_item : buses_to_stops) {
+			for (const auto &bus_item : buses_to_stops_) {
 				cout << "Bus "s << bus_item.first << ": "s;
 				for (const string &stop : bus_item.second) {
 					cout << stop << " "s;
@@ -131,14 +131,6 @@ public:
 	}
 };
 
-void Test() {
-	istringstream input;
-	input.str("4"s);
-	input.str("NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk"s);
-	input.str("NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta"s);
-	input.str("NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo"s);
-	input.str("BUSES_FOR_STOP Uhta"s);
-}
 
 // Не меняя тела функции main, реализуйте функции и классы выше
 
@@ -147,6 +139,7 @@ void EraseQuery(Query &q) {
 	q.stop = ""s;
 	q.stops.clear();
 }
+
 
 int main() {
 	int query_count;
@@ -173,11 +166,11 @@ int main() {
 	}
 }
 /*
-6
-NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
-NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
-NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
-BUSES_FOR_STOP Uhta
-STOPS_FOR_BUS 3
-ALL_BUSES
-*/
+ 6
+ NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
+ NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
+ NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
+ BUSES_FOR_STOP Uhta
+ STOPS_FOR_BUS 3
+ ALL_BUSES
+ */
