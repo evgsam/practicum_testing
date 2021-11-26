@@ -70,16 +70,15 @@ struct StopsForBusResponse {
 };
 
 ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
-	if (r.stops_to_buses.empty()){
+	if (r.stops_to_buses.empty()) {
 		cout << "No bus"s << endl;
-	}
-	else {
-		for (const auto &[stop,buses]:r.stops_to_buses){
+	} else {
+		for (const auto& [stop, buses] : r.stops_to_buses) {
 			cout << "Stop "s << stop << ": "s;
-			for(auto &bus:buses){
-				cout<<bus<<" ";
+			for (auto &bus : buses) {
+				cout << bus << " ";
 			}
-			cout<<endl;
+			cout << endl;
 		}
 
 	}
@@ -100,10 +99,10 @@ private:
 	map<string, vector<string>> buses_to_stops_, stops_to_buses_;
 public:
 	void AddBus(const string &bus, const vector<string> &stops) {
-        for (const string &stop: stops) {
-            stops_to_buses_[stop].push_back(bus);
-            buses_to_stops_[bus].push_back(stop);
-        }
+		for (const string &stop : stops) {
+			stops_to_buses_[stop].push_back(bus);
+			buses_to_stops_[bus].push_back(stop);
+		}
 
 	}
 	BusesForStopResponse GetBusesForStop(const string &stop) const {
@@ -130,7 +129,7 @@ public:
 						}
 					}
 				}
-				stop_for_bus_response.stops_to_buses.emplace(stop,buses);
+				stop_for_bus_response.stops_to_buses.emplace(stop, buses);
 				buses.clear();
 			}
 		}
