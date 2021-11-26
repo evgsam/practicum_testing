@@ -100,10 +100,11 @@ private:
 	map<string, vector<string>> buses_to_stops_, stops_to_buses_;
 public:
 	void AddBus(const string &bus, const vector<string> &stops) {
-		buses_to_stops_[bus] = stops;
-		for (const string &stop : stops) {
-			stops_to_buses_[stop].push_back(bus);
-		}
+        for (const string &stop: stops) {
+            stops_to_buses_[stop].push_back(bus);
+            buses_to_stops_[bus].push_back(stop);
+        }
+
 	}
 	BusesForStopResponse GetBusesForStop(const string &stop) const {
 		BusesForStopResponse buses_for_stop_resp;
@@ -280,9 +281,9 @@ int main() {
 }
 /*
  6
-NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
-NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
-NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
+ NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
+ NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
+ NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
  BUSES_FOR_STOP Uhta
  STOPS_FOR_BUS 3
  ALL_BUSES
