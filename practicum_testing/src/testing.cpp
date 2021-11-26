@@ -70,7 +70,19 @@ struct StopsForBusResponse {
 };
 
 ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
-	// Реализуйте эту функцию
+	if (r.stops_to_buses.empty()){
+		cout << "No bus"s << endl;
+	}
+	else {
+		for (const auto &[stop,buses]:r.stops_to_buses){
+			cout << "Stop "s << stop << ": "s;
+			for(auto &bus:buses){
+				cout<<bus<<" ";
+			}
+			cout<<endl;
+		}
+
+	}
 	return os;
 }
 
@@ -105,24 +117,23 @@ public:
 
 	StopsForBusResponse GetStopsForBus(const string &bus) const {
 		StopsForBusResponse stop_for_bus_response;
-
-		if (buses_to_stops_.count(bus) == 0) {
-			cout << "No bus"s << endl;
-		} else {
+		vector<string> buses;
+		if (buses_to_stops_.count(bus) != 0) {
 			for (const string &stop : buses_to_stops_.at(bus)) {
-				cout << "Stop "s << stop << ": "s;
 				if (stops_to_buses_.at(stop).size() == 1) {
-					cout << "no interchange"s;
+					buses.push_back("no interchange"s);
 				} else {
 					for (const string &other_bus : stops_to_buses_.at(stop)) {
 						if (bus != other_bus) {
-							cout << other_bus << " "s;
+							buses.push_back(other_bus);
 						}
 					}
 				}
-				cout << endl;
+				stop_for_bus_response.stops_to_buses.emplace(stop,buses);
+				buses.clear();
 			}
 		}
+		return stop_for_bus_response;
 	}
 
 	AllBusesResponse GetAllBuses() const {
