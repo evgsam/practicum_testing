@@ -66,7 +66,6 @@ ostream& operator<<(ostream &os, const BusesForStopResponse &r) {
 
 struct StopsForBusResponse {
 	map<string, vector<string>> stops_to_buses;
-	// Наполните полями эту структуру
 };
 
 ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
@@ -86,11 +85,22 @@ ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
 }
 
 struct AllBusesResponse {
-	// Наполните полями эту структуру
+	map<string, vector<string>> buses_to_stop;
 };
 
 ostream& operator<<(ostream &os, const AllBusesResponse &r) {
-	// Реализуйте эту функцию
+
+	if (r.buses_to_stop.empty()) {
+		cout << "No buses"s << endl;
+	} else {
+		for (const auto &bus_item : r.buses_to_stop) {
+			cout << "Bus "s << bus_item.first << ": "s;
+			for (const string &stop : bus_item.second) {
+				cout << stop << " "s;
+			}
+			cout << endl;
+		}
+	}
 	return os;
 }
 
@@ -137,17 +147,9 @@ public:
 	}
 
 	AllBusesResponse GetAllBuses() const {
-		if (buses_to_stops_.empty()) {
-			cout << "No buses"s << endl;
-		} else {
-			for (const auto &bus_item : buses_to_stops_) {
-				cout << "Bus "s << bus_item.first << ": "s;
-				for (const string &stop : bus_item.second) {
-					cout << stop << " "s;
-				}
-				cout << endl;
-			}
-		}
+		AllBusesResponse all_buses_responce;
+		all_buses_responce.buses_to_stop = buses_to_stops_;
+		return all_buses_responce;
 	}
 };
 
