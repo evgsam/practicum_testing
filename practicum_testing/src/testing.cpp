@@ -97,6 +97,8 @@ public:
 		}
 	}
 	StopsForBusResponse GetStopsForBus(const string &bus) const {
+		StopsForBusResponse stop_for_bus_response;
+
 		if (buses_to_stops_.count(bus) == 0) {
 			cout << "No bus"s << endl;
 		} else {
@@ -141,29 +143,42 @@ void EraseQuery(Query &q) {
 }
 
 
-void TestAddBus(Query &q,string &new_bus){
-	BusManager bm;
+void TestAddBus(BusManager &bm, Query &q,string &new_bus){
 	istringstream input;
 	input.str(new_bus);
     input >> q;
     bm.AddBus(q.bus, q.stops);
 }
 
-void Tests(Query &q){
-	vector <string> input_vector={"10\n",
-			"ALL_BUSES\n",
-			"BUSES_FOR_STOP Marushkino\n",
-			"STOPS_FOR_BUS 32K\n",
-			"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo\n",
-			"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n",
-			"BUSES_FOR_STOP Vnukovo\n",
-			"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n",
-			"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo\n",
-			"STOPS_FOR_BUS 272\n",
-			"ALL_BUSES\n"};
-	TestAddBus(q,input_vector[4]);
-	TestAddBus(q,input_vector[5]);
-	BusManager bm;
+void TestBusesForStop(BusManager &bm, Query &q,string &stop){
+	istringstream input;
+	input.str(stop);
+    input >> q;
+    bm.GetBusesForStop(q.stop);
+}
+
+void Tests(BusManager &bm, Query &q){
+	vector <string> input_vector={"10",
+			"ALL_BUSES",
+			"BUSES_FOR_STOP Marushkino",
+			"STOPS_FOR_BUS 32K",
+			"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo",
+			"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo",
+			"BUSES_FOR_STOP Vnukovo",
+			"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo",
+			"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo",
+			"STOPS_FOR_BUS 272",
+			"ALL_BUSES"};
+
+	bm.GetAllBuses();
+	TestBusesForStop(bm,q,input_vector[2]);
+	EraseQuery(q);
+	TestAddBus(bm, q,input_vector[4]);
+	EraseQuery(q);
+	TestAddBus(bm, q,input_vector[5]);
+	EraseQuery(q);
+	TestBusesForStop(bm,q,input_vector[6]);
+	EraseQuery(q);
 	bm.GetAllBuses();
 
 }
@@ -223,11 +238,11 @@ void TestBuiltin() {
 
 int main() {
 
-//int query_count;
-	Query q;
-	Tests(q);
-	/*cin >> query_count;
+	int query_count;
 	BusManager bm;
+	Query q;
+	//Tests(bm,q);
+	cin >> query_count;
 	for (int i = 0; i < query_count; ++i) {
 		cin >> q;
 		switch (q.type) {
@@ -246,7 +261,6 @@ int main() {
 		}
 		EraseQuery(q);
 	}
-	*/
 }
 /*
  6
