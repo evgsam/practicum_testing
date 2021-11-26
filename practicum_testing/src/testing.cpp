@@ -148,98 +148,97 @@ void EraseQuery(Query &q) {
 	q.stops.clear();
 }
 
-
-void TestAddBus(BusManager &bm, Query &q,string &new_bus){
+void TestAddBus(BusManager &bm, Query &q, string &new_bus) {
 	istringstream input;
 	input.str(new_bus);
-    input >> q;
-    bm.AddBus(q.bus, q.stops);
+	input >> q;
+	bm.AddBus(q.bus, q.stops);
 }
 
-void TestBusesForStop(BusManager &bm, Query &q,string &stop){
+void TestBusesForStop(BusManager &bm, Query &q, string &stop) {
 	istringstream input;
 	input.str(stop);
-    input >> q;
-    bm.GetBusesForStop(q.stop);
+	input >> q;
+	bm.GetBusesForStop(q.stop);
 }
 
-void Tests(BusManager &bm, Query &q){
-	vector <string> input_vector={"10",
-			"ALL_BUSES",
-			"BUSES_FOR_STOP Marushkino",
-			"STOPS_FOR_BUS 32K",
-			"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo",
-			"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo",
-			"BUSES_FOR_STOP Vnukovo",
-			"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo",
-			"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo",
-			"STOPS_FOR_BUS 272",
-			"ALL_BUSES"};
+void Tests(BusManager &bm, Query &q) {
+	vector<string> input_vector =
+			{ "10", "ALL_BUSES", "BUSES_FOR_STOP Marushkino",
+					"STOPS_FOR_BUS 32K",
+					"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo",
+					"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo",
+					"BUSES_FOR_STOP Vnukovo",
+					"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo",
+					"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo",
+					"STOPS_FOR_BUS 272", "ALL_BUSES" };
 
 	bm.GetAllBuses();
-	TestBusesForStop(bm,q,input_vector[2]);
+	TestBusesForStop(bm, q, input_vector[2]);
 	EraseQuery(q);
-	TestAddBus(bm, q,input_vector[4]);
+	TestAddBus(bm, q, input_vector[4]);
 	EraseQuery(q);
-	TestAddBus(bm, q,input_vector[5]);
+	TestAddBus(bm, q, input_vector[5]);
 	EraseQuery(q);
-	TestBusesForStop(bm,q,input_vector[6]);
+	TestBusesForStop(bm, q, input_vector[6]);
 	EraseQuery(q);
 	bm.GetAllBuses();
 
 }
-
 
 void TestBuiltin() {
-    istringstream iss;
-    iss.str("10\n"
-            "ALL_BUSES\n"
-            "BUSES_FOR_STOP Marushkino\n"
-            "STOPS_FOR_BUS 32K\n"
-            "NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo\n"
-            "NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n"
-            "BUSES_FOR_STOP Vnukovo\n"
-            "NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n"
-            "NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo\n"
-            "STOPS_FOR_BUS 272\n"
-            "ALL_BUSES ");
+	istringstream iss;
+	iss.str(
+			"10\n"
+					"ALL_BUSES\n"
+					"BUSES_FOR_STOP Marushkino\n"
+					"STOPS_FOR_BUS 32K\n"
+					"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo\n"
+					"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n"
+					"BUSES_FOR_STOP Vnukovo\n"
+					"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n"
+					"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo\n"
+					"STOPS_FOR_BUS 272\n"
+					"ALL_BUSES ");
 
-    int query_count;
-    Query q;
+	int query_count;
+	Query q;
 
-    iss >> query_count;
+	iss >> query_count;
 
-    BusManager bm;
-    ostringstream oss;
-    for (int i = 0; i < query_count; ++i) {
-        iss >> q;
-        switch (q.type) {
-            case QueryType::NewBus:
-                bm.AddBus(q.bus, q.stops);
-                break;
-            case QueryType::BusesForStop:
-                oss << bm.GetBusesForStop(q.stop) << endl;
-                break;
-            case QueryType::StopsForBus:
-                oss << bm.GetStopsForBus(q.bus) << endl;
-                break;
-            case QueryType::AllBuses:
-                oss << bm.GetAllBuses() << endl;
-                break;
-        }
-    }
-    assert(oss.str() == "No buses\n"
-                        "No stop\n\n"
-                        "No bus\n"
-                        "32 32K\n"
-                        "Stop Vnukovo: 32 32K 950\n"
-                        "Stop Moskovsky: no interchange\n"
-                        "Stop Rumyantsevo: no interchange\n"
-                        "Stop Troparyovo: 950\n"
-                        "Bus 272: Vnukovo Moskovsky Rumyantsevo Troparyovo\n"
-                        "Bus 32: Tolstopaltsevo Marushkino Vnukovo\n"
-                        "Bus 32K: Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n"
-                        "Bus 950: Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n");
+	BusManager bm;
+	ostringstream oss;
+	for (int i = 0; i < query_count; ++i) {
+		iss >> q;
+		switch (q.type) {
+		case QueryType::NewBus:
+			bm.AddBus(q.bus, q.stops);
+			break;
+		case QueryType::BusesForStop:
+			oss << bm.GetBusesForStop(q.stop) << endl;
+			break;
+		case QueryType::StopsForBus:
+			oss << bm.GetStopsForBus(q.bus) << endl;
+			break;
+		case QueryType::AllBuses:
+			oss << bm.GetAllBuses() << endl;
+			break;
+		}
+	}
+	assert(
+			oss.str()
+					== "No buses\n"
+							"No stop\n\n"
+							"No bus\n"
+							"32 32K\n"
+							"Stop Vnukovo: 32 32K 950\n"
+							"Stop Moskovsky: no interchange\n"
+							"Stop Rumyantsevo: no interchange\n"
+							"Stop Troparyovo: 950\n"
+							"Bus 272: Vnukovo Moskovsky Rumyantsevo Troparyovo\n"
+							"Bus 32: Tolstopaltsevo Marushkino Vnukovo\n"
+							"Bus 32K: Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo\n"
+							"Bus 950: Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n");
 }
 
 int main() {
@@ -270,9 +269,9 @@ int main() {
 }
 /*
  6
- NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
- NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
- NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
+NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
+NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
+NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
  BUSES_FOR_STOP Uhta
  STOPS_FOR_BUS 3
  ALL_BUSES
