@@ -79,8 +79,7 @@ ostream& operator<<(ostream &os, const BusesForStopResponse &r) {
 }
 
 struct StopsForBusResponse {
-	map<string, vector<string>> stops_to_buses;
-	vector<int> stops_secuence;
+	vector <pair<string, vector<string>>> stops_to_buses;
 };
 
 ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
@@ -101,7 +100,6 @@ ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
 
 struct AllBusesResponse {
 	map<string, vector<string>> buses_to_stop;
-	vector<int> buses_secuence;
 };
 
 ostream& operator<<(ostream &os, const AllBusesResponse &r) {
@@ -128,7 +126,6 @@ public:
 			stops_to_buses_[stop].push_back(bus);
 			buses_to_stops_[bus].push_back(stop);
 		}
-
 	}
 	BusesForStopResponse GetBusesForStop(const string &stop) const {
 		BusesForStopResponse buses_for_stop_resp;
@@ -154,8 +151,8 @@ public:
 						}
 					}
 				}
-				stop_for_bus_response.stops_to_buses.emplace(stop, buses);
-				buses.clear();
+
+				stop_for_bus_response.stops_to_buses.push_back({stop, buses});				buses.clear();
 			}
 		}
 		return stop_for_bus_response;
@@ -193,17 +190,8 @@ void Tests(BusManager &bm, Query &q) {
 					"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo",
 					"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo",
 					"STOPS_FOR_BUS 272", "ALL_BUSES" };
-
-	bm.GetAllBuses();
-	TestBusesForStop(bm, q, input_vector[2]);
-	EraseQuery(q);
-	TestAddBus(bm, q, input_vector[4]);
-	EraseQuery(q);
-	TestAddBus(bm, q, input_vector[5]);
-	EraseQuery(q);
-	TestBusesForStop(bm, q, input_vector[6]);
-	EraseQuery(q);
-	bm.GetAllBuses();
+hkino Vnukovo Peredelkino Solntsevo Troparyovo",
+					"NEW_BUS 272 4 Vnukovo Moskovsky Rumy
 
 }
 
@@ -264,29 +252,28 @@ void TestBuiltin() {
 
 int main() {
 
-	int query_count;
-	BusManager bm;
-	Query q;
-	//Tests(bm,q);
-	cin >> query_count;
-	for (int i = 0; i < query_count; ++i) {
-		cin >> q;
-		switch (q.type) {
-		case QueryType::NewBus:
-			bm.AddBus(q.bus, q.stops);
-			break;
-		case QueryType::BusesForStop:
-			cout << bm.GetBusesForStop(q.stop) << endl;
-			break;
-		case QueryType::StopsForBus:
-			cout << bm.GetStopsForBus(q.bus) << endl;
-			break;
-		case QueryType::AllBuses:
-			cout << bm.GetAllBuses() << endl;
-			break;
-		}
-	}
+					"Bus 950: Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n");
 }
+
+int main() {
+    int query_count;
+    Query q;
+    TestBuiltin();
+
+    cin >> query_count;
+
+    BusManager bm;
+    for (int i = 0; i < query_count; ++i) {
+        cin >> q;
+        switch (q.type) {
+            case QueryType::NewBus:
+                bm.AddBus(q.bus, q.stops);
+                break;
+            case QueryType::BusesForStop:
+                cout << bm.GetBusesForStop(q.stop) << endl;
+                break;
+            case QueryType::StopsForBus:
+                cout << bm.GetStopsForBus(q.bus) << end}
 /*
  6
  NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
