@@ -151,8 +151,8 @@ public:
 						}
 					}
 				}
-
-				stop_for_bus_response.stops_to_buses.push_back({stop, buses});				buses.clear();
+				stop_for_bus_response.stops_to_buses.push_back({stop, buses});
+				buses.clear();
 			}
 		}
 		return stop_for_bus_response;
@@ -180,20 +180,6 @@ void TestBusesForStop(BusManager &bm, Query &q, string &stop) {
 	bm.GetBusesForStop(q.stop);
 }
 
-void Tests(BusManager &bm, Query &q) {
-	vector<string> input_vector =
-			{ "10", "ALL_BUSES", "BUSES_FOR_STOP Marushkino",
-					"STOPS_FOR_BUS 32K",
-					"NEW_BUS 32 3 Tolstopaltsevo Marushkino Vnukovo",
-					"NEW_BUS 32K 6 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Skolkovo",
-					"BUSES_FOR_STOP Vnukovo",
-					"NEW_BUS 950 6 Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo",
-					"NEW_BUS 272 4 Vnukovo Moskovsky Rumyantsevo Troparyovo",
-					"STOPS_FOR_BUS 272", "ALL_BUSES" };
-hkino Vnukovo Peredelkino Solntsevo Troparyovo",
-					"NEW_BUS 272 4 Vnukovo Moskovsky Rumy
-
-}
 
 void TestBuiltin() {
 	istringstream iss;
@@ -251,15 +237,8 @@ void TestBuiltin() {
 }
 
 int main() {
-
-					"Bus 950: Kokoshkino Marushkino Vnukovo Peredelkino Solntsevo Troparyovo\n");
-}
-
-int main() {
     int query_count;
     Query q;
-    TestBuiltin();
-
     cin >> query_count;
 
     BusManager bm;
@@ -270,16 +249,14 @@ int main() {
                 bm.AddBus(q.bus, q.stops);
                 break;
             case QueryType::BusesForStop:
-                cout << bm.GetBusesForStop(q.stop) << endl;
+                cout << bm.GetBusesForStop(q.stop);
                 break;
             case QueryType::StopsForBus:
-                cout << bm.GetStopsForBus(q.bus) << end}
-/*
- 6
- NEW_BUS 1 4 Syktyvkar Uhta Sosnogorsk Troicko-Pechorsk
- NEW_BUS 2 4 Syktyvkar Kortkeros Ust-Kulom Uhta
- NEW_BUS 3 4 Mikun Syktyvkar Vizinga Obyachevo
- BUSES_FOR_STOP Uhta
- STOPS_FOR_BUS 3
- ALL_BUSES
- */
+                cout << bm.GetStopsForBus(q.bus);
+                break;
+            case QueryType::AllBuses:
+                cout << bm.GetAllBuses();
+                break;
+        }
+    }
+}
