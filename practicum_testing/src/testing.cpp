@@ -49,11 +49,18 @@ istream& operator>>(istream &is, Query &q) {
 }
 
 struct BusesForStopResponse {
-	map<string, vector<string>> buses_to_stops;
+	vector<string> buses;
 };
 
 ostream& operator<<(ostream &os, const BusesForStopResponse &r) {
-	// Реализуйте эту функцию
+	if (r.buses.empty()) {
+		cout << "No stop"s << endl;
+	} else {
+		for (const string &bus : r.buses) {
+			cout << bus << " "s;
+		}
+		cout << endl;
+	}
 	return os;
 }
 
@@ -87,15 +94,15 @@ public:
 		}
 	}
 	BusesForStopResponse GetBusesForStop(const string &stop) const {
-		if (stops_to_buses_.count(stop) == 0) {
-			cout << "No stop"s << endl;
-		} else {
+		BusesForStopResponse buses_for_stop_resp;
+		if (stops_to_buses_.count(stop) != 0) {
 			for (const string &bus : stops_to_buses_.at(stop)) {
-				cout << bus << " "s;
+				buses_for_stop_resp.buses.push_back(bus);
 			}
-			cout << endl;
 		}
+		return buses_for_stop_resp;
 	}
+
 	StopsForBusResponse GetStopsForBus(const string &bus) const {
 		StopsForBusResponse stop_for_bus_response;
 
@@ -132,7 +139,6 @@ public:
 		}
 	}
 };
-
 
 // Не меняя тела функции main, реализуйте функции и классы выше
 
