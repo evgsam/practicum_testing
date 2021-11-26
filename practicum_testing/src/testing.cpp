@@ -68,30 +68,31 @@ struct BusesForStopResponse {
 
 ostream& operator<<(ostream &os, const BusesForStopResponse &r) {
 	if (r.buses.empty()) {
-		cout << "No stop"s << endl;
+		os << "No stop"s << endl;
 	} else {
 		for (const string &bus : r.buses) {
-			cout << bus << " "s;
+			os << bus << " "s;
 		}
-		cout << endl;
+		os << endl;
 	}
 	return os;
 }
 
 struct StopsForBusResponse {
 	map<string, vector<string>> stops_to_buses;
+	vector<int> stops_secuence;
 };
 
 ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
 	if (r.stops_to_buses.empty()) {
-		cout << "No bus"s << endl;
+		os << "No bus"s << endl;
 	} else {
 		for (const auto& [stop, buses] : r.stops_to_buses) {
-			cout << "Stop "s << stop << ": "s;
+			os << "Stop "s << stop << ": "s;
 			for (auto &bus : buses) {
-				cout << bus << " ";
+				os << bus << " ";
 			}
-			cout << endl;
+			os << endl;
 		}
 
 	}
@@ -100,19 +101,19 @@ ostream& operator<<(ostream &os, const StopsForBusResponse &r) {
 
 struct AllBusesResponse {
 	map<string, vector<string>> buses_to_stop;
+	vector<int> buses_secuence;
 };
 
 ostream& operator<<(ostream &os, const AllBusesResponse &r) {
-
 	if (r.buses_to_stop.empty()) {
-		cout << "No buses"s << endl;
+		os << "No buses"s << endl;
 	} else {
 		for (const auto &bus_item : r.buses_to_stop) {
-			cout << "Bus "s << bus_item.first << ": "s;
+			os << "Bus "s << bus_item.first << ": "s;
 			for (const string &stop : bus_item.second) {
-				cout << stop << " "s;
+				os << stop << " "s;
 			}
-			cout << endl;
+			os << endl;
 		}
 	}
 	return os;
