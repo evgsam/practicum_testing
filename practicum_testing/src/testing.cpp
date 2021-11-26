@@ -21,10 +21,21 @@ struct Query {
 	vector<string> stops;
 };
 
+
+// Не меняя тела функции main, реализуйте функции и классы выше
+
+void EraseQuery(Query &q) {
+	q.bus = ""s;
+	q.stop = ""s;
+	q.stops.clear();
+}
+
+
 istream& operator>>(istream &is, Query &q) {
 	string command;
 	is >> command;
 	if (command == "NEW_BUS") {
+		EraseQuery(q);
 		int bus_count = 0;
 		q.type = QueryType::NewBus;
 		is >> q.bus;
@@ -35,12 +46,15 @@ istream& operator>>(istream &is, Query &q) {
 			q.stops.push_back(temp);
 		}
 	} else if (command == "BUSES_FOR_STOP") {
+		EraseQuery(q);
 		q.type = QueryType::BusesForStop;
 		is >> q.stop;
 	} else if (command == "STOPS_FOR_BUS") {
+		EraseQuery(q);
 		q.type = QueryType::StopsForBus;
 		is >> q.bus;
 	} else if (command == "ALL_BUSES") {
+		EraseQuery(q);
 		q.type = QueryType::AllBuses;
 	} else {
 		cout << "ERROR";
@@ -153,13 +167,6 @@ public:
 	}
 };
 
-// Не меняя тела функции main, реализуйте функции и классы выше
-
-void EraseQuery(Query &q) {
-	q.bus = ""s;
-	q.stop = ""s;
-	q.stops.clear();
-}
 
 void TestAddBus(BusManager &bm, Query &q, string &new_bus) {
 	istringstream input;
@@ -277,7 +284,6 @@ int main() {
 			cout << bm.GetAllBuses() << endl;
 			break;
 		}
-		EraseQuery(q);
 	}
 }
 /*
