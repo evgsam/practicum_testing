@@ -1,54 +1,66 @@
-//#include "search_server.h"
-
-#include <algorithm>
-#include <iostream>
-#include <map>
-#include <set>
 #include <string>
-#include <utility>
-#include <vector>
-#include <cmath>
-#include <cassert>
+#include <iostream>
 
 using namespace std;
 
-/*
- * Разработайте для класса Rational конструктор по умолчанию,
- * который задаёт значение дроби, равное 0/1.
- */
-
-class Rational {
-public:
-	Rational(){
-		SetNumerator(0);
-		SetDenominator(1);
-	}
-
-    int Numerator() const {
-        return numerator_;
-    }
-
-    int Denominator() const {
-        return denominator_;
-    }
-
-    void SetNumerator(int numerator) {
-        numerator_ = numerator;
-    }
-
-    void SetDenominator(int denominator) {
-        if (denominator != 0) {
-            denominator_ = denominator;
-        }
-    }
-
-private:
-    int numerator_;
-    int denominator_;
+enum class AnimalType {
+	Cat, Dog, Mouse,
 };
 
-int main(){
-    Rational r;
-    cout << r.Numerator() << "/" << r.Denominator() << endl;
-	return 0;
+ostream& operator<<(ostream &os, const AnimalType &at) {
+	if (at==AnimalType::Cat){
+		os<<"cat";
+	}
+	else if (at==AnimalType::Dog) {
+		os<<"dog";
+	}
+	else if (at==AnimalType::Mouse){
+		os<<"mouse";
+	}
+/*	if (r.buses.empty()) {
+		os << "No stop"s << endl;
+	} else {
+		for (const string &bus : r.buses) {
+			os << bus << " "s;
+		}
+		os << endl;
+	}
+	*/
+	return os;
+}
+
+
+
+class Animal {
+public:
+	Animal() = default;
+
+	Animal(AnimalType type, string name, string owner_name) {
+		type_ = type;
+		name_ = name;
+		owner_name_ = owner_name;
+	}
+
+	AnimalType GetType() const {
+		return type_;
+	}
+
+	const string& GetName() const {
+		return name_;
+	}
+
+	const string& GetOwnerName() const {
+		return owner_name_;
+	}
+
+private:
+	AnimalType type_;
+	string name_;
+	string owner_name_;
+};
+
+int main() {
+	const Animal animal_date(AnimalType::Dog, "Charley"s, "Ivan"s);
+	cout << "animal: " << animal_date.GetType() << " animal_name: "s
+			<< animal_date.GetName() << " animal onwer name:" << animal_date.GetOwnerName()<< endl;
 }
