@@ -7,19 +7,16 @@ using namespace std;
 
 class Rational {
 public:
-	Rational(int numerator = 0) {
-		numerator_ = numerator;
+	Rational() = default;
+
+	Rational(int numerator) :
+			numerator_(numerator) {
 		denominator_ = 1;
 	}
 
-	Rational(int numerator, int denominator) {
-		if (denominator < 0) {
-			numerator_ = (0 - numerator) / gcd(numerator, denominator);
-			denominator_ = abs(denominator) / gcd(numerator, denominator);
-		} else {
-			numerator_ = numerator / gcd(numerator, denominator);
-			denominator_ = denominator / gcd(numerator, denominator);
-		}
+	Rational(int numerator, int denominator) :
+			numerator_(numerator), denominator_(denominator) {
+		Normalize();
 	}
 
 	int Numerator() const {
@@ -31,6 +28,16 @@ public:
 	}
 
 private:
+	void Normalize() {
+		if (denominator_ < 0) {
+			numerator_ = -numerator_;
+			denominator_ = -denominator_;
+		}
+		const int divisor = gcd(numerator_, denominator_);
+		numerator_ /= divisor;
+		denominator_ /= divisor;
+	}
+
 	int numerator_ = 0;
 	int denominator_ = 1;
 };
@@ -41,7 +48,7 @@ Rational Add(Rational r1, Rational r2) {
 	int denominator = r1.Denominator() * r2.Denominator();
 
 	// Создаём и возвращаем дробь с заданным числителем и знаменателем
-	return Rational { numerator, denominator };
+	return {numerator, denominator};
 }
 
 int main() {
