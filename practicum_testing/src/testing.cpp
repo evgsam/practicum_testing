@@ -1,66 +1,68 @@
 #include <string>
 #include <iostream>
+#include <numeric>
+#include <vector>
 
 using namespace std;
 
-enum class AnimalType {
-	Cat, Dog, Mouse,
-};
-
-ostream& operator<<(ostream &os, const AnimalType &at) {
-	if (at==AnimalType::Cat){
-		os<<"cat";
-	}
-	else if (at==AnimalType::Dog) {
-		os<<"dog";
-	}
-	else if (at==AnimalType::Mouse){
-		os<<"mouse";
-	}
-/*	if (r.buses.empty()) {
-		os << "No stop"s << endl;
-	} else {
-		for (const string &bus : r.buses) {
-			os << bus << " "s;
-		}
-		os << endl;
-	}
-	*/
-	return os;
-}
-
-
-
-class Animal {
+class Rational {
 public:
-	Animal() = default;
-
-	Animal(AnimalType type, string name, string owner_name) {
-		type_ = type;
-		name_ = name;
-		owner_name_ = owner_name;
+	Rational(int numerator = 0) {
+		numerator_ = numerator;
+		denominator_ = 1;
 	}
 
-	AnimalType GetType() const {
-		return type_;
+	Rational(int numerator, int denominator) {
+		if (denominator < 0) {
+			numerator_ = (0 - numerator) / gcd(numerator, denominator);
+			denominator_ = abs(denominator) / gcd(numerator, denominator);
+		} else {
+			numerator_ = numerator / gcd(numerator, denominator);
+			denominator_ = denominator / gcd(numerator, denominator);
+		}
 	}
 
-	const string& GetName() const {
-		return name_;
+	int Numerator() const {
+		return numerator_;
 	}
 
-	const string& GetOwnerName() const {
-		return owner_name_;
+	int Denominator() const {
+		return denominator_;
 	}
 
 private:
-	AnimalType type_;
-	string name_;
-	string owner_name_;
+	int numerator_ = 0;
+	int denominator_ = 1;
 };
 
-int main() {
-	const Animal animal_date(AnimalType::Dog, "Charley"s, "Ivan"s);
-	cout << "animal: " << animal_date.GetType() << " animal_name: "s
-			<< animal_date.GetName() << " animal onwer name:" << animal_date.GetOwnerName()<< endl;
+Rational Add(Rational r1, Rational r2) {
+	int numerator = r1.Numerator() * r2.Denominator()
+			+ r2.Numerator() * r1.Denominator();
+	int denominator = r1.Denominator() * r2.Denominator();
+
+	// Создаём и возвращаем дробь с заданным числителем и знаменателем
+	return Rational { numerator, denominator };
 }
+
+int main() {
+	Rational zero;     // Дробь 0/1 = 0
+	const Rational seven(7); // Дробь 7/1 = 7
+	const Rational one_third(-1, 3); // Дробь 1/3
+
+	vector<Rational> numbers;
+	numbers.push_back(Rational { 7, 8 });
+
+	Rational sum = Add(Rational { 1, 6 }, one_third);
+	// Выведет 1/2
+	if (sum.Numerator() < 0) {
+		cout << "(" << sum.Numerator() << ")" << "/" << sum.Denominator();
+	} else {
+		cout << sum.Numerator() << "/" << sum.Denominator();
+	}
+
+	/*const Rational my_rational(8, 6);
+	 cout << my_rational.Numerator() << "/" << my_rational.Denominator() << endl;
+	 */
+
+}
+
