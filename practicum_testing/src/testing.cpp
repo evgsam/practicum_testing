@@ -93,21 +93,19 @@ Rational Add(Rational r1, Rational r2) {
 }
 
 Rational operator+(Rational left, Rational right) {
-	/*const int numerator = left.Numerator() * right.Denominator()
-		+ right.Numerator() * left.Denominator();
-	const int denominator = left.Denominator() * right.Denominator();
-
-	return {numerator, denominator};
-*/
 	return left += right;
 }
 
 Rational operator-(Rational left, Rational right) {
-	const int numerator = left.Numerator() * right.Denominator()
-			- right.Numerator() * left.Denominator();
-	const int denominator = left.Denominator() * right.Denominator();
+	return left -= right;
+}
 
-	return {numerator, denominator};
+Rational operator*(Rational left, Rational right) {
+	return left *= right;
+}
+
+Rational operator/(Rational left, Rational right) {
+	return left /= right;
 }
 
 Rational operator+(Rational r) {
