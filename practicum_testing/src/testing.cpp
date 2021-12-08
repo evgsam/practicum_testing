@@ -7,7 +7,6 @@ using namespace std;
 
 class Rational {
 public:
-
 	Rational() = default;
 
 	Rational(int numerator) :
@@ -45,14 +44,18 @@ private:
 	int denominator_ = 1;
 };
 
-ostream& operator<<(ostream &output, const Rational &r) {
-	output << r.Numerator() << "/" << r.Denominator();
-	return output;
+ostream& operator<<(ostream& output, Rational rational) {
+    return output << rational.Numerator() << '/' << rational.Denominator();
 }
-istream& operator>>(istream &input, Rational &r) {
-	char comma;
-	input >> r.numerator_ >> comma >>r.denominator_;
-	return input;
+
+istream& operator>>(istream& input, Rational& rational) {
+    int numerator;
+    int denominator;
+    char slash;
+    if ((input >> numerator) && (input >> slash) && (slash == '/') && (input >> denominator)) {
+        rational = Rational{numerator, denominator};
+    }
+    return input;
 }
 
 Rational Add(Rational r1, Rational r2) {
