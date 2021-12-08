@@ -27,15 +27,15 @@ public:
 	}
 
 	Rational& operator+=(Rational r) {
-		numerator_ = numerator_*r.denominator_+r.numerator_*denominator_;
-		denominator_=denominator_*r.denominator_;
+		numerator_ = numerator_ * r.denominator_ + r.numerator_ * denominator_;
+		denominator_ *= r.denominator_;
 		Normalize();
 		return *this;
 	}
 
 	Rational& operator-=(Rational r) {
-		numerator_ = numerator_*r.denominator_-r.numerator_*denominator_;
-		denominator_=denominator_*r.denominator_;
+		numerator_ = numerator_ * r.denominator_ - r.numerator_ * denominator_;
+		denominator_ *= r.denominator_;
 		Normalize();
 		return *this;
 	}
@@ -48,10 +48,11 @@ public:
 	Rational& operator/=(Rational r) {
 		// Результат операции сохраняется в текущем экземпляре класса
 		numerator_ *= r.denominator_;
-		denominator_ *=  r.numerator_;
+		denominator_ *= r.numerator_;
 		Normalize();
 		// return *this позволяет вернуть ссылку на текущий объект
 		return *this;
+
 	}
 
 private:
@@ -69,18 +70,19 @@ private:
 	int denominator_ = 1;
 };
 
-ostream& operator<<(ostream& output, Rational rational) {
-    return output << rational.Numerator() << '/' << rational.Denominator();
+ostream& operator<<(ostream &output, Rational rational) {
+	return output << rational.Numerator() << '/' << rational.Denominator();
 }
 
-istream& operator>>(istream& input, Rational& rational) {
-    int numerator;
-    int denominator;
-    char slash;
-    if ((input >> numerator) && (input >> slash) && (slash == '/') && (input >> denominator)) {
-        rational = Rational{numerator, denominator};
-    }
-    return input;
+istream& operator>>(istream &input, Rational &rational) {
+	int numerator;
+	int denominator;
+	char slash;
+	if ((input >> numerator) && (input >> slash) && (slash == '/')
+			&& (input >> denominator)) {
+		rational = Rational { numerator, denominator };
+	}
+	return input;
 }
 
 Rational Add(Rational r1, Rational r2) {
@@ -116,17 +118,47 @@ Rational operator-(Rational r) {
 	return {-r.Numerator(),r.Denominator()};
 }
 
+bool operator==(Rational left, Rational right) {
+	return left.Numerator() == right.Numerator()
+			&& left.Denominator() == right.Denominator();
+}
+
+bool operator!=(Rational left, Rational right) {
+	return !(left == right);
+}
+
+bool operator<(Rational left, Rational right) {
+	return left.Numerator() * right.Denominator()
+			< right.Numerator() * left.Denominator();
+}
+
+bool operator<=(Rational left, Rational right) {
+	return left.Numerator() * right.Denominator()
+			< right.Numerator() * left.Denominator() || left==right;
+}
+
+bool operator>(Rational left, Rational right) {
+	return left.Numerator() * right.Denominator()
+			> right.Numerator() * left.Denominator();
+}
+bool operator>=(Rational left, Rational right) {
+	return left.Numerator() * right.Denominator()
+			> right.Numerator() * left.Denominator()||left==right;
+}
+
+
 int main() {
-	Rational r1, r2;
+	cout << "Введите две обыкновенные дроби в формате x/y:"s << endl;
+	Rational a, b;
+	cin >> a >> b;
 
-	cout << "Введите первую дробь: "s;
-	cin >> r1;
-
-	cout << "Введите вторую дробь: "s;
-	cin >> r2;
-
-	cout << "Их сумма равна: "s << r1 + r2 << endl;
-	cout << "Их разница равна: "s << r1 - r2 << endl;
+	// Аналогично if (b != Rational{0})
+	if (a <= b) {
+		cout << "a <= b" << endl;
+	}
+	if (a > b) {
+		cout << "a >b" << endl;
+	}
 
 }
 
