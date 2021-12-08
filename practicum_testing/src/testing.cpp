@@ -64,10 +64,42 @@ Rational Add(Rational r1, Rational r2) {
 	return {numerator, denominator};
 }
 
+Rational operator+(Rational left, Rational right) {
+    const int numerator = left.Numerator() * right.Denominator()
+                  + right.Numerator() * left.Denominator();
+    const int denominator = left.Denominator() * right.Denominator();
+
+    return {numerator, denominator};
+}
+
+Rational operator-(Rational left, Rational right) {
+    const int numerator = left.Numerator() * right.Denominator()
+                  - right.Numerator() * left.Denominator();
+    const int denominator = left.Denominator() * right.Denominator();
+
+    return {numerator, denominator};
+}
+
+Rational operator+(Rational r) {
+    return {r};
+}
+
+Rational operator-(Rational r) {
+    return {-r.Numerator(),r.Denominator()};
+}
+
+
 int main() {
-	Rational sum;
-	cin>>sum;
-	cout << sum << endl;
+    Rational r1, r2;
+
+    cout << "Введите первую дробь: "s;
+    cin >> r1;
+
+    cout << "Введите вторую дробь: "s;
+    cin >> r2;
+
+    cout << "Их сумма равна: "s << r1 + r2 << endl;
+    cout << "Их разница равна: "s << r1 - r2 << endl;
 
 }
 
