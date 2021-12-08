@@ -7,11 +7,11 @@ using namespace std;
 
 class Rational {
 public:
+
 	Rational() = default;
 
 	Rational(int numerator) :
-			numerator_(numerator) {
-		denominator_ = 1;
+			numerator_(numerator), denominator_(1) {
 	}
 
 	Rational(int numerator, int denominator) :
@@ -26,6 +26,9 @@ public:
 	int Denominator() const {
 		return denominator_;
 	}
+
+	friend ostream& operator<< (ostream &output, const Rational &r);
+	friend istream& operator>> (istream &input, Rational &r);
 
 private:
 	void Normalize() {
@@ -42,6 +45,16 @@ private:
 	int denominator_ = 1;
 };
 
+ostream& operator<<(ostream &output, const Rational &r) {
+	output << r.Numerator() << "/" << r.Denominator();
+	return output;
+}
+istream& operator>>(istream &input, Rational &r) {
+	char comma;
+	input >> r.numerator_ >> comma >>r.denominator_;
+	return input;
+}
+
 Rational Add(Rational r1, Rational r2) {
 	int numerator = r1.Numerator() * r2.Denominator()
 			+ r2.Numerator() * r1.Denominator();
@@ -52,24 +65,9 @@ Rational Add(Rational r1, Rational r2) {
 }
 
 int main() {
-	Rational zero;     // Дробь 0/1 = 0
-	const Rational seven(7); // Дробь 7/1 = 7
-	const Rational one_third(-1, 3); // Дробь 1/3
-
-	vector<Rational> numbers;
-	numbers.push_back(Rational { 7, 8 });
-
-	Rational sum = Add(Rational { 1, 6 }, one_third);
-	// Выведет 1/2
-	if (sum.Numerator() < 0) {
-		cout << "(" << sum.Numerator() << ")" << "/" << sum.Denominator();
-	} else {
-		cout << sum.Numerator() << "/" << sum.Denominator();
-	}
-
-	/*const Rational my_rational(8, 6);
-	 cout << my_rational.Numerator() << "/" << my_rational.Denominator() << endl;
-	 */
+	Rational sum;
+	cin>>sum;
+	cout << sum << endl;
 
 }
 
