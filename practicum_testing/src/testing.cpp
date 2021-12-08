@@ -27,34 +27,28 @@ public:
 	}
 
 	Rational& operator+=(Rational r) {
-		// Результат операции сохраняется в текущем экземпляре класса
-		numerator_ += r.numerator_;
-		denominator_ += r.denominator_;
+		numerator_ = numerator_*r.denominator_+r.numerator_*denominator_;
+		denominator_=denominator_*r.denominator_;
 		Normalize();
-		// return *this позволяет вернуть ссылку на текущий объект
 		return *this;
 	}
 
 	Rational& operator-=(Rational r) {
-		// Результат операции сохраняется в текущем экземпляре класса
-		numerator_ -= r.numerator_;
-		denominator_ -= r.denominator_;
+		numerator_ = numerator_*r.denominator_-r.numerator_*denominator_;
+		denominator_=denominator_*r.denominator_;
 		Normalize();
-		// return *this позволяет вернуть ссылку на текущий объект
 		return *this;
 	}
 	Rational& operator*=(Rational r) {
-		// Результат операции сохраняется в текущем экземпляре класса
 		numerator_ *= r.numerator_;
 		denominator_ *= r.denominator_;
 		Normalize();
-		// return *this позволяет вернуть ссылку на текущий объект
 		return *this;
 	}
 	Rational& operator/=(Rational r) {
 		// Результат операции сохраняется в текущем экземпляре класса
-		numerator_ /= r.numerator_;
-		denominator_ /= r.denominator_;
+		numerator_ *= r.denominator_;
+		denominator_ *=  r.numerator_;
 		Normalize();
 		// return *this позволяет вернуть ссылку на текущий объект
 		return *this;
