@@ -26,8 +26,39 @@ public:
 		return denominator_;
 	}
 
-	friend ostream& operator<< (ostream &output, const Rational &r);
-	friend istream& operator>> (istream &input, Rational &r);
+	Rational& operator+=(Rational r) {
+		// Результат операции сохраняется в текущем экземпляре класса
+		numerator_ += r.numerator_;
+		denominator_ += r.denominator_;
+		Normalize();
+		// return *this позволяет вернуть ссылку на текущий объект
+		return *this;
+	}
+
+	Rational& operator-=(Rational r) {
+		// Результат операции сохраняется в текущем экземпляре класса
+		numerator_ -= r.numerator_;
+		denominator_ -= r.denominator_;
+		Normalize();
+		// return *this позволяет вернуть ссылку на текущий объект
+		return *this;
+	}
+	Rational& operator*=(Rational r) {
+		// Результат операции сохраняется в текущем экземпляре класса
+		numerator_ *= r.numerator_;
+		denominator_ *= r.denominator_;
+		Normalize();
+		// return *this позволяет вернуть ссылку на текущий объект
+		return *this;
+	}
+	Rational& operator/=(Rational r) {
+		// Результат операции сохраняется в текущем экземпляре класса
+		numerator_ /= r.numerator_;
+		denominator_ /= r.denominator_;
+		Normalize();
+		// return *this позволяет вернуть ссылку на текущий объект
+		return *this;
+	}
 
 private:
 	void Normalize() {
@@ -68,41 +99,42 @@ Rational Add(Rational r1, Rational r2) {
 }
 
 Rational operator+(Rational left, Rational right) {
-    const int numerator = left.Numerator() * right.Denominator()
-                  + right.Numerator() * left.Denominator();
-    const int denominator = left.Denominator() * right.Denominator();
+	/*const int numerator = left.Numerator() * right.Denominator()
+		+ right.Numerator() * left.Denominator();
+	const int denominator = left.Denominator() * right.Denominator();
 
-    return {numerator, denominator};
+	return {numerator, denominator};
+*/
+	return left += right;
 }
 
 Rational operator-(Rational left, Rational right) {
-    const int numerator = left.Numerator() * right.Denominator()
-                  - right.Numerator() * left.Denominator();
-    const int denominator = left.Denominator() * right.Denominator();
+	const int numerator = left.Numerator() * right.Denominator()
+			- right.Numerator() * left.Denominator();
+	const int denominator = left.Denominator() * right.Denominator();
 
-    return {numerator, denominator};
+	return {numerator, denominator};
 }
 
 Rational operator+(Rational r) {
-    return {r};
+	return {r};
 }
 
 Rational operator-(Rational r) {
-    return {-r.Numerator(),r.Denominator()};
+	return {-r.Numerator(),r.Denominator()};
 }
 
-
 int main() {
-    Rational r1, r2;
+	Rational r1, r2;
 
-    cout << "Введите первую дробь: "s;
-    cin >> r1;
+	cout << "Введите первую дробь: "s;
+	cin >> r1;
 
-    cout << "Введите вторую дробь: "s;
-    cin >> r2;
+	cout << "Введите вторую дробь: "s;
+	cin >> r2;
 
-    cout << "Их сумма равна: "s << r1 + r2 << endl;
-    cout << "Их разница равна: "s << r1 - r2 << endl;
+	cout << "Их сумма равна: "s << r1 + r2 << endl;
+	cout << "Их разница равна: "s << r1 - r2 << endl;
 
 }
 
