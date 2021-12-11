@@ -1,6 +1,9 @@
+// rational_s3_t3_v1.cpp
+
 #include <iostream>
 #include <numeric>
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 
@@ -15,8 +18,11 @@ public:
 
     Rational(int numerator, int denominator)
         : numerator_(numerator)
-        , denominator_(denominator)
-    {
+        , denominator_(denominator) {
+    	if (numerator_==0){
+    		throw domain_error("деление на ноль!");
+    	}
+
         Normalize();
     }
 
@@ -50,15 +56,13 @@ public:
     }
 
     Rational& operator/=(Rational right) {
-    	if (right.numerator_==0){
-    		throw invalid_argument("деление на ноль!");
-    	}
-    	else{
+        if (right.numerator_ == 0) {
+            throw invalid_argument("Division by zero");
+        }
         numerator_ *= right.denominator_;
         denominator_ *= right.numerator_;
         Normalize();
         return *this;
-    	}
     }
 
 private:
@@ -90,8 +94,6 @@ istream& operator>>(istream& input, Rational& rational) {
     return input;
 }
 
-// Unary plus and minus
-
 Rational operator+(Rational value) {
     return value;
 }
@@ -99,8 +101,6 @@ Rational operator+(Rational value) {
 Rational operator-(Rational value) {
     return {-value.Numerator(), value.Denominator()};
 }
-
-// Binary arithmetic operations
 
 Rational operator+(Rational left, Rational right) {
     return left += right;
@@ -115,15 +115,11 @@ Rational operator*(Rational left, Rational right) {
 }
 
 Rational operator/(Rational left, Rational right) {
-
     return left /= right;
 }
 
-// Comparison operators
-
 bool operator==(Rational left, Rational right) {
-    return left.Numerator() == right.Numerator() &&
-           left.Denominator() == right.Denominator();
+    return left.Numerator() == right.Numerator() && left.Denominator() == right.Denominator();
 }
 
 bool operator!=(Rational left, Rational right) {
@@ -131,13 +127,11 @@ bool operator!=(Rational left, Rational right) {
 }
 
 bool operator<(Rational left, Rational right) {
-    return left.Numerator() * right.Denominator() <
-           left.Denominator() * right.Numerator();
+    return left.Numerator() * right.Denominator() < left.Denominator() * right.Numerator();
 }
 
 bool operator>(Rational left, Rational right) {
-    return left.Numerator() * right.Denominator() >
-           left.Denominator() * right.Numerator();
+    return left.Numerator() * right.Denominator() > left.Denominator() * right.Numerator();
 }
 
 bool operator>=(Rational left, Rational right) {
@@ -147,6 +141,8 @@ bool operator>=(Rational left, Rational right) {
 bool operator<=(Rational left, Rational right) {
     return !(left > right);
 }
+
+// ========== Для примера ========
 
 int main() {
     try {
@@ -161,7 +157,7 @@ int main() {
         Rational value{3, 5};
         value /= Rational();
         // Следующая строка не должна выполниться
-        cout << value <<" не должно выводится" << endl;
+        cout << value << endl;
     } catch (const invalid_argument& e) {
         cout << "Ошибка: "s << e.what() << endl;
     }
