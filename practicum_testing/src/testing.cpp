@@ -2,20 +2,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 
 using namespace std;
 
-struct Lang {
-    string name;
-    int age;
-};
+template<typename It>
+void PrintRange(It begin, It end){
+	for (auto i=begin;i!=end;i++){
+		cout<<*i<<" "s;
+	}
+	cout<<endl;
+}
 
 int main() {
-    vector<Lang> langs = {{"Python"s, 29}, {"Java"s, 24}, {"C#"s, 20}, {"Ruby"s, 25}, {"C++"s, 37}};
-    // Выведите первый язык, начинающийся на J, используя алгоритм find_if
-    auto result = find_if(langs.begin(), langs.end(), [](const Lang &lang) {
-        return lang.name[0] == 'J';
-    });
-    cout << result->name << ", " << result->age << endl;
+    set<int> test = {1, 1, 1, 2, 3, 4, 5, 5};
+    PrintRange(test.begin(), test.end());
     return 0;
 }
