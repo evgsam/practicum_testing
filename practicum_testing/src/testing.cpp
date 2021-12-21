@@ -1,3 +1,5 @@
+// авторское решение - https://www.onlinegdb.com/BkY1XyRPD
+
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -14,8 +16,18 @@ void PrintRange(It begin, It end){
 	cout<<endl;
 }
 
+template<typename Container, typename Separator>
+void FindAndPrint(Container cont, Separator sep){
+	auto it=find_if(cont.begin(),cont.end(),[sep](const Separator &item){
+		return item==sep;
+	});
+		PrintRange(cont.begin(), it);
+		PrintRange(it, cont.end());
+}
+
 int main() {
     set<int> test = {1, 1, 1, 2, 3, 4, 5, 5};
-    PrintRange(test.begin(), test.end());
+    FindAndPrint(test, 3);
+    FindAndPrint(test, 0);
     return 0;
 }
