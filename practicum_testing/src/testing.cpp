@@ -1,33 +1,36 @@
-// авторское решение - https://www.onlinegdb.com/BkY1XyRPD
-
 #include <algorithm>
 #include <iostream>
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
 using namespace std;
 
-template<typename It>
-void PrintRange(It begin, It end){
-	for (auto i=begin;i!=end;i++){
-		cout<<*i<<" "s;
-	}
-	cout<<endl;
+template <typename It>
+void PrintRange(It range_begin, It range_end) {
+    for (auto it = range_begin; it != range_end; ++it) {
+        cout << *it << " "s;
+    }
+    cout << endl;
 }
 
-template<typename Container, typename Separator>
-void FindAndPrint(Container cont, Separator sep){
-	auto it=find_if(cont.begin(),cont.end(),[sep](const Separator &item){
-		return item==sep;
-	});
-		PrintRange(cont.begin(), it);
-		PrintRange(it, cont.end());
+template <typename It>
+auto MakeSet(It range_begin, It range_end) {
+    return set(range_begin, range_end);
 }
+
+template <typename It>
+auto MakeVector(It range_begin, It range_end) {
+    return vector(range_begin, range_end);
+}
+
 
 int main() {
-    set<int> test = {1, 1, 1, 2, 3, 4, 5, 5};
-    FindAndPrint(test, 3);
-    FindAndPrint(test, 0);
-    return 0;
+    //vector<string> langs = {"Python"s, "Java"s, "C#"s, "Ruby"s, "C++"s, "C++"s, "C++"s, "Ruby"s, "Java"s};
+	set<string> unique_langs = {"Python"s, "Java"s, "C#"s, "Ruby"s, "C++"s};
+    vector<string> langs = MakeVector(unique_langs.begin(), unique_langs.end());
+    PrintRange(langs.begin(), langs.end());
+    /*  auto unique_langs = MakeSet(langs.begin(), langs.end());
+    PrintRange(unique_langs.begin(), unique_langs.end());
+    */
 }
