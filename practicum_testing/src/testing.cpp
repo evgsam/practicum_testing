@@ -17,13 +17,14 @@ void PrintRange(It range_begin, It range_end) {
 
 //template <typename Container, typename Iterator>
 template <typename Container>
-void EraseAndPrint(Container& container, int pos) {
+void EraseAndPrint(Container& container, int pos, int begin,int end) {
 	auto it_to_erased = container.erase(container.begin()+pos);
-    PrintRange(container.begin(), it_to_erased);
-    PrintRange(it_to_erased, container.end());
+    PrintRange(container.begin(), container.end());
+    it_to_erased = container.erase(container.begin()+begin,container.begin()+end);
+    PrintRange(container.begin(), container.end());
 }
 
 int main() {
     vector <string> langs = {"Python"s, "Java"s, "C#"s, "Ruby"s, "C++"s};
-    EraseAndPrint(langs, 2);
+    EraseAndPrint(langs, 0,0,2);
 }
