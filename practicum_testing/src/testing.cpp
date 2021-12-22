@@ -15,14 +15,15 @@ void PrintRange(It range_begin, It range_end) {
 }
 
 
-template <typename Container, typename Iterator>
-void EraseAndPrint(Container& container, Iterator it) {
-    auto it_to_erased = container.erase(it);
+//template <typename Container, typename Iterator>
+template <typename Container>
+void EraseAndPrint(Container& container, int pos) {
+	auto it_to_erased = container.erase(container.begin()+pos);
     PrintRange(container.begin(), it_to_erased);
     PrintRange(it_to_erased, container.end());
 }
 
 int main() {
-    set<string> langs = {"Python"s, "Java"s, "C#"s, "Ruby"s, "C++"s};
-    EraseAndPrint(langs, langs.begin());
+    vector <string> langs = {"Python"s, "Java"s, "C#"s, "Ruby"s, "C++"s};
+    EraseAndPrint(langs, 2);
 }
