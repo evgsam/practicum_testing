@@ -28,6 +28,18 @@ public:
         }
     }
 
+    // disks_num - количество перемещаемых дисков
+    // destination - конечная башня для перемещения
+    // buffer - башня, которую нужно использовать в качестве буфера для дисков
+    void MoveDisks(int disks_num, Tower& destination, Tower& buffer) {
+        if (disks_num > 1) {
+              Tower from_tower = *this;
+              from_tower.MoveDisks(disks_num-1, buffer, destination);
+             // buffer.MoveDisks(disks_num-1, destination, from_tower);
+          } else {
+              destination.AddToTop(disks_[disks_.size()-1]);
+          }
+    }
     // вы можете дописывать необходимые для вашего решения методы
 
 private:
@@ -42,14 +54,6 @@ private:
 };
 
 
-// disks_num - количество перемещаемых дисков
-// destination - конечная башня для перемещения
-// buffer - башня, которую нужно использовать в качестве буфера для дисков
-void MoveDisks(int disks_num, Tower& destination, Tower& buffer) {
-    if (// условие выхода ещё не выполнено) {
-        // действия из шага рекурсии
-    }
-}
 
 void SolveHanoi(vector<Tower>& towers) {
     int disks_num = towers[0].GetDisksNum();
@@ -69,6 +73,5 @@ int main() {
     }
     // добавим на первую башню три кольца
     towers[0].SetDisks(disks_num);
-
     SolveHanoi(towers);
 }
