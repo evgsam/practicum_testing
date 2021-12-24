@@ -10,11 +10,9 @@ public:
     Tower(int disks_num) {
         FillTower(disks_num);
     }
-
     int GetDisksNum() const {
         return disks_.size();
     }
-
     void SetDisks(int disks_num) {
         FillTower(disks_num);
     }
@@ -26,7 +24,7 @@ public:
         if (0 != disks_.size() && disk >= disks_[top_disk_num]) {
             throw invalid_argument("Невозможно поместить большой диск на маленький");
         } else {
-            // допишите этот метод и используйте его в вашем решении
+           disks_.push_back(disk);
         }
     }
 
