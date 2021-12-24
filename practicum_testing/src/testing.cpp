@@ -14,7 +14,6 @@ public:
 		return disks_.size();
 	}
 	void SetDisks(int disks_num) {
-		cout<<"SetDisks:"<<disks_num<<endl;
 		FillTower(disks_num);
 	}
 
@@ -26,54 +25,59 @@ public:
 			throw invalid_argument(
 					"Невозможно поместить большой диск на маленький");
 		} else {
-			disks_.push_back(disk);
+			//disks_.push_back(disk);
+			FillTower(disk);
 		}
 	}
-	void PrintDisks(int disk_num,Tower &from_tower, Tower &destination, Tower &buffer){
-		cout<<"Disk number:"<<disk_num<<endl;
-		for(auto vec:from_tower.disks_){
-			cout<<vec<<" ";
-		}
-		cout<<endl;
-		if (buffer.disks_.empty()){
-			for (int i=0;i<from_tower.disks_.size();i++){
-				cout<<"0 ";
+	void PrintDisks(int disk_num, Tower &from_tower, Tower &destination,
+			Tower &buffer) {
+		cout << "Disk number:" << disk_num << endl;
+		if (from_tower.disks_.empty()) {
+			for (int i = 0; i < 3; i++) {
+				cout << "0 ";
+			}
+		} else {
+			for (int i=0;i<3;i++) {
+				cout << from_tower.disks_[i] << " ";
 			}
 		}
-		else{
-			for(auto vec:buffer.disks_){
-				cout<<vec;
+		cout << endl;
+		if (buffer.disks_.empty()) {
+			for (int i = 0; i < 3; i++) {
+				cout << "0 ";
+			}
+		} else {
+			for (int i = 0; i < 3; i++) {
+				cout << buffer.disks_[i] << " ";
 			}
 		}
-		cout<<endl;
-		if (destination.disks_.empty()){
-			for (int i=0;i<from_tower.disks_.size();i++){
-				cout<<"0 ";
+		cout << endl;
+		if (destination.disks_.empty()) {
+			for (int i = 0; i < 3; i++) {
+				cout << "0 ";
+			}
+		} else {
+			for (int i = 0; i < 3; i++) {
+				cout << destination.disks_[i] << " ";
 			}
 		}
-		else{
-			for(auto vec:destination.disks_){
-				cout<<vec;
-			}
-		}
-		cout<<endl;
+		cout << endl;
 	}
 
 	// disks_num - количество перемещаемых дисков
 	// destination - конечная башня для перемещения
 	// buffer - башня, которую нужно использовать в качестве буфера для дисков
 	void MoveDisks(int disks_num, Tower &destination, Tower &buffer) {
-		if (disks_num > 1) {
+		if (disks_num!=0){
 			Tower from_tower = *this;
 			PrintDisks(disks_num, from_tower, destination, buffer);
-			from_tower.MoveDisks(disks_num - 1, buffer, destination);
-			from_tower.disks_.pop_back();
-			//buffer.MoveDisks(disks_num-1, destination, from_tower);
-		} /*else {
+
+			from_tower.MoveDisks(disks_num-1,destination,buffer);
+			buffer.MoveDisks(disks_num-1, destination, from_tower);
 			destination.AddToTop(disks_[disks_.size() - 1]);
-		}*/
+		}
+
 	}
-	// вы можете дописывать необходимые для вашего решения методы
 
 private:
 	vector<int> disks_;
@@ -94,7 +98,6 @@ void SolveHanoi(vector<Tower> &towers) {
 	towers[0].MoveDisks(disks_num, towers[2], towers[1]);
 }
 
-
 int main() {
 	int towers_num = 3;
 	int disks_num = 3;
@@ -105,7 +108,6 @@ int main() {
 	}
 	// добавим на первую башню три кольца
 	towers[0].SetDisks(disks_num);
-
 
 	SolveHanoi(towers);
 }
