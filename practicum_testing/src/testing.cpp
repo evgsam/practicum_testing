@@ -14,16 +14,22 @@ uint64_t Factorial(int num) {
 	return factorial;
 }
 
-uint64_t Fibonacci(int num) {
+
+bool IsPowOfTwo(int num) {
 	if (num == 0) {
-		return 0;
+		return false;
 	}
 	if (num == 1) {
-		return 1;
+		return true;
 	}
-	return Fibonacci(num - 1) + Fibonacci(num - 2);
+	if (num % 2 == 0) {
+		return IsPowOfTwo(num/2);
+	}
+	return false;
 }
 
+
 int main() {
-	cout << Fibonacci(6) << endl;
+    int result = IsPowOfTwo(3);
+    cout << result << endl;
 }
