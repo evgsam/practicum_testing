@@ -25,8 +25,8 @@ public:
 			throw invalid_argument(
 					"Невозможно поместить большой диск на маленький");
 		} else {
-			//disks_.push_back(disk);
-			FillTower(disk);
+			disks_.push_back(disk);
+			//FillTower(disk);
 		}
 	}
 	void PrintDisks(int disk_num, Tower &from_tower, Tower &destination,
@@ -37,7 +37,7 @@ public:
 				cout << "0 ";
 			}
 		} else {
-			for (int i=0;i<3;i++) {
+			for (int i = 0; i < 3; i++) {
 				cout << from_tower.disks_[i] << " ";
 			}
 		}
@@ -68,15 +68,45 @@ public:
 	// destination - конечная башня для перемещения
 	// buffer - башня, которую нужно использовать в качестве буфера для дисков
 	void MoveDisks(int disks_num, Tower &destination, Tower &buffer) {
-		if (disks_num!=0){
-			Tower from_tower = *this;
-			PrintDisks(disks_num, from_tower, destination, buffer);
+		if(disks_num!=0){
+			Tower this_tower = *this;
 
-			from_tower.MoveDisks(disks_num-1,destination,buffer);
-			buffer.MoveDisks(disks_num-1, destination, from_tower);
-			destination.AddToTop(disks_[disks_.size() - 1]);
+			int top_disk_num = disks_.size() - 1;
+			destination.AddToTop(disks_[top_disk_num]);
+			this_tower.disks_[top_disk_num] = 0;
+			cout<<"top_disk_num="<<top_disk_num<<endl;
+			PrintDisks(disks_num, this_tower, destination, buffer);
+			//destination.AddToTop(disks_[top_disk_num]);
+			//disks_num--;
+
+			--top_disk_num;
+			buffer.AddToTop(disks_[top_disk_num]);
+			this_tower.disks_[top_disk_num] = 0;
+			cout<<"top_disk_num="<<top_disk_num<<endl;
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
+			buffer.AddToTop(destination.disks_[0]);
+			destination.disks_.pop_back();
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
+			destination.AddToTop(this_tower.disks_[0]);
+		//	this_tower.disks_[0]=0;
+			PrintDisks(disks_num, this_tower, destination, buffer);
+			this_tower.disks_.clear();
+
+			this_tower.AddToTop(buffer.disks_[1]);
+			buffer.disks_[1]=0;
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
+			destination.AddToTop(buffer.disks_[0]);
+			buffer.disks_.clear();
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
+			destination.AddToTop(this_tower.disks_[0]);
+			this_tower.disks_.clear();
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
 		}
-
 	}
 
 private:
