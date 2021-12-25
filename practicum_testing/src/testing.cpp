@@ -87,39 +87,14 @@ public:
 	// destination - конечная башня для перемещения
 	// buffer - башня, которую нужно использовать в качестве буфера для дисков
 	void MoveDisks(int disks_num, Tower &destination, Tower &buffer) {
-		if(disks_num!=0){
+		if(disks_num!=1){
 			Tower this_tower = *this;
 
-		//	PrintDisks(disks_num, this_tower, destination, buffer);
-
-			destination.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
+			destination.AddToTop(this_tower.disks_[disks_num-1]);
 			this_tower.disks_.pop_back();
-			PrintDisks(disks_num, this_tower, destination, buffer);
 
-			buffer.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
-			this_tower.disks_.pop_back();
+			MoveDisks(disks_num-1, this_tower, destination);
 			PrintDisks(disks_num, this_tower, destination, buffer);
-
-			buffer.AddToTop(destination.disks_[destination.disks_.size()-1]);
-			destination.disks_.pop_back();
-			PrintDisks(disks_num, this_tower, destination, buffer);
-
-			destination.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
-			this_tower.disks_.pop_back();
-			PrintDisks(disks_num, this_tower, destination, buffer);
-
-			this_tower.AddToTop(buffer.disks_[buffer.disks_.size()-1]);
-			buffer.disks_.pop_back();
-			PrintDisks(disks_num, this_tower, destination, buffer);
-
-			destination.AddToTop(buffer.disks_[buffer.disks_.size()-1]);
-			buffer.disks_.pop_back();
-			PrintDisks(disks_num, this_tower, destination, buffer);
-
-			destination.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
-			this_tower.disks_.clear();
-			PrintDisks(disks_num, this_tower, destination, buffer);
-
 		}
 	}
 
