@@ -1,3 +1,5 @@
+//авторское решение - https://www.onlinegdb.com/BJltzvyRww
+
 #include <algorithm>
 #include <iostream>
 #include <numeric>
@@ -7,35 +9,36 @@
 using namespace std;
 
 // функция, записывающая элементы диапазона в строку
-template <typename It>
+template<typename It>
 string PrintRangeToString(It range_begin, It range_end) {
-	  // удобный тип ostringstream -> https://ru.cppreference.com/w/cpp/io/basic_ostringstream
-    ostringstream out;
-    for (auto it = range_begin; it != range_end; ++it) {
-        out << *it << " "s;
-    }
-    out << endl;
-	  // получаем доступ к строке с помощью метода str для ostringstream
-    return out.str();
+	// удобный тип ostringstream -> https://ru.cppreference.com/w/cpp/io/basic_ostringstream
+	ostringstream out;
+	for (auto it = range_begin; it != range_end; ++it) {
+		out << *it << " "s;
+	}
+	out << endl;
+	// получаем доступ к строке с помощью метода str для ostringstream
+	return out.str();
 }
 
-
-template <typename It>
+template<typename It>
 vector<string> GetPermutations(It begin_, It end_) {
-    cout << endl;
-    return {"dddd"s,"fffff"s};
+	vector<string> res;
+	do {
+		res.push_back(PrintRangeToString(begin_,end_));
+	} while (next_permutation(begin_, end_));
+	return res;
 }
-
 
 int main() {
-    vector<int> permutation(3);
-    // iota             -> http://ru.cppreference.com/w/cpp/algorithm/iota
-    // Заполняет диапазон последовательно возрастающими значениями
-    iota(permutation.begin(), permutation.end(), 1);
+	vector<int> permutation(3);
+	// iota             -> http://ru.cppreference.com/w/cpp/algorithm/iota
+	// Заполняет диапазон последовательно возрастающими значениями
+	iota(permutation.begin(), permutation.end(), 1);
 
-    auto result = GetPermutations(permutation.begin(), permutation.end());
-    for (const auto& s : result) {
-        cout << s;
-    }
-    return 0;
+	auto result = GetPermutations(permutation.begin(), permutation.end());
+	for (const auto &s : result) {
+		cout << s;
+	}
+	return 0;
 }
