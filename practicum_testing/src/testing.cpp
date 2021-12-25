@@ -31,7 +31,7 @@ public:
 	}
 	void PrintDisks(int disk_num, Tower &from_tower, Tower &destination,
 			Tower &buffer) {
-
+		cout<<"disk_num="<<disk_num<<endl;
 		cout<<"this_tower_size="<<from_tower.disks_.size()<<endl;
 		cout<<"buffer_tower_size="<<buffer.disks_.size()<<endl;
 		cout<<"destionation_tower_size="<<destination.disks_.size()<<endl;
@@ -87,13 +87,11 @@ public:
 	// destination - конечная башня для перемещения
 	// buffer - башня, которую нужно использовать в качестве буфера для дисков
 	void MoveDisks(int disks_num, Tower &destination, Tower &buffer) {
-		if(disks_num!=1){
+		if(disks_num!=0){
 			Tower this_tower = *this;
-
-			destination.AddToTop(this_tower.disks_[disks_num-1]);
-			this_tower.disks_.pop_back();
-
-			MoveDisks(disks_num-1, this_tower, destination);
+			destination.AddToTop(disks_num);
+			MoveDisks(disks_num-1, destination, buffer);
+			this_tower.disks_.clear();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 		}
 	}
