@@ -31,7 +31,11 @@ public:
 	}
 	void PrintDisks(int disk_num, Tower &from_tower, Tower &destination,
 			Tower &buffer) {
-		cout << "Disk number:" << disk_num << endl;
+
+		cout<<"this_tower_size="<<from_tower.disks_.size()<<endl;
+		cout<<"buffer_tower_size="<<buffer.disks_.size()<<endl;
+		cout<<"destionation_tower_size="<<destination.disks_.size()<<endl;
+
 		if (from_tower.disks_.empty()) {
 			for (int i = 0; i < 3; i++) {
 				cout << "0 ";
@@ -62,6 +66,7 @@ public:
 			}
 		}
 		cout << endl;
+		cout << endl;
 	}
 
 	// disks_num - количество перемещаемых дисков
@@ -71,18 +76,14 @@ public:
 		if(disks_num!=0){
 			Tower this_tower = *this;
 
-			int top_disk_num = disks_.size() - 1;
-			destination.AddToTop(disks_[top_disk_num]);
-			this_tower.disks_[top_disk_num] = 0;
-			cout<<"top_disk_num="<<top_disk_num<<endl;
 			PrintDisks(disks_num, this_tower, destination, buffer);
-			//destination.AddToTop(disks_[top_disk_num]);
-			//disks_num--;
 
-			--top_disk_num;
-			buffer.AddToTop(disks_[top_disk_num]);
-			this_tower.disks_[top_disk_num] = 0;
-			cout<<"top_disk_num="<<top_disk_num<<endl;
+			destination.AddToTop(this_tower.disks_[2]);
+			this_tower.disks_.pop_back();
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
+			buffer.AddToTop(this_tower.disks_[1]);
+			this_tower.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
 			buffer.AddToTop(destination.disks_[0]);
@@ -90,16 +91,16 @@ public:
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
 			destination.AddToTop(this_tower.disks_[0]);
-		//	this_tower.disks_[0]=0;
+			this_tower.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
-			this_tower.disks_.clear();
 
 			this_tower.AddToTop(buffer.disks_[1]);
-			buffer.disks_[1]=0;
+			buffer.disks_.pop_back();
+			cout<<"Тут?"<<endl;
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
 			destination.AddToTop(buffer.disks_[0]);
-			buffer.disks_.clear();
+			buffer.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
 			destination.AddToTop(this_tower.disks_[0]);
