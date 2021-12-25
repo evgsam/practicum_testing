@@ -28,7 +28,6 @@ public:
 					"Невозможно поместить большой диск на маленький");
 		} else {
 			disks_.push_back(disk);
-			//FillTower(disk);
 		}
 	}
 	void PrintDisks(int disk_num, Tower &from_tower, Tower &destination,
@@ -91,9 +90,13 @@ public:
 	void MoveDisks(int disks_num, Tower &destination, Tower &buffer) {
 		if(disks_num!=0){
 			Tower this_tower = *this;
+			//PrintDisks(disks_num, this_tower, destination, buffer);
 			destination.AddToTop(disks_num);
+			disks_.pop_back();
 			MoveDisks(disks_num-1, destination, buffer);
-			this_tower.disks_.clear();
+			if (this_tower.disks_.size()==1){
+				this_tower.disks_.pop_back();
+			}
 			PrintDisks(disks_num, this_tower, destination, buffer);
 		}
 	}
@@ -115,6 +118,7 @@ void SolveHanoi(vector<Tower> &towers) {
 	// просим переложить все диски на последнюю башню
 	// с использованием средней башни как буфера
 	towers[0].MoveDisks(disks_num, towers[2], towers[1]);
+
 }
 
 int main() {
