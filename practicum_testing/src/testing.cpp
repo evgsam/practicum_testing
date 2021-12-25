@@ -42,7 +42,12 @@ public:
 			}
 		} else {
 			for (int i = 0; i < 3; i++) {
-				cout << from_tower.disks_[i] << " ";
+				if (i<from_tower.disks_.size()){
+					cout << from_tower.disks_[i] << " ";
+				}else {
+					cout<<"0 ";
+				}
+
 			}
 		}
 		cout << endl;
@@ -52,7 +57,12 @@ public:
 			}
 		} else {
 			for (int i = 0; i < 3; i++) {
-				cout << buffer.disks_[i] << " ";
+				if (i<buffer.disks_.size()){
+					cout << buffer.disks_[i] << " ";
+				}else{
+					cout<<"0 ";
+				}
+
 			}
 		}
 		cout << endl;
@@ -62,7 +72,11 @@ public:
 			}
 		} else {
 			for (int i = 0; i < 3; i++) {
-				cout << destination.disks_[i] << " ";
+				if(i<destination.disks_.size()){
+					cout << destination.disks_[i] << " ";
+				}else{
+					cout<<"0 ";
+				}
 			}
 		}
 		cout << endl;
