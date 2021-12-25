@@ -90,34 +90,33 @@ public:
 		if(disks_num!=0){
 			Tower this_tower = *this;
 
-			PrintDisks(disks_num, this_tower, destination, buffer);
+		//	PrintDisks(disks_num, this_tower, destination, buffer);
 
-			destination.AddToTop(this_tower.disks_[2]);
+			destination.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
 			this_tower.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
-			buffer.AddToTop(this_tower.disks_[1]);
+			buffer.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
 			this_tower.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
-			buffer.AddToTop(destination.disks_[0]);
+			buffer.AddToTop(destination.disks_[destination.disks_.size()-1]);
 			destination.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
-			destination.AddToTop(this_tower.disks_[0]);
+			destination.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
 			this_tower.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
-			this_tower.AddToTop(buffer.disks_[1]);
-			buffer.disks_.pop_back();
-			cout<<"Тут?"<<endl;
-			PrintDisks(disks_num, this_tower, destination, buffer);
-
-			destination.AddToTop(buffer.disks_[0]);
+			this_tower.AddToTop(buffer.disks_[buffer.disks_.size()-1]);
 			buffer.disks_.pop_back();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
-			destination.AddToTop(this_tower.disks_[0]);
+			destination.AddToTop(buffer.disks_[buffer.disks_.size()-1]);
+			buffer.disks_.pop_back();
+			PrintDisks(disks_num, this_tower, destination, buffer);
+
+			destination.AddToTop(this_tower.disks_[this_tower.disks_.size()-1]);
 			this_tower.disks_.clear();
 			PrintDisks(disks_num, this_tower, destination, buffer);
 
