@@ -1,138 +1,41 @@
-//авторское решение - https://www.onlinegdb.com/S1yaLyRwD
-
+#include <algorithm>
 #include <iostream>
-#include <stdexcept>
+#include <numeric>
+#include <sstream>
 #include <vector>
 
 using namespace std;
 
-int disk_num_=8;
-
-class Tower {
-public:
-	// конструктор и метод SetDisks нужны, чтобы правильно создать башни
-	Tower(int disks_num) {
-		FillTower(disks_num);
-	}
-	int GetDisksNum() const {
-		return disks_.size();
-	}
-	void SetDisks(int disks_num) {
-		FillTower(disks_num);
-	}
-
-	// добавляем диск на верх собственной башни
-	// обратите внимание на исключение, которое выбрасывается этим методом
-	void AddToTop(int disk) {
-		int top_disk_num = disks_.size() - 1;
-		if (0 != disks_.size() && disk >= disks_[top_disk_num]) {
-			throw invalid_argument(
-					"Невозможно поместить большой диск на маленький");
-		} else {
-			disks_.push_back(disk);
-		}
-	}
-	void PrintDisks(int disk_num, Tower &from_tower, Tower &destination,
-			Tower &buffer) {
-		cout<<"disk_num="<<disk_num<<endl;
-		cout<<"this_tower_size="<<from_tower.disks_.size()<<endl;
-		cout<<"buffer_tower_size="<<buffer.disks_.size()<<endl;
-		cout<<"destionation_tower_size="<<destination.disks_.size()<<endl;
-
-		if (from_tower.disks_.empty()) {
-			for (int i = 0; i < disk_num_; i++) {
-				cout << "0 ";
-			}
-		} else {
-			for (int i = 0; i < disk_num_; i++) {
-				if (i<from_tower.disks_.size()){
-					cout << from_tower.disks_[i] << " ";
-				}else {
-					cout<<"0 ";
-				}
-
-			}
-		}
-		cout << endl;
-		if (buffer.disks_.empty()) {
-			for (int i = 0; i < disk_num_; i++) {
-				cout << "0 ";
-			}
-		} else {
-			for (int i = 0; i < disk_num_; i++) {
-				if (i<buffer.disks_.size()){
-					cout << buffer.disks_[i] << " ";
-				}else{
-					cout<<"0 ";
-				}
-
-			}
-		}
-		cout << endl;
-		if (destination.disks_.empty()) {
-			for (int i = 0; i < disk_num_; i++) {
-				cout << "0 ";
-			}
-		} else {
-			for (int i = 0; i < disk_num_; i++) {
-				if(i<destination.disks_.size()){
-					cout << destination.disks_[i] << " ";
-				}else{
-					cout<<"0 ";
-				}
-			}
-		}
-		cout << endl;
-		cout << endl;
-	}
-
-	// disks_num - количество перемещаемых дисков
-	// destination - конечная башня для перемещения
-	// buffer - башня, которую нужно использовать в качестве буфера для дисков
-	void MoveDisks(int disks_num, Tower &destination, Tower &buffer) {
-		if(disks_num!=0){
-			Tower this_tower = *this;
-			//PrintDisks(disks_num, this_tower, destination, buffer);
-			destination.AddToTop(disks_num);
-			disks_.pop_back();
-			MoveDisks(disks_num-1, destination, buffer);
-			if (this_tower.disks_.size()==1){
-				this_tower.disks_.pop_back();
-			}
-			PrintDisks(disks_num, this_tower, destination, buffer);
-		}
-	}
-
-private:
-	vector<int> disks_;
-
-	// используем приватный метод FillTower, чтобы избежать дубликации кода
-	void FillTower(int disks_num) {
-		for (int i = disks_num; i > 0; i--) {
-			disks_.push_back(i);
-		}
-	}
-};
-
-void SolveHanoi(vector<Tower> &towers) {
-	int disks_num = towers[0].GetDisksNum();
-	// запускаем рекурсию
-	// просим переложить все диски на последнюю башню
-	// с использованием средней башни как буфера
-	towers[0].MoveDisks(disks_num, towers[2], towers[1]);
-
+// функция, записывающая элементы диапазона в строку
+template <typename It>
+string PrintRangeToString(It range_begin, It range_end) {
+	  // удобный тип ostringstream -> https://ru.cppreference.com/w/cpp/io/basic_ostringstream
+    ostringstream out;
+    for (auto it = range_begin; it != range_end; ++it) {
+        out << *it << " "s;
+    }
+    out << endl;
+	  // получаем доступ к строке с помощью метода str для ostringstream
+    return out.str();
 }
 
-int main() {
-	int towers_num = 3;
-	int disks_num = disk_num_;
-	vector<Tower> towers;
-	// добавим в вектор три пустые башни
-	for (int i = 0; i < towers_num; ++i) {
-		towers.push_back(0);
-	}
-	// добавим на первую башню три кольца
-	towers[0].SetDisks(disks_num);
 
-	SolveHanoi(towers);
+template <typename It>
+vector<string> GetPermutations(It begin_, It end_) {
+    cout << endl;
+    return {"dddd"s,"fffff"s};
+}
+
+
+int main() {
+    vector<int> permutation(3);
+    // iota             -> http://ru.cppreference.com/w/cpp/algorithm/iota
+    // Заполняет диапазон последовательно возрастающими значениями
+    iota(permutation.begin(), permutation.end(), 1);
+
+    auto result = GetPermutations(permutation.begin(), permutation.end());
+    for (const auto& s : result) {
+        cout << s;
+    }
+    return 0;
 }
