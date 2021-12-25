@@ -4,6 +4,8 @@
 
 using namespace std;
 
+int disk_num_=8;
+
 class Tower {
 public:
 	// конструктор и метод SetDisks нужны, чтобы правильно создать башни
@@ -37,11 +39,11 @@ public:
 		cout<<"destionation_tower_size="<<destination.disks_.size()<<endl;
 
 		if (from_tower.disks_.empty()) {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < disk_num_; i++) {
 				cout << "0 ";
 			}
 		} else {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < disk_num_; i++) {
 				if (i<from_tower.disks_.size()){
 					cout << from_tower.disks_[i] << " ";
 				}else {
@@ -52,11 +54,11 @@ public:
 		}
 		cout << endl;
 		if (buffer.disks_.empty()) {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < disk_num_; i++) {
 				cout << "0 ";
 			}
 		} else {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < disk_num_; i++) {
 				if (i<buffer.disks_.size()){
 					cout << buffer.disks_[i] << " ";
 				}else{
@@ -67,11 +69,11 @@ public:
 		}
 		cout << endl;
 		if (destination.disks_.empty()) {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < disk_num_; i++) {
 				cout << "0 ";
 			}
 		} else {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < disk_num_; i++) {
 				if(i<destination.disks_.size()){
 					cout << destination.disks_[i] << " ";
 				}else{
@@ -117,7 +119,7 @@ void SolveHanoi(vector<Tower> &towers) {
 
 int main() {
 	int towers_num = 3;
-	int disks_num = 3;
+	int disks_num = disk_num_;
 	vector<Tower> towers;
 	// добавим в вектор три пустые башни
 	for (int i = 0; i < towers_num; ++i) {
