@@ -1,3 +1,5 @@
+//авторское решение - https://www.onlinegdb.com/S1yaLyRwD
+
 #include <iostream>
 #include <stdexcept>
 #include <vector>
