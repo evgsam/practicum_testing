@@ -15,26 +15,31 @@ template<typename Type>
 class Stack {
 public:
 	void Push(const Type &element) {
-
+		elements_.push_back(element);
 		// напишите реализацию
 	}
 	void Pop() {
+		elements_.pop_back();
 		// напишите реализацию
 	}
 	const Type& Peek() const {
-		// напишите реализацию
+		return elements_.back();
 	}
 	Type& Peek() {
+		return elements_.back();
 		// напишите реализацию
 	}
 	void Print() const {
-		// напишите реализацию
+		PrintRange(elements_.begin(),elements_.end());
 	}
 	uint64_t Size() const {
-		// напишите реализацию
+		return static_cast<int64_t>(elements_.size());
 	}
 	bool IsEmpty() const {
-		// напишите реализацию
+		if(elements_.empty()){
+			return true;
+		}
+		return false;
 	}
 
 private:
@@ -51,4 +56,5 @@ int main() {
         stack.Pop();
         stack.Print();
     }
+
 }
