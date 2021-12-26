@@ -1,24 +1,21 @@
-#include <iostream>
-#include <iterator>
-#include <set>
-#include <string>
-#include <vector>
 #include <algorithm>
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
 template <typename RandomIt>
 pair<RandomIt, RandomIt> FindStartsWith(RandomIt range_begin, RandomIt range_end, string prefix) {
-    // Все строки, начинающиеся с '<prefix>', больше или равны строке "<prefix>"
-	auto left = lower_bound(range_begin, range_end, prefix);
-	//ищем ближайшую строку - в которой последняя буква на 1 больше в алфавите
-	string next_prefix =string(prefix.begin(),prefix.end()-1)+ static_cast<char>(prefix[prefix.size()-1]+1);
-
-    // Строка "<next_prefix>" в рамках буквенных строк
-    // является точной верхней гранью
-    // множества строк, начнающихся с '<prefix>'
-    auto right = lower_bound(range_begin, range_end, next_prefix);
-
+    // Все строки, начинающиеся с prefix, больше или равны строке "<prefix>"
+    auto left = lower_bound(range_begin, range_end, prefix);
+    // Составим строку, которая в рамках буквенных строк является точной верхней гранью
+    // множества строк, начинающихся с prefix
+    string upper_bound = prefix;
+    ++upper_bound[upper_bound.size() - 1];
+    // Первое встреченное слово, не меньшее upper_bound, обязательно является концом полуинтервала
+    auto right = lower_bound(range_begin, range_end, upper_bound);
     return {left, right};
 }
 
@@ -39,4 +36,3 @@ int main() {
 
     return 0;
 }
-
