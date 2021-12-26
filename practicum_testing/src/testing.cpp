@@ -50,8 +50,21 @@ class StackMin {
 public:
 	void Push(const Type &element) {
 		//elements_.Push(element);
-		auto i=Peek();
-		if(element<Peek()){
+		bool flag=false;
+		if (!flag){
+			cout<<"FLAG!!!!!!!!"<<endl;
+			flag=true;
+			elements_.Push(element);
+			min_pointer_=Peek();
+		}
+		if (element<Peek()){
+			elements_.Push(element);
+			min_pointer_=Peek();
+		}
+		else {
+			elements_.Push(element);
+		}
+	/*	if(element<Peek()){
 			min_pointer_vector_.push_back(&Peek());
 			elements_.Push(element);
 		}
@@ -59,6 +72,7 @@ public:
 			elements_.Push(element);
 			min_pointer_vector_.push_back(&Peek());
 		}
+		*/
 
 	}
 	void Pop() {
@@ -84,14 +98,14 @@ public:
 		return elements_.IsEmpty();
 	}
 	const Type& PeekMin() const {
-		return *min_pointer_vector_.back();// напишите реализацию метода
+		return min_pointer_;// напишите реализацию метода
 	}
 	Type& PeekMin() {
-		return *min_pointer_vector_.back();// напишите реализацию метода
+		return min_pointer_;// напишите реализацию метода
 	}
 private:
 	Stack<Type> elements_;
-	vector<int*> min_pointer_vector_;
+	vector<int> min_pointer_vector_;
 	int min_pointer_=0;
 	// возможно, здесь вам понадобится что-то изменить
 };
