@@ -36,14 +36,48 @@ public:
 		return static_cast<int64_t>(elements_.size());
 	}
 	bool IsEmpty() const {
-		if(elements_.empty()){
-			return true;
-		}
-		return false;
+		return elements_.empty();
 	}
 
 private:
 	vector<Type> elements_;
+};
+
+template <typename Type>
+class StackMin {
+public:
+    void Push(const Type& element) {
+    // напишите реализацию метода
+    }
+    void Pop() {
+    // напишите реализацию метода
+    }
+    const Type& Peek() const {
+        return elements_.Peek();
+    }
+    Type& Peek() {
+        return elements_.Peek();
+    }
+    void Print() const {
+        // работу этого метода мы проверять не будем,
+        // но если он вам нужен, то можете его реализовать
+        elements_.Print();
+    }
+    uint64_t Size() const {
+        return elements_.size();
+    }
+    bool IsEmpty() const {
+        return elements_.IsEmpty();
+    }
+    const Type& PeekMin() const {
+    // напишите реализацию метода
+    }
+    Type& PeekMin() {
+    // напишите реализацию метода
+    }
+private:
+    Stack<Type> elements_;
+    // возможно, здесь вам понадобится что-то изменить
 };
 
 int main() {
