@@ -1,19 +1,34 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <set>
 
 using namespace std;
 
-void PrintSpacesPositions(string& str) {
-    for (auto it = find(str.begin(), str.end(), ' ');
-         it != str.end(); it = find(next(it),
-         str.end(), ' ')) {
-        cout << distance(str.begin(), it) << endl;
-    }
+set<int>::const_iterator FindNearestElement(const set<int> &numbers,
+		int border) {
+	auto it = numbers.lower_bound(border);
+	if (it != numbers.begin()) {
+		auto pv =  prev(it, 1);
+		if ((abs(border - *pv) < abs(*it-border))
+				|| (abs(border - *pv) == abs(*it-border))) {
+			return pv;
+		}
+	}
+	return it;
 }
 
 int main() {
-	string str = "He said: one and one and one is three"s;
-	PrintSpacesPositions(str);
+	set<int> numbers = { 1, 4, 6 };
+	cout << *FindNearestElement(numbers, 0) << " "
+			<< *FindNearestElement(numbers, 3) << " "
+			<< *FindNearestElement(numbers, 5) << " "
+			<< *FindNearestElement(numbers, 6) << " "
+			<< *FindNearestElement(numbers, 100) << endl;
+
+	set<int> empty_set;
+
+	cout << (FindNearestElement(empty_set, 8) == end(empty_set)) << endl;
 	return 0;
 }
+
