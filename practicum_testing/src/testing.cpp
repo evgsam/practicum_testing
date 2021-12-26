@@ -48,38 +48,52 @@ private:
 template<typename Type>
 class StackMin {
 public:
-    void Push(const Type& element) {
-    // напишите реализацию метода
-    }
-    void Pop() {
-    // напишите реализацию метода
-    }
-    const Type& Peek() const {
-        return elements_.Peek();
-    }
-    Type& Peek() {
-        return elements_.Peek();
-    }
-    void Print() const {
-        // работу этого метода мы проверять не будем,
-        // но если он вам нужен, то можете его реализовать
-        elements_.Print();
-    }
-    uint64_t Size() const {
-        return elements_.size();
-    }
-    bool IsEmpty() const {
-        return elements_.IsEmpty();
-    }
-    const Type& PeekMin() const {
-    // напишите реализацию метода
-    }
-    Type& PeekMin() {
-    // напишите реализацию метода
-    }
+	void Push(const Type &element) {
+		//elements_.Push(element);
+		auto i=Peek();
+		if(element<Peek()){
+			min_pointer_vector_.push_back(&Peek());
+			elements_.Push(element);
+		}
+		else {
+			elements_.Push(element);
+			min_pointer_vector_.push_back(&Peek());
+		}
+
+	}
+	void Pop() {
+		elements_.Pop();
+		min_pointer_vector_.pop_back();
+		// напишите реализацию метода
+	}
+	const Type& Peek() const {
+		return elements_.Peek();
+	}
+	Type& Peek() {
+		return elements_.Peek();
+	}
+	void Print() const {
+		// работу этого метода мы проверять не будем,
+		// но если он вам нужен, то можете его реализовать
+		elements_.Print();
+	}
+	uint64_t Size() const {
+		return elements_.size();
+	}
+	bool IsEmpty() const {
+		return elements_.IsEmpty();
+	}
+	const Type& PeekMin() const {
+		return *min_pointer_vector_.back();// напишите реализацию метода
+	}
+	Type& PeekMin() {
+		return *min_pointer_vector_.back();// напишите реализацию метода
+	}
 private:
-    Stack<Type> elements_;
-    // возможно, здесь вам понадобится что-то изменить
+	Stack<Type> elements_;
+	vector<int*> min_pointer_vector_;
+	int min_pointer_=0;
+	// возможно, здесь вам понадобится что-то изменить
 };
 
 int main() {
