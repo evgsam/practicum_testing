@@ -1,19 +1,15 @@
-#include <algorithm>
 #include <iostream>
 #include <string>
-#include <vector>
-#include <set>
-#include <iterator>
+#include <algorithm>
 
 using namespace std;
 
-void PrintSpacesPositions(string str) {
-	auto it = str.find(" ");
-	while (it!=string::npos){
-		cout<<it;
-		cout<<endl;
-		it= str.find(" ", it+1);
-	}
+void PrintSpacesPositions(string& str) {
+    for (auto it = find(str.begin(), str.end(), ' ');
+         it != str.end(); it = find(next(it),
+         str.end(), ' ')) {
+        cout << distance(str.begin(), it) << endl;
+    }
 }
 
 int main() {
