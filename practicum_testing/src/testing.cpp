@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
 
@@ -30,7 +32,7 @@ public:
 		// напишите реализацию
 	}
 	void Print() const {
-		PrintRange(elements_.begin(),elements_.end());
+		PrintRange(elements_.begin(), elements_.end());
 	}
 	uint64_t Size() const {
 		return static_cast<int64_t>(elements_.size());
@@ -43,7 +45,7 @@ private:
 	vector<Type> elements_;
 };
 
-template <typename Type>
+template<typename Type>
 class StackMin {
 public:
     void Push(const Type& element) {
@@ -81,14 +83,23 @@ private:
 };
 
 int main() {
-    Stack<int> stack;
-    for (uint32_t i = 0; i < 10; ++i) {
-        stack.Push(i);
-        stack.Print();
-    }
-    while (!stack.IsEmpty()) {
-        stack.Pop();
-        stack.Print();
+    StackMin<int> stack;
+    vector<int> values(5);
+
+    // заполняем вектор для тестирования нашего стека
+    iota(values.begin(), values.end(), 1);
+    // перемешиваем значения
+    random_shuffle(values.begin(), values.end());
+
+    // заполняем стек
+    for (int i = 0; i < 5; ++i) {
+        stack.Push(values[i]);
     }
 
+    // печатаем стек и его минимум, постепенно убирая из стека элементы
+    while (!stack.IsEmpty()) {
+        stack.Print();
+        cout << "Минимум = "s << stack.PeekMin() << endl;
+        stack.Pop();
+    }
 }
