@@ -86,12 +86,14 @@ private:
 template<typename Type>
 class SortedStack {
 public:
-	void Ssort(const Type &element) {
-		if (element >= Peek()) {
+	void Ssort(Type pointer, const Type &element) {
+		if ((element > pointer)&&(!IsEmpty())) {
 			elements_reserve_.push_back(Peek());
 			elements_.Pop();
-			elements_.Push(element);
+			pointer=Peek();
+			Ssort(pointer, element);
 			elements_.Push(elements_reserve_.back());
+			elements_reserve_.pop_back();
 		}
 		else {
 			elements_.Push(element);
@@ -99,7 +101,10 @@ public:
 	}
 	void Push(const Type &element) {
 		if (!IsEmpty()) {
-			Ssort(element);
+			Type& pointer=Peek();
+				Ssort(pointer,element);
+
+			//Ssort(pointer,element);
 		}
 		else {
 			elements_.Push(element);
