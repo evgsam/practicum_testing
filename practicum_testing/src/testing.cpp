@@ -51,7 +51,8 @@ class StackMin {
 public:
 	void Push(const Type &element) {
 		elements_.Push(element);
-		elements_minimum_.insert(make_pair(element, static_cast<int>(Size() - 1)));
+		elements_minimum_.insert(
+				make_pair(element, static_cast<int>(Size() - 1)));
 	}
 	void Pop() {
 		pair<int, int> position;
@@ -82,9 +83,51 @@ private:
 	map<Type, int> elements_minimum_;
 };
 
-int main() {
+template<typename Type>
+class SortedStack {
+public:
+	void Push(const Type &element) {
+		int pointer = Size() - 1;
+		if ((!IsEmpty()) || (element >= Peek())) {
+			if (element < Peek()) {
+				elements_reserve_.push_back(Peek());
+				elements_.Pop();
+				elements_.Push(element);
+				elements_.Push(
+						elements_reserve_[static_cast<int>(elements_reserve_.size()
+								- 1)]);
+			}
+			Push(element);
+		}
+		elements_.Push(element);
+		// напишите реализацию метода
+	}
+	void Pop() {
+		elements_.Pop();
+		// напишите реализацию метода
+	}
+	const Type& Peek() const {
+		return elements_.Peek();
+	}
+	Type& Peek() {
+		return elements_.Peek();
+	}
+	void Print() const {
+		elements_.Print();
+	}
+	uint64_t Size() const {
+		return elements_.Size();
+	}
+	bool IsEmpty() const {
+		return elements_.IsEmpty();
+	}
+private:
+	Stack<Type> elements_;
+	vector<Type> elements_reserve_;
+};
 
-	StackMin<int> stack;
+int main() {
+	SortedStack<int> stack;
 	vector<int> values(5);
 
 	// заполняем вектор для тестирования нашего стека
@@ -92,15 +135,10 @@ int main() {
 	// перемешиваем значения
 	random_shuffle(values.begin(), values.end());
 
-	// заполняем стек
+	// заполняем стек и проверяем, что сортировка сохраняется после каждой вставки
 	for (int i = 0; i < 5; ++i) {
+		cout << "Вставляемый элемент = "s << values[i] << endl;
 		stack.Push(values[i]);
-	}
-
-	// печатаем стек и его минимум, постепенно убирая из стека элементы
-	while (!stack.IsEmpty()) {
 		stack.Print();
-		cout << "Минимум = "s << stack.PeekMin() << endl;
-		stack.Pop();
 	}
 }
