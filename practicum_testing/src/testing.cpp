@@ -1,3 +1,4 @@
+//авторское решение - https://onlinegdb.com/SyoYp2CPw
 #include <iostream>
 #include <vector>
 #include <algorithm>
