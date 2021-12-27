@@ -2,9 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <map>
 
 using namespace std;
-vector <pair <int,int>> elements_minimum_;
 
 template<typename It>
 void PrintRange(It range_begin, It range_end) {
@@ -51,13 +51,12 @@ class StackMin {
 public:
 	void Push(const Type &element) {
 		elements_.Push(element);
-		elements_minimum_.push_back(make_pair(element,Size()-1));
-		sort(elements_minimum_.rbegin(), elements_minimum_.rend());
+		elements_minimum_.insert(make_pair(element, static_cast<int>(Size() - 1)));
 	}
 	void Pop() {
+		pair<int, int> position;
+		elements_minimum_.erase(Peek());
 		elements_.Pop();
-		//elements_minimum_.erase(__position);
-		// напишите реализацию метода
 	}
 	const Type& Peek() const {
 		return elements_.Peek();
@@ -75,16 +74,12 @@ public:
 		return elements_.IsEmpty();
 	}
 	const Type& PeekMin() const {
-		return  elements_minimum_.back().first;
-				//elements_m.back(); //elements_minimum_.back();// напишите реализацию метода
+		return elements_minimum_.begin()->first;
 	}
-	Type& PeekMin() {
-		return  elements_minimum_.back().first; //elements_minimum_.back();// напишите реализацию метода
-	}
+
 private:
 	Stack<Type> elements_;
-
-	// возможно, здесь вам понадобится что-то изменить
+	map<Type, int> elements_minimum_;
 };
 
 int main() {
@@ -101,7 +96,6 @@ int main() {
 	for (int i = 0; i < 5; ++i) {
 		stack.Push(values[i]);
 	}
-
 
 	// печатаем стек и его минимум, постепенно убирая из стека элементы
 	while (!stack.IsEmpty()) {
