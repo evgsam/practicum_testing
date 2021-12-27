@@ -49,35 +49,15 @@ template<typename Type>
 class StackMin {
 public:
 	void Push(const Type &element) {
-		//elements_.Push(element);
-		bool flag=false;
-		if (!flag){
-			cout<<"FLAG!!!!!!!!"<<endl;
-			flag=true;
+		if (IsEmpty()) {
 			elements_.Push(element);
-			min_pointer_=Peek();
+			elements_minimum_.push_back(Size()-1);
 		}
-		if (element<Peek()){
-			elements_.Push(element);
-			min_pointer_=Peek();
-		}
-		else {
-			elements_.Push(element);
-		}
-	/*	if(element<Peek()){
-			min_pointer_vector_.push_back(&Peek());
-			elements_.Push(element);
-		}
-		else {
-			elements_.Push(element);
-			min_pointer_vector_.push_back(&Peek());
-		}
-		*/
+		elements_.Push(element);
 
 	}
 	void Pop() {
 		elements_.Pop();
-		min_pointer_vector_.pop_back();
 		// напишите реализацию метода
 	}
 	const Type& Peek() const {
@@ -87,47 +67,44 @@ public:
 		return elements_.Peek();
 	}
 	void Print() const {
-		// работу этого метода мы проверять не будем,
-		// но если он вам нужен, то можете его реализовать
 		elements_.Print();
 	}
 	uint64_t Size() const {
-		return elements_.size();
+		return elements_.Size();
 	}
 	bool IsEmpty() const {
 		return elements_.IsEmpty();
 	}
 	const Type& PeekMin() const {
-		return min_pointer_;// напишите реализацию метода
+		return Peek(); //elements_minimum_.back();// напишите реализацию метода
 	}
 	Type& PeekMin() {
-		return min_pointer_;// напишите реализацию метода
+		return Peek(); //elements_minimum_.back();// напишите реализацию метода
 	}
 private:
 	Stack<Type> elements_;
-	vector<int> min_pointer_vector_;
-	int min_pointer_=0;
+	vector<Type> elements_minimum_;
 	// возможно, здесь вам понадобится что-то изменить
 };
 
 int main() {
-    StackMin<int> stack;
-    vector<int> values(5);
+	StackMin<int> stack;
+	vector<int> values(5);
 
-    // заполняем вектор для тестирования нашего стека
-    iota(values.begin(), values.end(), 1);
-    // перемешиваем значения
-    random_shuffle(values.begin(), values.end());
+	// заполняем вектор для тестирования нашего стека
+	iota(values.begin(), values.end(), 1);
+	// перемешиваем значения
+	random_shuffle(values.begin(), values.end());
 
-    // заполняем стек
-    for (int i = 0; i < 5; ++i) {
-        stack.Push(values[i]);
-    }
+	// заполняем стек
+	for (int i = 0; i < 5; ++i) {
+		stack.Push(values[i]);
+	}
 
-    // печатаем стек и его минимум, постепенно убирая из стека элементы
-    while (!stack.IsEmpty()) {
-        stack.Print();
-        cout << "Минимум = "s << stack.PeekMin() << endl;
-        stack.Pop();
-    }
+	// печатаем стек и его минимум, постепенно убирая из стека элементы
+	while (!stack.IsEmpty()) {
+		stack.Print();
+		cout << "Минимум = "s << stack.PeekMin() << endl;
+		stack.Pop();
+	}
 }
