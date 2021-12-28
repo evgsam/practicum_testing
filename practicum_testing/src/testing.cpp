@@ -1,3 +1,5 @@
+//авторский вариант - https://www.onlinegdb.com/BJX-A30vP
+
 #include <stack>
 #include <iostream>
 #include <vector>
@@ -22,10 +24,6 @@ public:
 		stack1_.push(element);
 		// напишите реализацию
 	}
-	void Pop() {
-		stack2_.pop();
-		// напишите реализацию
-	}
 
 	void Reconstr(void) {
 		if (!stack2_.empty()) {
@@ -35,22 +33,46 @@ public:
 		}
 	}
 
-	Type& SearchFront(Type res) {
+	void PopFront(void) {
 		if (!IsEmpty()) {
+			if (Size() == 1) {
+				stack1_.pop();
+				Reconstr();
+				return;
+			}
 			stack2_.push(stack1_.top());
-			res = stack2_.top();
 			stack1_.pop();
-			SearchFront(res);
-			return res;
+			PopFront();
+
 		}
+		Reconstr();
+	}
+
+	void Pop() {
+		PopFront();
+		// напишите реализацию
+	}
+
+
+	Type& SearchFront(void) {
+		if (!IsEmpty()) {
+			if (Size() == 1) {
+				front_ = stack1_.top();
+			}
+			stack2_.push(stack1_.top());
+			stack1_.pop();
+			SearchFront();
+		}
+		Reconstr();
+		return front_;
 
 	}
 	Type& Front() {
-		Type res;
+
 		if (Size() == 1) {
 			return stack1_.top();
 		} else {
-			return SearchFront(res);
+			return SearchFront();
 		}
 
 		// напишите реализацию
@@ -72,6 +94,7 @@ public:
 private:
 	stack<Type> stack1_;
 	stack<Type> stack2_;
+	Type front_;
 };
 
 int main() {
