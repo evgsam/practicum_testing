@@ -1,130 +1,80 @@
-//авторский вариант - https://www.onlinegdb.com/BJX-A30vP
-
-#include <stack>
+#include <cstdlib>
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <numeric>
-#include <map>
+#include <chrono>
+#include <thread>
+
 
 using namespace std;
+using namespace chrono;
+// хотите немного магии? тогда используйте namespace literals
+using namespace literals;
 
-template<typename It>
-void PrintRange(It range_begin, It range_end) {
-	for (auto it = range_begin; it != range_end; ++it) {
-		cout << *it << " "s;
+vector<int> ReverseVector(const vector<int> &source_vector) {
+	vector<int> res;
+	for (int i : source_vector) {
+		res.insert(res.begin(), i);
 	}
-	cout << endl;
+	return res;
 }
 
-template<typename Type>
-class Queue {
-public:
-	void Push(const Type &element) {
-		stack1_.push(element);
-		// напишите реализацию
-	}
-
-	void Reconstr(void) {
-		if (!stack2_.empty()) {
-			stack1_.push(stack2_.top());
-			stack2_.pop();
-			Reconstr();
+int CountPops(const vector<int> &source_vector, int begin, int end) {
+	int res = 0;
+	for (int i = begin; i < end; ++i) {
+		if (source_vector[i]) {
+			++res;
 		}
 	}
+	return res;
+}
 
-	void PopFront(void) {
-		if (!IsEmpty()) {
-			if (Size() == 1) {
-				stack1_.pop();
-				Reconstr();
-				return;
-			}
-			stack2_.push(stack1_.top());
-			stack1_.pop();
-			PopFront();
+void FillRandom(vector<int> &v, int n) {
 
-		}
-		Reconstr();
+	for (int i = 0; i < n; ++i) {
+		// получаем случайное число с помощью функции rand.
+		// с помощью (rand() % 2) получим целое число в диапазоне 0..1.
+		// в C++ имеются более современные генераторы случайных чисел,
+		// но в данном уроке не будем их касаться
+		v.push_back(rand() % 2);
 	}
+}
 
-	void Pop() {
-		PopFront();
-		// напишите реализацию
+void Operate() {
+	vector<int> random_bits;
+
+	// операция << для целых чисел это сдвиг всех бит в двоичной
+	// записи числа. Запишем с её помощью число 2 в степени 17 (131072)
+	static const int N = 1 << 17;
+
+	// заполним вектор случайными числами 0 и 1
+	const auto start_time = steady_clock::now();
+	FillRandom(random_bits, N);
+	const auto end_time = steady_clock::now();
+	const auto dur = end_time - start_time;
+	cerr<< "Fill random: "s << chrono::duration_cast<chrono::milliseconds>(dur).count() << " ms"s << endl;
+
+	// перевернём вектор задом наперёд
+	const auto start_time1 = steady_clock::now();
+	vector<int> reversed_bits = ReverseVector(random_bits);
+	const auto end_time1 = steady_clock::now();
+	const auto dur1 = end_time1 - start_time1;
+	cerr << "Reverse: "s << chrono::duration_cast<chrono::milliseconds>(dur1).count() << " ms"s << endl;
+
+
+	const auto start_time2 = steady_clock::now();
+	// посчитаем процент единиц на начальных отрезках вектора
+	for (int i = 1, step = 1; i <= N; i += step, step *= 2) {
+		// чтобы вычислить проценты, мы умножаем на литерал 100. типа double;
+		// целочисленное значение функции CountPops при этом автоматически
+		// преобразуется к double, как и i
+		 double rate = CountPops(reversed_bits, 0, i) * 100. / i;
+		cout << "After "s << i << " bits we found "s << rate << "% pops"s<< endl;
 	}
-
-
-	Type& SearchFront(void) {
-		if (!IsEmpty()) {
-			if (Size() == 1) {
-				front_ = stack1_.top();
-			}
-			stack2_.push(stack1_.top());
-			stack1_.pop();
-			SearchFront();
-		}
-		Reconstr();
-		return front_;
-
-	}
-	Type& Front() {
-
-		if (Size() == 1) {
-			return stack1_.top();
-		} else {
-			return SearchFront();
-		}
-
-		// напишите реализацию
-	}
-	const Type& Front() const {
-		return SearchFront();
-		// напишите реализацию
-	}
-
-	uint64_t Size() const {
-		return static_cast<int64_t>(stack1_.size());
-		// напишите реализацию
-	}
-	bool IsEmpty() const {
-		return stack1_.empty();
-		// напишите реализацию
-	}
-
-private:
-	stack<Type> stack1_;
-	stack<Type> stack2_;
-	Type front_;
-};
+	const auto end_time2 = steady_clock::now();
+	const auto dur2 = end_time2 - start_time2;
+	cerr << "Counting: "s << chrono::duration_cast<chrono::milliseconds>(dur2).count() << " ms"s << endl;
+}
 
 int main() {
-	Queue<int> queue;
-	vector<int> values(5);
-
-	// заполняем вектор для тестирования очереди
-	iota(values.begin(), values.end(), 1);
-	// перемешиваем значения
-	random_shuffle(values.begin(), values.end());
-
-	PrintRange(values.begin(), values.end());
-
-	cout << "Заполняем очередь"s << endl;
-
-	// заполняем очередь и выводим элемент в начале очереди
-	for (int i = 0; i < 5; ++i) {
-		queue.Push(values[i]);
-		cout << "Вставленный элемент "s << values[i] << endl;
-		cout << "Первый элемент очереди "s << queue.Front() << endl;
-	}
-
-	cout << "Вынимаем элементы из очереди"s << endl;
-
-	// выводим элемент в начале очереди и вытаскиваем элементы по одному
-	while (!queue.IsEmpty()) {
-		// сначала будем проверять начальный элемент, а потом вытаскивать,
-		// так как операция Front на пустой очереди не определена
-		cout << "Будем вынимать элемент "s << queue.Front() << endl;
-		queue.Pop();
-	}
-	return 0;
+	Operate();
 }
