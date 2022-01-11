@@ -25,7 +25,7 @@ int CountPops(const vector<int> &source_vector, int begin, int end) {
 	return res;
 }
 
-void FillRandom(vector<int> &v, int n) {
+void AppendRandom(vector<int> &v, int n) {
 	for (int i = 0; i < n; ++i) {
 		v.push_back(rand() % 2);
 	}
@@ -33,21 +33,23 @@ void FillRandom(vector<int> &v, int n) {
 
 void Operate() {
 	vector<int> random_bits;
-	LogDuration ld("Total"s);
+
+	LOG_DURATION("Total"s);
+	//LogDuration ld("Total"s);
 	static const int N = 1 << 17;
 	{
-		LogDuration sleep_guard("Fill random"s);
-		FillRandom(random_bits, N);
+		LOG_DURATION("Append random"s);
+		AppendRandom(random_bits, N);
 	}
 
 	vector<int> reversed_bits;
 	{
-		LogDuration sleep_guard("Reverse"s);
+		LOG_DURATION("Reverse"s);
 		reversed_bits = ReverseVector(random_bits);
 	}
 
 	{
-		LogDuration sleep_guard("Counting"s);
+		LOG_DURATION("Counting"s);
 		for (int i = 1, step = 1; i <= N; i += step, step *= 2) {
 			double rate = CountPops(reversed_bits, 0, i) * 100. / i;
 			cout << "After "s << i << " bits we found "s << rate << "% pops"s
