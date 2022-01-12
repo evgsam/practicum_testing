@@ -1,61 +1,54 @@
-#include <chrono>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
 #include "log_duration.h"
+
+#include <algorithm>
+#include <iostream>
+#include <numeric>
+#include <random>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-vector<int> ReverseVector(const vector<int> &source_vector) {
-	vector<int> res;
-	for (int i : source_vector) {
-		res.insert(res.begin(), i);
-	}
+// функция анализирует данные телескопа, определяя, сколько сильных сигналов
+// зафиксировано по каждому направлению
+vector<int> ComputeStatistics(const vector<string>& vs, int n) {
+    int m = vs.size();
+    vector<int> result(n);
 
-	return res;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            // прибавляем 1, если сигнал не менее 'K'
+            result[i] += (vs[j][i] >= 'K' ? 1 : 0);
+        }
+    }
+
+    return result;
 }
 
-int CountPops(const vector<int> &source_vector, int begin, int end) {
-	int res = 0;
-	for (int i = begin; i < end; ++i) {
-		if (source_vector[i]) {
-			++res;
-		}
-	}
-	return res;
-}
+string GetRandomString(int size) {
+    static mt19937 engine;
+    uniform_int_distribution<int> distribution('A', 'Z');
 
-void FillRandom(vector<int> &v, int n) {
-	for (int i = 0; i < n; ++i) {
-		v.push_back(rand() % 2);
-	}
-}
+    string res(size, ' ');
+    for (char& c : res) {
+        c = char(distribution(engine));
+    }
 
-void Operate() {
-	vector<int> random_bits;
-	LogDuration ld("Total"s);
-	static const int N = 1 << 17;
-	{
-		LogDuration sleep_guard("Fill random"s);
-		FillRandom(random_bits, N);
-	}
-
-	vector<int> reversed_bits;
-	{
-		LogDuration sleep_guard("Reverse"s);
-		reversed_bits = ReverseVector(random_bits);
-	}
-
-	{
-		LogDuration sleep_guard("Counting"s);
-		for (int i = 1, step = 1; i <= N; i += step, step *= 2) {
-			double rate = CountPops(reversed_bits, 0, i) * 100. / i;
-			cout << "After "s << i << " bits we found "s << rate << "% pops"s
-					<< endl;
-		}
-	}
+    return res;
 }
 
 int main() {
-	Operate();
+    vector<string> data;
+
+    for (int i = 0; i < 5000; ++i) {
+        data.push_back(GetRandomString(5000));
+    }
+
+    vector<int> statistics;
+    {
+        LOG_DURATION("ComputeStatistics"s);
+        statistics = ComputeStatistics(data, 5000);
+    }
+
+    cout << "Всего сильных сигналов: "s << accumulate(statistics.begin(), statistics.end(), 0) << endl;
 }
