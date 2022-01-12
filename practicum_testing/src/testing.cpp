@@ -25,6 +25,21 @@ vector<int> ComputeStatistics(const vector<string>& vs, int n) {
     return result;
 }
 
+vector<int> ComputeStatistics2(const vector<string>& vs, int n) {
+    int m = vs.size();
+    vector<int> result(n);
+
+    // теперь первым идёт цикл по j
+    for (int j = 0; j < m; ++j) {
+        for (int i = 0; i < n; ++i) {
+            // прибавляем 1, если сигнал не менее 'K'
+            result[i] += (vs[j][i] >= 'K' ? 1 : 0);
+        }
+    }
+
+    return result;
+}
+
 string GetRandomString(int size) {
     static mt19937 engine;
     uniform_int_distribution<int> distribution('A', 'Z');
@@ -40,14 +55,14 @@ string GetRandomString(int size) {
 int main() {
     vector<string> data;
 
-    for (int i = 0; i < 5000; ++i) {
-        data.push_back(GetRandomString(5000));
+    for (int i = 0; i < 20; ++i) {
+        data.push_back(GetRandomString(20));
     }
 
     vector<int> statistics;
     {
         LOG_DURATION("ComputeStatistics"s);
-        statistics = ComputeStatistics(data, 5000);
+        statistics = ComputeStatistics(data, 20);
     }
 
     cout << "Всего сильных сигналов: "s << accumulate(statistics.begin(), statistics.end(), 0) << endl;
