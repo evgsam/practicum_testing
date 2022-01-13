@@ -12,13 +12,12 @@ vector<float> ComputeAvgTemp(const vector<vector<float>> &vs) {
 	if (vs.empty())
 		return {};
 	int m = vs.size();
-
-	vector<float> result(m);
-	vector<float> sum(m);
-	vector<int> count(m);
-
-	for (int i = 0; i < m; ++i) {
-		for (int j = 0; j < vs[i].size(); ++j) {
+	int n = vs[0].size();
+	vector<float> result(n);
+	vector<float> sum(n);
+	vector<float> count(n);
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
 			float c = vs[j][i];
 			sum[i] += (c > 0 ? c : 0);
 			count[i]+= (c > 0 ? 1 : 0);
@@ -43,10 +42,10 @@ vector<float> GetRandomVector(int size) {
 
 int main() {
 	vector<vector<float>> data;
-	data.reserve(10);
+	data.reserve(5000);
 
-	for (int i = 0; i < 5; ++i) {
-		data.push_back(GetRandomVector(5));
+	for (int i = 0; i < 5000; ++i) {
+		data.push_back(GetRandomVector(5000));
 	}
 
 	vector<float> avg;
