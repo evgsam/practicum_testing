@@ -9,22 +9,21 @@
 using namespace std;
 
 vector<float> ComputeAvgTemp(const vector<vector<float>> &vs) {
+	if (vs.empty())
+		return {};
 	int m = vs.size();
-	int n = vs[0].size();
-	vector<float> result(n);
-	vector<float> sum(n);
-	vector<float> size(n);
 
-	// теперь первым идёт цикл по j
-	for (int i = 0; i < n; ++i) {
-		sum = { };
-		size = { };
+	vector<float> result(m);
+	vector<float> sum(m);
+	vector<int> count(m);
 
-		for (int j = 0; j < m; ++j) {
-			sum[i] += (vs[j][i] > 0 ? vs[j][i] : 0);
-			size[i] += (vs[j][i] > 0 ? 1 : 0);
+	for (int i = 0; i < m; ++i) {
+		for (int j = 0; j < vs[i].size(); ++j) {
+			float c = vs[j][i];
+			sum[i] += (c > 0 ? c : 0);
+			count[i]+= (c > 0 ? 1 : 0);
 		}
-		result[i] += (size[i] > 0 ? sum[i] / size[i] : 0);
+		result[i]+=(count[i] > 0 ? sum[i] / count[i] : 0);
 	}
 	return result;
 
