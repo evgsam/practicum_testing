@@ -6,17 +6,18 @@ using namespace std;
 
 class StreamUntier {
 public:
-	StreamUntier(istream &tied_before){
-		tied_before_ = cin.tie(nullptr);
+	StreamUntier(istream &stream): stream_(stream){
+		tied_before_ = stream_.tie(nullptr);
 	}
 	~StreamUntier(){
-		cin.tie(tied_before_);
+		stream_.tie(tied_before_);
 	}
 	// добавьте конструктор, деструктор
 	// и дополнительные поля класса при необходимости
 
 private:
 	ostream *tied_before_;
+	istream& stream_;
 };
 
 int main() {
