@@ -1,33 +1,47 @@
-#include "log_duration.h"
-
+#include <algorithm>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-class StreamUntier {
-public:
-	StreamUntier(istream &stream): stream_(stream){
-		tied_before_ = stream_.tie(nullptr);
-	}
-	~StreamUntier(){
-		stream_.tie(tied_before_);
-	}
-	// добавьте конструктор, деструктор
-	// и дополнительные поля класса при необходимости
+// функция возвращает true, если векторы из одинаковых элементов
+// перепишите эту функцию, улучшив её асимптотическую сложность
+bool TestPermut(const vector<int>& v1, const vector<int>& v2) {
+    // если они разной длины, элементы заведомо разные
+    if (v1.size() != v2.size()) {
+        return false;
+    }
 
-private:
-	ostream *tied_before_;
-	istream& stream_;
-};
+    for (int i : v1) {
+        // проверяем, что каждый элемент первого вектора
+        // содержится одинаковое количество раз в обоих векторах
+        if (count(v1.begin(), v1.end(), i) != count(v2.begin(), v2.end(), i)) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 int main() {
-	LOG_DURATION("\\n with tie"s);
+    int n;
+    cin >> n;
+    vector<int> v1, v2;
+    v1.reserve(n);
+    v2.reserve(n);
 
-	StreamUntier guard(cin);
-	int i;
-	while (cin >> i) {
-		cout << i * i << "\n"s;
-	}
+    for (int i = 0; i < n; ++i) {
+        v1.push_back(rand());
+        v2.push_back(rand());
+    }
 
-	return 0;
+    // оба вектора случайны, вряд ли они совпадут
+    cout << "Random vectors match? "s << flush;
+    cout << (TestPermut(v1, v2) ? "Yes"s : "No"s) << endl;
+
+    // делаем один перестановкой другого явным образом
+    v2 = v1;
+    random_shuffle(v2.begin(), v2.end());
+    cout << "Permuted vectors match? "s << flush;
+    cout << (TestPermut(v1, v2) ? "Yes"s : "No"s) << endl;
 }
