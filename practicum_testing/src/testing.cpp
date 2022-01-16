@@ -1,37 +1,30 @@
+#include <cstdint>
 #include <iostream>
 
 using namespace std;
 
-template<typename F>
-int FindFloor(int n, F drop) {
-	// Переделайте этот алгоритм, имеющий линейную сложность.
-	// В итоге должен получится логарифмический алгоритм.
-	int a = 1;
-	int b = n;
-	while (a != b) {
-		int m = (a + b) / 2;
-		if (drop(m)) {
-			b = m;
-		} else {
-			a = m + 1;
-		}
+// упростите эту экспоненциальную функцию,
+// реализовав линейный алгоритм
+int64_t T(int i) {
+    if (i <= 1) {
+        return 0;
+    }
+    if (i == 2) {
+        return 1;
+    }
 
-	}
-	return a;
+    return T(i - 1) + T(i - 2) + T(i - 3);
 }
 
 int main() {
-	int n, t;
-	cout << "Enter n and target floor number: "s << endl;
-	cin >> n >> t;
+    int i;
 
-	int count = 0;
-	int found = FindFloor(n, [t, &count](int f) {
-		++count;
-		return f >= t;
-	});
+    while (true) {
+        cout << "Enter index: "s;
+        if (!(cin >> i)) {
+            break;
+        }
 
-	cout << "Found floor "s << found << " after "s << count << " drops"s;
-
-	return 0;
+        cout << "Ti = "s << T(i) << endl;
+    }
 }
