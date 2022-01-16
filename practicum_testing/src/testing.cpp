@@ -2,31 +2,36 @@
 
 using namespace std;
 
-template <typename F>
+template<typename F>
 int FindFloor(int n, F drop) {
-    // Переделайте этот алгоритм, имеющий линейную сложность.
-    // В итоге должен получится логарифмический алгоритм.
-    for (int i = 1; i < n; ++i) {
-        if (drop(i)) {
-            return i;
-        }
-    }
+	// Переделайте этот алгоритм, имеющий линейную сложность.
+	// В итоге должен получится логарифмический алгоритм.
+	int a = 1;
+	int b = n;
+	while (a != b) {
+		int m = (a + b) / 2;
+		if (drop(m)) {
+			b = m;
+		} else {
+			a = m + 1;
+		}
 
-    return n;
+	}
+	return a;
 }
 
 int main() {
-    int n,t;
-    cout << "Enter n and target floor number: "s << endl;
-    cin >> n >> t;
+	int n, t;
+	cout << "Enter n and target floor number: "s << endl;
+	cin >> n >> t;
 
-    int count = 0;
-    int found = FindFloor(n, [t, &count](int f) {
-        ++count;
-        return f >= t;
-    });
+	int count = 0;
+	int found = FindFloor(n, [t, &count](int f) {
+		++count;
+		return f >= t;
+	});
 
-    cout << "Found floor "s << found << " after "s << count << " drops"s;
+	cout << "Found floor "s << found << " after "s << count << " drops"s;
 
-    return 0;
+	return 0;
 }
