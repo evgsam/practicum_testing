@@ -1,30 +1,17 @@
-#include <cstdint>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-// упростите эту экспоненциальную функцию,
-// реализовав линейный алгоритм
-int64_t T(int i) {
-    if (i <= 1) {
-        return 0;
-    }
-    if (i == 2) {
-        return 1;
-    }
-
-    return T(i - 1) + T(i - 2) + T(i - 3);
+template <typename F>
+string BruteForce(F check) {
+    // верните строку str, для которой check(str) будет true
 }
 
 int main() {
-    int i;
-
-    while (true) {
-        cout << "Enter index: "s;
-        if (!(cin >> i)) {
-            break;
-        }
-
-        cout << "Ti = "s << T(i) << endl;
-    }
+    string pass = "ARTUR"s;
+    auto check = [pass](const string& s) {
+        return s == pass;
+    };
+    cout << BruteForce(check) << endl;
 }
