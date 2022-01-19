@@ -1,85 +1,32 @@
 #include <algorithm>
-#include <deque>
-#include <string>
+#include <cmath>
+#include <cstdint>
 #include <iostream>
+#include <random>
+#include <vector>
 
 using namespace std;
 
-struct Ticket {
-	int id;
-	string name;
-};
-
-class TicketOffice {
-public:
-	// добавить билет в систему
-	void PushTicket(const string &name) {
-		ticket_.id = last_id_;
-		ticket_.name = name;
-		tickets_.push_back(ticket_);
-		++last_id_;
-		// реализуйте метод
-	}
-
-	// получить количество доступных билетов
-	int GetAvailable() const {
-		return tickets_.size();
-		// реализуйте метод
-	}
-
-	// получить количество доступных билетов определённого типа
-	int GetAvailable(const string &name) const {
-		return count_if(tickets_.begin(), tickets_.end(),
-				[name](Ticket ticket_) {
-					return (ticket_.name == name);
-				});
-		// реализуйте метод
-	}
-
-	// отозвать старые билеты (до определённого id)
-	void Invalidate(int minimum) {
-		int count = 0;
-		for (Ticket ticket : tickets_) {
-			if (ticket.id == minimum) {
-				break;
-			}
-			count++;
-		}
-		tickets_.erase(tickets_.begin(), tickets_.begin() + count);
-	}
-
-private:
-	int last_id_ = 0;
-	Ticket ticket_;
-	deque<Ticket> tickets_;
-
-};
+int EffectiveCount(const vector<int>& v, int n, int i) {
+    // место для вашего решения
+}
 
 int main() {
-	TicketOffice tickets;
+    static const int NUMBERS = 1'000'000;
+    static const int MAX = 1'000'000'000;
 
-	tickets.PushTicket("Swan Lake"); // id - 0
-	tickets.PushTicket("Swan Lake"); // id - 1
-	tickets.PushTicket("Boris Godunov"); // id - 2
-	tickets.PushTicket("Boris Godunov"); // id - 3
-	tickets.PushTicket("Swan Lake"); // id - 4
-	tickets.PushTicket("Boris Godunov"); // id - 5
-	tickets.PushTicket("Boris Godunov"); // id - 6
+    mt19937 r;
+    uniform_int_distribution<int> uniform_dist(0, MAX);
 
-	cout << tickets.GetAvailable() << endl; // Вывод: 7
-	cout << tickets.GetAvailable("Swan Lake") << endl; // Вывод: 3
-	cout << tickets.GetAvailable("Boris Godunov") << endl; // Вывод: 4
+    vector<int> nums;
+    for (int i = 0; i < NUMBERS; ++i) {
+        int random_number = uniform_dist(r);
+        nums.push_back(random_number);
+    }
+    sort(nums.begin(), nums.end());
 
-	// Invalidate удалит билеты с номерами 0, 1, 2:
-	tickets.Invalidate(3);
-
-	cout << tickets.GetAvailable() << endl; // Вывод: 4
-	cout << tickets.GetAvailable("Swan Lake") << endl; // Вывод: 1
-	cout << tickets.GetAvailable("Boris Godunov") << endl; // Вывод: 3
-
-	tickets.PushTicket("Swan Lake"); // id - 7
-	tickets.PushTicket("Swan Lake"); // id - 8
-
-	cout << tickets.GetAvailable("Swan Lake") << endl; // Вывод: 3
-
+    int i;
+    cin >> i;
+    int result = EffectiveCount(nums, MAX, i);
+    cout << "Total numbers before "s << i << ": "s << result << endl;
 }
