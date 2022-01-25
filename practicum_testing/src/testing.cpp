@@ -52,18 +52,26 @@ ostream& operator<<(ostream &out, Gender gender) {
 	return out;
 }
 
-ostream& operator<<(ostream& out, const Cat& cat) {
-    out << '{' << cat.name << ", "s << cat.gender;
-    out << ", breed: "s << cat.breed << ", age:"s << cat.age << '}';
-    return out;
+ostream& operator<<(ostream &out, const Cat &cat) {
+	out << '{' << cat.name << ", "s << cat.gender;
+	out << ", breed: "s << cat.breed << ", age:"s << cat.age << '}';
+	return out;
 }
 
 // Возвращает массив указателей на элементы вектора cats, отсортированные с использованием
 // компаратора comp. Компаратор comp - функция, принимающая два аргумента типа const Cat&
 // и возвращающая true, если значения упорядочены, и false в ином случае
-template <typename Comparator>
-vector<const Cat*> GetSortedCats(const vector<Cat>& cats, const Comparator& comp) {
-    vector<const Cat*> sorted_cat_pointers;
+template<typename Comparator>
+vector<const Cat*> GetSortedCats(const vector<Cat> &cats,
+		const Comparator &comp) {
+	vector<const Cat*> sorted_cat_pointers;
+	for (const Cat &cat : cats) {
+		sorted_cat_pointers.push_back(&cat);
+	}
+	sort(sorted_cat_pointers.begin(), sorted_cat_pointers.end(),
+			[comp](const Cat *lhs, const Cat *rhs) {
+				return comp(*lhs, *rhs);
+			});
 
 	/*
 	 Напишите тело функции самостоятельно. Подсказка:
