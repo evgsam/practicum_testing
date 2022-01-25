@@ -92,7 +92,20 @@ vector<const Cat*> GetSortedCats(const vector<Cat> &cats,
 // {{Tom, male, breed: Bengal, age:2}, {Charlie, male, breed: Balinese, age:7}}
 void PrintCatPointerValues(const vector<const Cat*> &cat_pointers,
 		ostream &out) {
-	// Напишите функцию самостоятельно
+
+		bool first = true;
+		out << "{"s;
+		for (const Cat *cat_ptr : cat_pointers) {
+			//cout << *cat_ptr << ", "s;
+			if (first) {
+				out << *cat_ptr;
+				first = false;
+			}
+			out << ", "s << *cat_ptr;
+		}
+		out << "}"s;
+		// Напишите функцию самостоятельно
+
 }
 
 int main() {
