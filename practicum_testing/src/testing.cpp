@@ -1,53 +1,90 @@
 #include <cassert>
-#include <iostream>
-#include <string>
-#include <vector>
 
-using namespace std;
-class Tentacle {
+// Умный указатель, удаляющий связанный объект при своём разрушении.
+// Параметр шаблона T задаёт тип объекта, на который ссылается указатель
+template<typename T>
+class ScopedPtr {
 public:
-    explicit Tentacle(int id) noexcept;
-    int GetId() const noexcept;
+	// Конструктор по умолчанию создаёт нулевой указатель,
+	// так как поле ptr_ имеет значение по умолчанию nullptr
+	ScopedPtr() = default;
 
-    Tentacle* GetLinkedTentacle() const noexcept {
-        return linked_tentacle_;
-    }
-    void LinkTo(Tentacle& tentacle) noexcept {
-        linked_tentacle_ = &tentacle;
-    }
-    void Unlink() noexcept {
-        linked_tentacle_ = nullptr;
-    }
+	// Создаёт указатель, ссылающийся на переданный raw_ptr.
+	// raw_ptr ссылается либо на объект, созданный в куче при помощи new,
+	// либо является нулевым указателем
+	// Спецификатор noexcept обозначает, что метод не бросает исключений
+	explicit ScopedPtr(T *raw_ptr) noexcept :
+			ptr_(raw_ptr) {
+		// Реализуйте самостоятельно
+	}
+
+	// Удаляем у класса конструктор копирования
+	ScopedPtr(const ScopedPtr&) = delete;
+
+	// Деструктор. Удаляет объект, на который ссылается умный указатель.
+	~ScopedPtr() {
+		delete ptr_;    // Реализуйте тело деструктора самостоятельно
+	}
+
+	// Возвращает указатель, хранящийся внутри ScopedPtr
+	T* GetRawPtr() const noexcept {
+		return ptr_;
+	}
+
+	// Прекращает владение объектом, на который ссылается умный указатель.
+	// Возвращает прежнее значение "сырого" указателя и устанавливает поле ptr_ в null
+	T* Release() noexcept {
+		T *ptr2_ = ptr_;
+		ptr_ = nullptr;
+		return ptr2_;
+		// Реализуйте самостоятельно
+	}
 
 private:
-    int id_ = 0;
-    Tentacle* linked_tentacle_ = nullptr;
+	T *ptr_ = nullptr;
 };
 
-class Octopus {
-public:
-    Octopus();
-    explicit Octopus(int num_tentacles);
-
-    void AddTentacle();
-    size_t GetTentacleCount() const noexcept;
-    const Tentacle& GetTentacle(size_t index) const;
-    Tentacle& GetTentacle(size_t index);
-
-    ~Octopus();
-
-private:
-    void Cleanup() noexcept;
-
-    vector<Tentacle*> tentacles_;
-};
-
+// Этот main тестирует класс ScopedPtr
 int main() {
-    Octopus octopus1;
-    Octopus octopus2;
+	// Вспомогательный "шпион", позволяющий узнать о своём удалении
+	struct DeletionSpy {
+		explicit DeletionSpy(bool &is_deleted) :
+				is_deleted_(is_deleted) {
+		}
+		~DeletionSpy() {
+			is_deleted_ = true;
+		}
+		bool &is_deleted_;
+	};
 
-    // Два осьминога прицепляются друг к другу щупальцами
-    octopus1.GetTentacle(1).LinkTo(octopus2.GetTentacle(3));
-    octopus2.AddTentacle();
-    octopus2.GetTentacle(octopus2.GetTentacleCount() - 1).LinkTo(octopus1.GetTentacle(0));
+	// Проверяем автоматическое удаление
+	{
+		bool is_deleted = false;
+		{
+			// настраиваем "шпион", чтобы при своём удалении он выставил is_deleted в true
+			DeletionSpy *raw_ptr = new DeletionSpy(is_deleted);
+			ScopedPtr<DeletionSpy> p(raw_ptr);
+			assert(p.GetRawPtr() == raw_ptr);
+			assert(!is_deleted);
+			// При выходе из блока деструктор p должен удалить "шпиона"
+		}
+		// Если деструктор умного указателя работает правильно, шпион перед своей "смертью"
+		// должен выставить is_deleted в true
+		assert(is_deleted);
+	}
+
+	// Проверяем работу метода Release
+	{
+		bool is_deleted = false;
+		DeletionSpy *raw_ptr = new DeletionSpy(is_deleted);
+		{
+			ScopedPtr<DeletionSpy> scoped_ptr(raw_ptr);
+			assert(scoped_ptr.Release() == raw_ptr);
+			assert(scoped_ptr.GetRawPtr() == nullptr);
+			// После Release умный указатель не ссылается на объект и не удаляет его при своём удалении
+		}
+		assert(!is_deleted);
+		delete raw_ptr;
+		assert(is_deleted);
+	}
 }
