@@ -74,12 +74,22 @@ public:
     // равным (количество_щупалец + 1):
     // 1, 2, 3, ...
     // Возвращает ссылку на добавленное щупальце
-    // Tentacle& AddTentacle() {
-    //     Реализуйте добавление щупальца самостоятельно
-    // }
+
+    Tentacle& AddTentacle(){
+
+    	ScopedPtr<Tentacle> ptr(new Tentacle(GetTentacleCount() + 1));
+    	//Tentacle *tentacle_ = new Tentacle(GetTentacleCount()+1);
+    	//ScopedPtr<Tentacle> scptr (tentacle_);
+
+      	//tentacles_.GetItems().push_back(new Tentacle(GetTentacleCount()+1));
+    	//tentacles_.GetItems().push_back(tentacle_->GetLinkedTentacle());
+    	tentacles_.GetItems().push_back(ptr.GetRawPtr());
+    	ptr.Release();
+    	return GetTentacle(GetTentacleCount());
+    }
 
     int GetTentacleCount() const noexcept {
-        return static_cast<int>(tentacles_.size());
+    	 return static_cast<int>(tentacles_.GetItems().size());
     }
 
     const Tentacle& GetTentacle(size_t index) const {
