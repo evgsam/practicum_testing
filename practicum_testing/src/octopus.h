@@ -91,10 +91,7 @@ public:
 
 private:
     void Cleanup() {
-        for (Tentacle* t : tentacles_.GetItems()) {
-            delete t;
-        }
-    	tentacles_.GetItems().clear();
+      tentacles_.~PtrVector();
 
     }
 
