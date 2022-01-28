@@ -78,14 +78,9 @@ public:
     Tentacle& AddTentacle(){
 
     	ScopedPtr<Tentacle> ptr(new Tentacle(GetTentacleCount() + 1));
-    	//Tentacle *tentacle_ = new Tentacle(GetTentacleCount()+1);
-    	//ScopedPtr<Tentacle> scptr (tentacle_);
-
-      	//tentacles_.GetItems().push_back(new Tentacle(GetTentacleCount()+1));
-    	//tentacles_.GetItems().push_back(tentacle_->GetLinkedTentacle());
     	tentacles_.GetItems().push_back(ptr.GetRawPtr());
     	ptr.Release();
-    	return GetTentacle(GetTentacleCount());
+    	return GetTentacle(GetTentacleCount()-1);
     }
 
     int GetTentacleCount() const noexcept {
