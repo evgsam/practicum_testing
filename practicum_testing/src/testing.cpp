@@ -1,4 +1,7 @@
 #include <cassert>
+#include <stdexcept>
+
+using namespace std::string_literals;
 
 template<typename T>
 class ScopedPtr {
@@ -21,6 +24,43 @@ public:
 		return ptr2_;
 	}
 		
+    // Оператор приведения к типу bool позволяет узнать, ссылается ли умный указатель
+    // на какой-либо объект
+    explicit operator bool() const noexcept {
+        if (ptr_==nullptr){
+        	return false;
+        }
+        else {
+        	return true;
+		}
+    }
+
+    // Оператор разыменования возвращает ссылку на объект
+    // Выбрасывает исключение std::logic_error, если указатель нулевой
+    T& operator*() const {
+    	if (ptr_==nullptr){
+    		throw std::logic_error("ptr == nullptr");
+    	}
+    	else {
+			return &ptr_;
+		}
+
+        // Реализуйте самостоятельно
+    }
+
+    // Оператор -> должен возвращать указатель на объект
+    // Выбрасывает исключение std::logic_error, если указатель нулевой
+    T* operator->() const {
+    	if (ptr_==nullptr){
+    		throw std::logic_error("ptr == nullptr");
+    	}
+    	else {
+			return *ptr_;
+		}
+    	// Реализуйте самостоятельно
+    }
+
+
 private:
 	T *ptr_ = nullptr;
 };
