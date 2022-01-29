@@ -62,15 +62,13 @@ class SingleLinkedList {
 		[[nodiscard]] bool operator==(
 				const BasicIterator<const Type> &rhs) const noexcept {
 			return this->node_ == rhs.node_;
-			// Заглушка. Реализуйте оператор самостоятельно
 		}
 
 		// Оператор проверки итераторов на неравенство
 		// Противоположен !=
 		[[nodiscard]] bool operator!=(
 				const BasicIterator<const Type> &rhs) const noexcept {
-			assert(false);
-			// Заглушка. Реализуйте оператор самостоятельно
+			return (!(this->node_ == rhs.node_));
 		}
 
 		// Оператор сравнения итераторов (в роли второго аргумента итератор)
