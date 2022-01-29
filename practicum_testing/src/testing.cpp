@@ -91,7 +91,9 @@ class SingleLinkedList {
 		// Возвращает ссылку на самого себя
 		// Инкремент итератора, не указывающего на существующий элемент списка, приводит к неопределённому поведению
 		BasicIterator& operator++() noexcept {
-			++node_;
+			if (node_ != nullptr) {
+				node_ = node_->next_node;
+			}
 			return *this;
 		}
 
@@ -101,9 +103,8 @@ class SingleLinkedList {
 		// приводит к неопределённому поведению
 		BasicIterator operator++(int) noexcept {
 			auto Temp(*this);
-            ++(*this);
-            return Temp;
-			// Заглушка. Реализуйте оператор самостоятельно
+			++(*this);
+			return Temp;
 		}
 
 		// Операция разыменования. Возвращает ссылку на текущий элемент
@@ -174,7 +175,7 @@ public:
 	// Возвращает итератор, ссылающийся на первый элемент
 	// Если список пустой, возвращённый итератор будет равен end()
 	[[nodiscard]] Iterator begin() noexcept {
-		return Iterator {&head_};
+		return Iterator { &head_ };
 	}
 
 	// Возвращает итератор, указывающий на позицию, следующую за последним элементом односвязного списка
