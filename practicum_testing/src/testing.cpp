@@ -19,11 +19,8 @@ class SingleLinkedList {
 		// Класс списка объявляется дружественным, чтобы из методов списка
 		// был доступ к приватной области итератора
 		friend class SingleLinkedList;
-
 		// Конвертирующий конструктор итератора из указателя на узел списка
-		explicit BasicIterator(Node *node) {
-			assert(false);
-			// Реализуйте конструктор самостоятельно
+		explicit BasicIterator(Node *node):iter_(node) {
 		}
 
 	public:
@@ -124,6 +121,7 @@ class SingleLinkedList {
 
 	private:
 		Node *node_ = nullptr;
+		BasicIterator<ValueType> *iter_;
 	};
 
 public:
