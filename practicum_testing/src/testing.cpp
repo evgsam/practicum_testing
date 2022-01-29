@@ -120,7 +120,7 @@ class SingleLinkedList {
 		// Вызов этого оператора у итератора, не указывающего на существующий элемент списка,
 		// приводит к неопределённому поведению
 		[[nodiscard]] pointer operator->() const noexcept {
-			assert(false);
+			return &(node_->value);
 			// Заглушка. Реализуйте оператор самостоятельно
 		}
 
