@@ -84,8 +84,7 @@ class SingleLinkedList {
 		// Противоположен !=
 		[[nodiscard]] bool operator!=(
 				const BasicIterator<Type> &rhs) const noexcept {
-			assert(false);
-			// Заглушка. Реализуйте оператор самостоятельно
+			return this->node_ != rhs.node_;
 		}
 
 		// Оператор прединкремента. После его вызова итератор указывает на следующий элемент списка
