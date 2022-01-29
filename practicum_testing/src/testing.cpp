@@ -43,7 +43,11 @@ class SingleLinkedList {
 		// Конвертирующий конструктор/конструктор копирования
 		// При ValueType, совпадающем с Type, играет роль копирующего конструктора
 		// При ValueType, совпадающем с const Type, играет роль конвертирующего конструктора
-		BasicIterator(const BasicIterator<Type> &other) noexcept {
+		BasicIterator(const BasicIterator<Type> &other) noexcept{
+		/*	if (pointer==value_type){
+
+			}
+			*/
 			assert(false);
 			// Реализуйте конструктор самостоятельно
 		}
@@ -57,8 +61,7 @@ class SingleLinkedList {
 		// Два итератора равны, если они ссылаются на один и тот же элемент списка, либо на end()
 		[[nodiscard]] bool operator==(
 				const BasicIterator<const Type> &rhs) const noexcept {
-
-			assert(false);
+			return this->node_ == rhs.node_;
 			// Заглушка. Реализуйте оператор самостоятельно
 		}
 
