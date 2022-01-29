@@ -93,7 +93,6 @@ class SingleLinkedList {
 		BasicIterator& operator++() noexcept {
 			++node_;
 			return *this;
-			// Заглушка. Реализуйте оператор самостоятельно
 		}
 
 		// Оператор постинкремента. После его вызова итератор указывает на следующий элемент списка.
@@ -101,7 +100,9 @@ class SingleLinkedList {
 		// Инкремент итератора, не указывающего на существующий элемент списка,
 		// приводит к неопределённому поведению
 		BasicIterator operator++(int) noexcept {
-			assert(false);
+			BasicIterator Temp(*this);
+            ++(*this);
+            return Temp;
 			// Заглушка. Реализуйте оператор самостоятельно
 		}
 
