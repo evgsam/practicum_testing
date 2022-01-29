@@ -43,13 +43,7 @@ class SingleLinkedList {
 		// Конвертирующий конструктор/конструктор копирования
 		// При ValueType, совпадающем с Type, играет роль копирующего конструктора
 		// При ValueType, совпадающем с const Type, играет роль конвертирующего конструктора
-		BasicIterator(const BasicIterator<Type> &other) noexcept{
-		/*	if (pointer==value_type){
-
-			}
-			*/
-			assert(false);
-			// Реализуйте конструктор самостоятельно
+		BasicIterator(const BasicIterator<Type> &other) noexcept: node_(other.node_){
 		}
 
 		// Чтобы компилятор не выдавал предупреждение об отсутствии оператора = при наличии
@@ -169,7 +163,7 @@ public:
 	// Возвращает итератор, ссылающийся на первый элемент
 	// Если список пустой, возвращённый итератор будет равен end()
 	[[nodiscard]] Iterator begin() noexcept {
-		return Iterator { &head_ };
+		return Iterator { &head_};
 	}
 
 	// Возвращает итератор, указывающий на позицию, следующую за последним элементом односвязного списка
