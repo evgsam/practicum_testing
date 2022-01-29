@@ -21,6 +21,7 @@ class SingleLinkedList {
 		friend class SingleLinkedList;
 		// Конвертирующий конструктор итератора из указателя на узел списка
 		explicit BasicIterator(Node *node) {
+
 			assert(false);
 			// Реализуйте конструктор самостоятельно
 		}
@@ -59,9 +60,7 @@ class SingleLinkedList {
 		// Два итератора равны, если они ссылаются на один и тот же элемент списка, либо на end()
 		[[nodiscard]] bool operator==(
 				const BasicIterator<const Type> &rhs) const noexcept {
-			
-			
-			
+
 			assert(false);
 			// Заглушка. Реализуйте оператор самостоятельно
 		}
@@ -78,8 +77,7 @@ class SingleLinkedList {
 		// Два итератора равны, если они ссылаются на один и тот же элемент списка, либо на end()
 		[[nodiscard]] bool operator==(
 				const BasicIterator<Type> &rhs) const noexcept {
-			assert(false);
-			// Заглушка. Реализуйте оператор самостоятельно
+			return this->node_ == rhs.node_;
 		}
 
 		// Оператор проверки итераторов на неравенство
