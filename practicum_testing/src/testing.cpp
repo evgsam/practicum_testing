@@ -20,10 +20,7 @@ class SingleLinkedList {
 		// был доступ к приватной области итератора
 		friend class SingleLinkedList;
 		// Конвертирующий конструктор итератора из указателя на узел списка
-		explicit BasicIterator(Node *node) {
-		//	Iterator Node::Node()=node;
-			assert(false);
-			// Реализуйте конструктор самостоятельно
+		explicit BasicIterator(Node *node):node_(node) {
 		}
 
 	public:
