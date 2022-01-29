@@ -21,7 +21,7 @@ class SingleLinkedList {
 		friend class SingleLinkedList;
 		// Конвертирующий конструктор итератора из указателя на узел списка
 		explicit BasicIterator(Node *node) {
-
+		//	Iterator Node::Node()=node;
 			assert(false);
 			// Реализуйте конструктор самостоятельно
 		}
@@ -111,8 +111,7 @@ class SingleLinkedList {
 		// Вызов этого оператора у итератора, не указывающего на существующий элемент списка,
 		// приводит к неопределённому поведению
 		[[nodiscard]] reference operator*() const noexcept {
-			//return *node_;
-			assert(false);
+			return node_->value;
 			// Не реализовано
 			// Заглушка. Реализуйте оператор самостоятельно
 		}
