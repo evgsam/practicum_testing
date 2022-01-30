@@ -268,8 +268,7 @@ bool operator<(const SingleLinkedList<Type> &lhs,
 template<typename Type>
 bool operator<=(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
-	// Заглушка. Реализуйте сравнение самостоятельно
-	return true;
+	return !(lhs>rhs);
 }
 
 template<typename Type>
