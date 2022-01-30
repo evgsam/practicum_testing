@@ -2,6 +2,9 @@
 #include <cstddef>
 #include <string>
 #include <utility>
+#include <initializer_list>
+#include <vector>
+
 
 template<typename Type>
 class SingleLinkedList {
@@ -122,13 +125,21 @@ class SingleLinkedList {
 	};
 
 public:
-
 	SingleLinkedList(std::initializer_list<Type> values) {
-		// Реализуйте конструктор самостоятельно
+		InitList(values.begin(),values.end());
+	}
+	SingleLinkedList(const SingleLinkedList &other) {
+		InitList(other.begin(), other.end());
 	}
 
-	SingleLinkedList(const SingleLinkedList &other) {
-		// Реализуйте конструктор самостоятельно
+	template<typename It>
+	void InitList(It range_begin, It range_end) {
+		assert(size_ == 0 && head_.next_node == nullptr);
+		SingleLinkedList tmp;
+		for (auto it = range_begin; it != range_end; ++it) {
+			tmp.PushFront(*it);
+		}
+		swap(tmp);
 	}
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
