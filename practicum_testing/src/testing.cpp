@@ -274,21 +274,20 @@ bool operator<(const SingleLinkedList<Type> &lhs,
 template<typename Type>
 bool operator<=(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
-	return !(lhs>rhs);
+	return !(lhs > rhs);
 }
 
 template<typename Type>
 bool operator>(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
 	return std::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(),
-				lhs.end());
+			lhs.end());
 }
 
 template<typename Type>
 bool operator>=(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
-	// Заглушка. Реализуйте сравнение самостоятельно
-	return true;
+	return !(lhs < rhs);
 }
 
 void Test3() {
