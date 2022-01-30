@@ -143,7 +143,7 @@ public:
 	}
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
-		// Реализуйте присваивание самостоятельно
+		if (this != &rhs)
 		return *this;
 	}
 
