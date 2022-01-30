@@ -125,6 +125,8 @@ class SingleLinkedList {
 	};
 
 public:
+	SingleLinkedList()=default;
+
 	SingleLinkedList(std::initializer_list<Type> values) {
 		InitList(values.begin(),values.end());
 	}
