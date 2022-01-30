@@ -149,7 +149,7 @@ public:
 
 	// Обменивает содержимое списков за время O(1)
 	void swap(SingleLinkedList &other) noexcept {
-		// Реализуйте обмен содержимого списков самостоятельно
+		swap(other);
 	}
 
 	~SingleLinkedList() {
