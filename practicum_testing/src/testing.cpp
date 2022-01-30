@@ -275,8 +275,8 @@ bool operator<=(const SingleLinkedList<Type> &lhs,
 template<typename Type>
 bool operator>(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
-	// Заглушка. Реализуйте сравнение самостоятельно
-	return true;
+	return std::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(),
+				lhs.end());
 }
 
 template<typename Type>
