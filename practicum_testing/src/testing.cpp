@@ -144,8 +144,14 @@ public:
 	}
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
-		if (this != &rhs)
-			return *this;
+		if (this != &rhs) {
+			SingleLinkedList tmp;
+			for (auto it = rhs.begin(); it != rhs.end(); ++it) {
+				tmp.PushFront(*it);
+			}
+			swap(tmp);
+		}
+		return *this;
 	}
 
 	// Обменивает содержимое списков за время O(1)
