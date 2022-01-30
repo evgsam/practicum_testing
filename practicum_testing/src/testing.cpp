@@ -5,7 +5,6 @@
 #include <initializer_list>
 #include <vector>
 
-
 template<typename Type>
 class SingleLinkedList {
 	struct Node {
@@ -125,10 +124,10 @@ class SingleLinkedList {
 	};
 
 public:
-	SingleLinkedList()=default;
+	SingleLinkedList() = default;
 
 	SingleLinkedList(std::initializer_list<Type> values) {
-		InitList(values.begin(),values.end());
+		InitList(values.begin(), values.end());
 	}
 	SingleLinkedList(const SingleLinkedList &other) {
 		InitList(other.begin(), other.end());
@@ -146,7 +145,7 @@ public:
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
 		if (this != &rhs)
-		return *this;
+			return *this;
 	}
 
 	// Обменивает содержимое списков за время O(1)
@@ -249,7 +248,7 @@ void swap(SingleLinkedList<Type> &lhs, SingleLinkedList<Type> &rhs) noexcept {
 template<typename Type>
 bool operator==(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
-	return std::equal(lhs.begin(),lhs.end(),rhs.begin());
+	return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template<typename Type>
@@ -262,8 +261,8 @@ bool operator!=(const SingleLinkedList<Type> &lhs,
 template<typename Type>
 bool operator<(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
-	// Заглушка. Реализуйте сравнение самостоятельно
-	return true;
+	return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(),
+			rhs.end());
 }
 
 template<typename Type>
