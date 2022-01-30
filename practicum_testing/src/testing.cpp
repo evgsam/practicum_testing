@@ -243,7 +243,7 @@ private:
 
 template<typename Type>
 void swap(SingleLinkedList<Type> &lhs, SingleLinkedList<Type> &rhs) noexcept {
-	// Реализуйте обмен самостоятельно
+	lhs.swap(rhs);
 }
 
 template<typename Type>
