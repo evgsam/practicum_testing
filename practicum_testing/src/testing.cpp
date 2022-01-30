@@ -20,7 +20,8 @@ class SingleLinkedList {
 		// был доступ к приватной области итератора
 		friend class SingleLinkedList;
 		// Конвертирующий конструктор итератора из указателя на узел списка
-		explicit BasicIterator(Node *node):node_(node) {
+		explicit BasicIterator(Node *node) :
+				node_(node) {
 		}
 
 	public:
@@ -43,7 +44,8 @@ class SingleLinkedList {
 		// Конвертирующий конструктор/конструктор копирования
 		// При ValueType, совпадающем с Type, играет роль копирующего конструктора
 		// При ValueType, совпадающем с const Type, играет роль конвертирующего конструктора
-		BasicIterator(const BasicIterator<Type> &other) noexcept: node_(other.node_){
+		BasicIterator(const BasicIterator<Type> &other) noexcept :
+				node_(other.node_) {
 		}
 
 		// Чтобы компилятор не выдавал предупреждение об отсутствии оператора = при наличии
@@ -103,7 +105,7 @@ class SingleLinkedList {
 		// Вызов этого оператора у итератора, не указывающего на существующий элемент списка,
 		// приводит к неопределённому поведению
 		[[nodiscard]] reference operator*() const noexcept {
-			assert(node_!=nullptr);
+			assert(node_ != nullptr);
 			return node_->value;
 		}
 
@@ -111,7 +113,7 @@ class SingleLinkedList {
 		// Вызов этого оператора у итератора, не указывающего на существующий элемент списка,
 		// приводит к неопределённому поведению
 		[[nodiscard]] pointer operator->() const noexcept {
-			assert(node_!=nullptr);
+			assert(node_ != nullptr);
 			return &(node_->value);
 		}
 
@@ -120,6 +122,25 @@ class SingleLinkedList {
 	};
 
 public:
+
+	SingleLinkedList(std::initializer_list<Type> values) {
+		// Реализуйте конструктор самостоятельно
+	}
+
+	SingleLinkedList(const SingleLinkedList &other) {
+		// Реализуйте конструктор самостоятельно
+	}
+
+	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
+		// Реализуйте присваивание самостоятельно
+		return *this;
+	}
+
+	// Обменивает содержимое списков за время O(1)
+	void swap(SingleLinkedList &other) noexcept {
+		// Реализуйте обмен содержимого списков самостоятельно
+	}
+
 	~SingleLinkedList() {
 		Clear();
 	}
@@ -165,13 +186,13 @@ public:
 	// Возвращает итератор, ссылающийся на первый элемент
 	// Если список пустой, возвращённый итератор будет равен end()
 	[[nodiscard]] Iterator begin() noexcept {
-		return Iterator { head_.next_node};
+		return Iterator { head_.next_node };
 	}
 
 	// Возвращает итератор, указывающий на позицию, следующую за последним элементом односвязного списка
 	// Разыменовывать этот итератор нельзя - попытка разыменования приведёт к неопределённому поведению
 	[[nodiscard]] Iterator end() noexcept {
-		return Iterator {nullptr};
+		return Iterator { nullptr };
 	}
 
 	// Возвращает константный итератор, ссылающийся на первый элемент
@@ -197,7 +218,7 @@ public:
 	// Возвращает константный итератор, указывающий на позицию, следующую за последним элементом односвязного списка
 	// Разыменовывать этот итератор нельзя - попытка разыменования приведёт к неопределённому поведению
 	[[nodiscard]] ConstIterator cend() const noexcept {
-		return ConstIterator {nullptr};
+		return ConstIterator { nullptr };
 	}
 
 private:
@@ -207,189 +228,238 @@ private:
 }
 ;
 
+template<typename Type>
+void swap(SingleLinkedList<Type> &lhs, SingleLinkedList<Type> &rhs) noexcept {
+	// Реализуйте обмен самостоятельно
+}
+
+template<typename Type>
+bool operator==(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	// Заглушка. Реализуйте сравнение самостоятельно
+	return true;
+}
+
+template<typename Type>
+bool operator!=(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	// Заглушка. Реализуйте сравнение самостоятельно
+	return true;
+}
+
+template<typename Type>
+bool operator<(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	// Заглушка. Реализуйте сравнение самостоятельно
+	return true;
+}
+
+template<typename Type>
+bool operator<=(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	// Заглушка. Реализуйте сравнение самостоятельно
+	return true;
+}
+
+template<typename Type>
+bool operator>(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	// Заглушка. Реализуйте сравнение самостоятельно
+	return true;
+}
+
+template<typename Type>
+bool operator>=(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	// Заглушка. Реализуйте сравнение самостоятельно
+	return true;
+}
+
 void Test3() {
-    // Проверка списков на равенство и неравенство
-    {
-        SingleLinkedList<int> list_1;
-        list_1.PushFront(1);
-        list_1.PushFront(2);
+	// Проверка списков на равенство и неравенство
+	{
+		SingleLinkedList<int> list_1;
+		list_1.PushFront(1);
+		list_1.PushFront(2);
 
-        SingleLinkedList<int> list_2;
-        list_2.PushFront(1);
-        list_2.PushFront(2);
-        list_2.PushFront(3);
+		SingleLinkedList<int> list_2;
+		list_2.PushFront(1);
+		list_2.PushFront(2);
+		list_2.PushFront(3);
 
-        SingleLinkedList<int> list_1_copy;
-        list_1_copy.PushFront(1);
-        list_1_copy.PushFront(2);
+		SingleLinkedList<int> list_1_copy;
+		list_1_copy.PushFront(1);
+		list_1_copy.PushFront(2);
 
-        SingleLinkedList<int> empty_list;
-        SingleLinkedList<int> another_empty_list;
+		SingleLinkedList<int> empty_list;
+		SingleLinkedList<int> another_empty_list;
 
-        // Список равен самому себе
-        assert(list_1 == list_1);
-        assert(empty_list == empty_list);
+		// Список равен самому себе
+		assert(list_1 == list_1);
+		assert(empty_list == empty_list);
 
-        // Списки с одинаковым содержимым равны, а с разным - не равны
-        assert(list_1 == list_1_copy);
-        assert(list_1 != list_2);
-        assert(list_2 != list_1);
-        assert(empty_list == another_empty_list);
-    }
+		// Списки с одинаковым содержимым равны, а с разным - не равны
+		assert(list_1 == list_1_copy);
+		assert(list_1 != list_2);
+		assert(list_2 != list_1);
+		assert(empty_list == another_empty_list);
+	}
 
-    // Обмен содержимого списков
-    {
-        SingleLinkedList<int> first;
-        first.PushFront(1);
-        first.PushFront(2);
+	// Обмен содержимого списков
+	{
+		SingleLinkedList<int> first;
+		first.PushFront(1);
+		first.PushFront(2);
 
-        SingleLinkedList<int> second;
-        second.PushFront(10);
-        second.PushFront(11);
-        second.PushFront(15);
+		SingleLinkedList<int> second;
+		second.PushFront(10);
+		second.PushFront(11);
+		second.PushFront(15);
 
-        const auto old_first_begin = first.begin();
-        const auto old_second_begin = second.begin();
-        const auto old_first_size = first.GetSize();
-        const auto old_second_size = second.GetSize();
+		const auto old_first_begin = first.begin();
+		const auto old_second_begin = second.begin();
+		const auto old_first_size = first.GetSize();
+		const auto old_second_size = second.GetSize();
 
-        first.swap(second);
+		first.swap(second);
 
-        assert(second.begin() == old_first_begin);
-        assert(first.begin() == old_second_begin);
-        assert(second.GetSize() == old_first_size);
-        assert(first.GetSize() == old_second_size);
+		assert(second.begin() == old_first_begin);
+		assert(first.begin() == old_second_begin);
+		assert(second.GetSize() == old_first_size);
+		assert(first.GetSize() == old_second_size);
 
-        // Обмен при помощи функции swap
-        {
-            using std::swap;
+		// Обмен при помощи функции swap
+		{
+			using std::swap;
 
-            // В отсутствие пользовательской перегрузки будет вызвана функция std::swap, которая
-            // выполнит обмен через создание временной копии
-            swap(first, second);
+			// В отсутствие пользовательской перегрузки будет вызвана функция std::swap, которая
+			// выполнит обмен через создание временной копии
+			swap(first, second);
 
-            // Убеждаемся, что используется не std::swap, а пользовательская перегрузка
+			// Убеждаемся, что используется не std::swap, а пользовательская перегрузка
 
-            // Если бы обмен был выполнен с созданием временной копии,
-            // то итератор first.begin() не будет равен ранее сохранённому значению,
-            // так как копия будет хранить свои узлы по иным адресам
-            assert(first.begin() == old_first_begin);
-            assert(second.begin() == old_second_begin);
-            assert(first.GetSize() == old_first_size);
-            assert(second.GetSize() == old_second_size);
-        }
-    }
+			// Если бы обмен был выполнен с созданием временной копии,
+			// то итератор first.begin() не будет равен ранее сохранённому значению,
+			// так как копия будет хранить свои узлы по иным адресам
+			assert(first.begin() == old_first_begin);
+			assert(second.begin() == old_second_begin);
+			assert(first.GetSize() == old_first_size);
+			assert(second.GetSize() == old_second_size);
+		}
+	}
 
-    // Инициализация списка при помощи std::initializer_list
-    {
-        SingleLinkedList<int> list{1, 2, 3, 4, 5};
-        assert(list.GetSize() == 5);
-        assert(!list.IsEmpty());
-        assert(std::equal(list.begin(), list.end(), std::begin({1, 2, 3, 4, 5})));
-    }
+	// Инициализация списка при помощи std::initializer_list
+	{
+		SingleLinkedList<int> list { 1, 2, 3, 4, 5 };
+		assert(list.GetSize() == 5);
+		assert(!list.IsEmpty());
+		assert(
+				std::equal(list.begin(), list.end(),
+						std::begin( { 1, 2, 3, 4, 5 })));
+	}
 
-    // Лексикографическое сравнение списков
-    {
-        using IntList = SingleLinkedList<int>;
+	// Лексикографическое сравнение списков
+	{
+		using IntList = SingleLinkedList<int>;
 
-        assert((IntList{1, 2, 3} < IntList{1, 2, 3, 1}));
-        assert((IntList{1, 2, 3} <= IntList{1, 2, 3}));
-        assert((IntList{1, 2, 4} > IntList{1, 2, 3}));
-        assert((IntList{1, 2, 3} >= IntList{1, 2, 3}));
-    }
+		assert((IntList { 1, 2, 3 } < IntList { 1, 2, 3, 1 }));
+		assert((IntList { 1, 2, 3 } <= IntList { 1, 2, 3 }));
+		assert((IntList { 1, 2, 4 } > IntList { 1, 2, 3 }));
+		assert((IntList { 1, 2, 3 } >= IntList { 1, 2, 3 }));
+	}
 
-    // Копирование списков
-    {
-        const SingleLinkedList<int> empty_list{};
-        // Копирование пустого списка
-        {
-            auto list_copy(empty_list);
-            assert(list_copy.IsEmpty());
-        }
+	// Копирование списков
+	{
+		const SingleLinkedList<int> empty_list { };
+		// Копирование пустого списка
+		{
+			auto list_copy(empty_list);
+			assert(list_copy.IsEmpty());
+		}
 
-        SingleLinkedList<int> non_empty_list{1, 2, 3, 4};
-        // Копирование непустого списка
-        {
-            auto list_copy(non_empty_list);
+		SingleLinkedList<int> non_empty_list { 1, 2, 3, 4 };
+		// Копирование непустого списка
+		{
+			auto list_copy(non_empty_list);
 
-            assert(non_empty_list.begin() != list_copy.begin());
-            assert(list_copy == non_empty_list);
-        }
-    }
+			assert(non_empty_list.begin() != list_copy.begin());
+			assert(list_copy == non_empty_list);
+		}
+	}
 
-    // Присваивание списков
-    {
-        const SingleLinkedList<int> source_list{1, 2, 3, 4};
+	// Присваивание списков
+	{
+		const SingleLinkedList<int> source_list { 1, 2, 3, 4 };
 
-        SingleLinkedList<int> receiver{5, 4, 3, 2, 1};
-        receiver = source_list;
-        assert(receiver.begin() != source_list.begin());
-        assert(receiver == source_list);
-    }
+		SingleLinkedList<int> receiver { 5, 4, 3, 2, 1 };
+		receiver = source_list;
+		assert(receiver.begin() != source_list.begin());
+		assert(receiver == source_list);
+	}
 
-    // Вспомогательный класс, бросающий исключение после создания N-копии
-    struct ThrowOnCopy {
-        ThrowOnCopy() = default;
-        explicit ThrowOnCopy(int& copy_counter) noexcept
-            : countdown_ptr(&copy_counter) {
-        }
-        ThrowOnCopy(const ThrowOnCopy& other)
-            : countdown_ptr(other.countdown_ptr)  //
-        {
-            if (countdown_ptr) {
-                if (*countdown_ptr == 0) {
-                    throw std::bad_alloc();
-                } else {
-                    --(*countdown_ptr);
-                }
-            }
-        }
-        // Присваивание элементов этого типа не требуется
-        ThrowOnCopy& operator=(const ThrowOnCopy& rhs) = delete;
-        // Адрес счётчика обратного отсчёта. Если не равен nullptr, то уменьшается при каждом копировании.
-        // Как только обнулится, конструктор копирования выбросит исключение
-        int* countdown_ptr = nullptr;
-    };
+	// Вспомогательный класс, бросающий исключение после создания N-копии
+	struct ThrowOnCopy {
+		ThrowOnCopy() = default;
+		explicit ThrowOnCopy(int &copy_counter) noexcept :
+				countdown_ptr(&copy_counter) {
+		}
+		ThrowOnCopy(const ThrowOnCopy &other) :
+				countdown_ptr(other.countdown_ptr)  //
+		{
+			if (countdown_ptr) {
+				if (*countdown_ptr == 0) {
+					throw std::bad_alloc();
+				} else {
+					--(*countdown_ptr);
+				}
+			}
+		}
+		// Присваивание элементов этого типа не требуется
+		ThrowOnCopy& operator=(const ThrowOnCopy &rhs) = delete;
+		// Адрес счётчика обратного отсчёта. Если не равен nullptr, то уменьшается при каждом копировании.
+		// Как только обнулится, конструктор копирования выбросит исключение
+		int *countdown_ptr = nullptr;
+	};
 
-    // Безопасное присваивание списков
-    {
-        SingleLinkedList<ThrowOnCopy> src_list;
-        src_list.PushFront(ThrowOnCopy{});
-        src_list.PushFront(ThrowOnCopy{});
-        auto thrower = src_list.begin();
-        src_list.PushFront(ThrowOnCopy{});
+	// Безопасное присваивание списков
+	{
+		SingleLinkedList<ThrowOnCopy> src_list;
+		src_list.PushFront(ThrowOnCopy { });
+		src_list.PushFront(ThrowOnCopy { });
+		auto thrower = src_list.begin();
+		src_list.PushFront(ThrowOnCopy { });
 
-        int copy_counter = 0;  // при первом же копировании будет выброшего исключение
-        thrower->countdown_ptr = &copy_counter;
+		int copy_counter = 0; // при первом же копировании будет выброшего исключение
+		thrower->countdown_ptr = &copy_counter;
 
-        SingleLinkedList<ThrowOnCopy> dst_list;
-        dst_list.PushFront(ThrowOnCopy{});
-        int dst_counter = 10;
-        dst_list.begin()->countdown_ptr = &dst_counter;
-        dst_list.PushFront(ThrowOnCopy{});
+		SingleLinkedList<ThrowOnCopy> dst_list;
+		dst_list.PushFront(ThrowOnCopy { });
+		int dst_counter = 10;
+		dst_list.begin()->countdown_ptr = &dst_counter;
+		dst_list.PushFront(ThrowOnCopy { });
 
-        try {
-            dst_list = src_list;
-            // Ожидается исключение при присваивании
-            assert(false);
-        } catch (const std::bad_alloc&) {
-            // Проверяем, что состояние списка-приёмника не изменилось
-            // при выбрасывании исключений
-            assert(dst_list.GetSize() == 2);
-            auto it = dst_list.begin();
-            assert(it != dst_list.end());
-            assert(it->countdown_ptr == nullptr);
-            ++it;
-            assert(it != dst_list.end());
-            assert(it->countdown_ptr == &dst_counter);
-            assert(dst_counter == 10);
-        } catch (...) {
-            // Других типов исключений не ожидается
-            assert(false);
-        }
-    }
+		try {
+			dst_list = src_list;
+			// Ожидается исключение при присваивании
+			assert(false);
+		} catch (const std::bad_alloc&) {
+			// Проверяем, что состояние списка-приёмника не изменилось
+			// при выбрасывании исключений
+			assert(dst_list.GetSize() == 2);
+			auto it = dst_list.begin();
+			assert(it != dst_list.end());
+			assert(it->countdown_ptr == nullptr);
+			++it;
+			assert(it != dst_list.end());
+			assert(it->countdown_ptr == &dst_counter);
+			assert(dst_counter == 10);
+		} catch (...) {
+			// Других типов исключений не ожидается
+			assert(false);
+		}
+	}
 }
 
 int main() {
-    Test3();
+	Test3();
 }
