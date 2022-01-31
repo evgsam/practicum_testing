@@ -127,21 +127,12 @@ public:
 	SingleLinkedList() = default;
 
 	SingleLinkedList(std::initializer_list<Type> values) {
+		assert(size_ == 0 && head_.next_node == nullptr);
 		InitList(values.begin(), values.end());
 	}
 	SingleLinkedList(const SingleLinkedList &other) {
-		InitList(other.begin(), other.end());
-	}
-
-	template<typename It>
-	void InitList(It range_begin, It range_end) {
 		assert(size_ == 0 && head_.next_node == nullptr);
-		std::vector<Type> my_vector {range_begin, range_end };
-		SingleLinkedList tmp;
-		for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
-			tmp.PushFront(*it);
-		}
-		swap(tmp);
+		InitList(other.begin(), other.end());
 	}
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
@@ -154,6 +145,16 @@ public:
 			swap(tmp);
 		}
 		return *this;
+	}
+
+	template<typename It>
+	void InitList(It range_begin, It range_end) {
+		SingleLinkedList tmp;
+		std::vector<Type> my_vector {range_begin, range_end };
+		for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
+			tmp.PushFront(*it);
+		}
+		swap(tmp);
 	}
 
 	// Обменивает содержимое списков за время O(1)
