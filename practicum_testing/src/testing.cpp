@@ -251,6 +251,18 @@ void swap(SingleLinkedList<Type> &lhs, SingleLinkedList<Type> &rhs) noexcept {
 	lhs.swap(rhs);
 }
 
+/*
+template<typename Type>
+bool operator==(const SingleLinkedList<Type> &lhs,
+		const SingleLinkedList<Type> &rhs) {
+	if (std::equal(lhs.begin(), lhs.end(), rhs.begin())&(lhs.GetSize()==rhs.GetSize())){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+ */
 template<typename Type>
 bool operator==(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
