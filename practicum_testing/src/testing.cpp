@@ -273,7 +273,7 @@ template<typename Type>
 bool operator!=(const SingleLinkedList<Type> &lhs,
 		const SingleLinkedList<Type> &rhs) {
 	// Заглушка. Реализуйте сравнение самостоятельно
-	return !(lhs==rhs);
+	return !(std::equal(lhs.begin(), lhs.end(), rhs.begin()));
 }
 
 template<typename Type>
