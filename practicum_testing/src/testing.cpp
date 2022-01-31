@@ -137,12 +137,15 @@ public:
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
 		if (this != &rhs) {
-			SingleLinkedList tmp;
+			Assign(rhs.begin(),rhs.end());
+			/*SingleLinkedList tmp;
+			auto tmp_it = tmp.begin();
 			std::vector<Type> my_vector { rhs.begin(), rhs.end() };
 			for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
 				tmp.PushFront(*it);
 			}
 			swap(tmp);
+			*/
 		}
 		return *this;
 	}
@@ -156,6 +159,27 @@ public:
 		}
 		swap(tmp);
 	}
+
+	 template <typename InputIterator>
+	    void Assign(InputIterator from, InputIterator to) {
+	        SingleLinkedList<Type> tmp;
+	        // Элементы будут записываться начиная с указателя на первый узел
+	        Node** node_ptr = &tmp.head_.next_node;
+	        while (from != to) {
+	        	//*node_ptr=new Node(*node_ptr,);
+	        	tmp.PushFront(value)
+	/*????
+	 // it_tmp.node_ = new Node(*it_values, nullptr);
+	            где-то тут new Node
+	????
+	*/
+	            ++tmp.size_;
+	//????
+	            ++from;
+	        }
+	        swap(tmp);
+	    }
+
 
 	// Обменивает содержимое списков за время O(1)
 	void swap(SingleLinkedList &other) noexcept {
