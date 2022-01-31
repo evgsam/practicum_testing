@@ -129,26 +129,6 @@ public:
 	SingleLinkedList(std::initializer_list<Type> values) {
 		InitList(values.begin(), values.end());
 	}
-
-	/*
-	 SingleLinkedList(const SingleLinkedList& other)
-	 {
-	 assert(size_ == 0 && head_.next_node == nullptr);
-	 SingleLinkedList tmp;
-	 auto tmp_it = tmp.begin();
-	 for (auto it_other = other.begin(); it_other != other.end(); ++it_other)
-	 {
-	 if (it_other == other.begin())
-	 {
-	 tmp.head_.next_node = tmp_it.node_;
-	 }
-	 tmp_it.node_->value = *it_other;
-	 tmp_it.node_->next_node = new Node();
-	 }
-	 swap(tmp);
-	 }
-	 */
-
 	SingleLinkedList(const SingleLinkedList &other) {
 		InitList(other.begin(), other.end());
 	}
@@ -156,8 +136,9 @@ public:
 	template<typename It>
 	void InitList(It range_begin, It range_end) {
 		assert(size_ == 0 && head_.next_node == nullptr);
+		std::vector<Type> my_vector {range_begin, range_end };
 		SingleLinkedList tmp;
-		for (auto it = range_begin; it != range_end; ++it) {
+		for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
 			tmp.PushFront(*it);
 		}
 		swap(tmp);
