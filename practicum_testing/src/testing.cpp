@@ -133,10 +133,10 @@ public:
 		auto from = values.begin();
 		auto to = values.end();
 		while (from != to) {
-			*node_ptr = new Node (*from, *node_ptr);
+			tmp.head_.next_node = new Node(*from, *node_ptr);
+			//node_ptr =&tmp.head_.next_node+sizeof(head_.next_node);
 			++tmp.size_;
 			++from;
-
 		}
 		swap(tmp);
 
