@@ -128,24 +128,40 @@ public:
 
 	SingleLinkedList(std::initializer_list<Type> values) {
 		assert(size_ == 0 && head_.next_node == nullptr);
-		InitList(values.begin(), values.end());
+		SingleLinkedList<Type> tmp;
+		Node **node_ptr = &tmp.head_.next_node;
+		auto from = values.begin();
+		auto to = values.end();
+		while (from != to) {
+			*node_ptr = new Node (*from, *node_ptr);
+			++tmp.size_;
+			++from;
+
+		}
+		swap(tmp);
+
+		//Assign(values.begin(), values.end());  // Может бросить исключение
+		//InitList(values.begin(), values.end());
+
 	}
 	SingleLinkedList(const SingleLinkedList &other) {
 		assert(size_ == 0 && head_.next_node == nullptr);
-		InitList(other.begin(), other.end());
+		Assign(other.begin(), other.end());  // Может бросить исключение
+		//	InitList(other.begin(), other.end());
 	}
 
 	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
 		if (this != &rhs) {
-			Assign(rhs.begin(),rhs.end());
+			InitList(rhs.begin(), rhs.end());
+			//Assign(rhs.begin(), rhs.end());
 			/*SingleLinkedList tmp;
-			auto tmp_it = tmp.begin();
-			std::vector<Type> my_vector { rhs.begin(), rhs.end() };
-			for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
-				tmp.PushFront(*it);
-			}
-			swap(tmp);
-			*/
+			 auto tmp_it = tmp.begin();
+			 std::vector<Type> my_vector { rhs.begin(), rhs.end() };
+			 for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
+			 tmp.PushFront(*it);
+			 }
+			 swap(tmp);
+			 */
 		}
 		return *this;
 	}
@@ -153,33 +169,26 @@ public:
 	template<typename It>
 	void InitList(It range_begin, It range_end) {
 		SingleLinkedList tmp;
-		std::vector<Type> my_vector {range_begin, range_end };
+		std::vector<Type> my_vector { range_begin, range_end };
 		for (auto it = my_vector.crbegin(); it != my_vector.crend(); ++it) {
 			tmp.PushFront(*it);
 		}
 		swap(tmp);
 	}
 
-	 template <typename InputIterator>
-	    void Assign(InputIterator from, InputIterator to) {
-	        SingleLinkedList<Type> tmp;
-	        // Элементы будут записываться начиная с указателя на первый узел
-	        Node** node_ptr = &tmp.head_.next_node;
-	        while (from != to) {
-	        	//*node_ptr=new Node(*node_ptr,);
-	        	tmp.PushFront(value)
-	/*????
-	 // it_tmp.node_ = new Node(*it_values, nullptr);
-	            где-то тут new Node
-	????
-	*/
-	            ++tmp.size_;
-	//????
-	            ++from;
-	        }
-	        swap(tmp);
-	    }
+	template<typename InputIterator>
+	void Assign(InputIterator from, InputIterator to) {
+		SingleLinkedList<Type> tmp;
+		Node **node_ptr = &tmp.head_.next_node;
+		while (from != to) {
+			tmp.head_.next_node = new Node(*from, *node_ptr);
+			node_ptr = &tmp.head_.next_node;
 
+			++tmp.size_;
+			++from;
+		}
+		swap(tmp);
+	}
 
 	// Обменивает содержимое списков за время O(1)
 	void swap(SingleLinkedList &other) noexcept {
@@ -443,12 +452,13 @@ void Test3() {
 	 */
 	// Присваивание списков
 	{
-		const SingleLinkedList<int> source_list { 1, 2, 3, 4 };
+		const SingleLinkedList<int> source_list { 11, 12, 13, 14 };
 
-		SingleLinkedList<int> receiver { 5, 4, 3, 2, 1 };
-		receiver = source_list;
-		assert(receiver.begin() != source_list.begin());
-		assert(receiver == source_list);
+		/*SingleLinkedList<int> receiver { 5, 4, 3, 2, 1 };
+		 receiver = source_list;
+		 assert(receiver.begin() != source_list.begin());
+		 assert(receiver == source_list);
+		 */
 	}
 
 	// Вспомогательный класс, бросающий исключение после создания N-копии
