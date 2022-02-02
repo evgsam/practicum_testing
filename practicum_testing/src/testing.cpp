@@ -98,6 +98,7 @@ class SingleLinkedList {
 		// Инкремент итератора, не указывающего на существующий элемент списка,
 		// приводит к неопределённому поведению
 		BasicIterator operator++(int) noexcept {
+			assert(this != nullptr);
 			auto Temp(*this);
 			++(*this);
 			return Temp;
