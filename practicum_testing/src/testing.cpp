@@ -279,11 +279,9 @@ public:
 	 * Если при создании элемента будет выброшено исключение, список останется в прежнем состоянии
 	 */
 	Iterator InsertAfter(ConstIterator pos, const Type &value) {
-		Node *tmp = new Node;
-		tmp->value = value;
-		tmp->next_node = pos.node_;	//this->head_.next_node;
+		Node *temp = new Node(value, pos.node_->next_node);
 		++size_;
-		return { &head_};
+		return Iterator {&head_};
 	}
 
 	void PopFront() noexcept {
@@ -500,5 +498,10 @@ void Test4() {
 }
 
 int main() {
-	Test4();
+	//Test4();
+	SingleLinkedList<int> list;
+	auto pos = list.InsertAfter(list.cbefore_begin(), 1);
+	pos = list.InsertAfter(pos, 2);
+	list.InsertAfter(pos, 3);
+	// Список содержит {1, 2, 3}*/
 }
