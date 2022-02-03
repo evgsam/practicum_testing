@@ -297,11 +297,18 @@ public:
 	 */
 	Iterator EraseAfter(ConstIterator pos) noexcept {
 		SingleLinkedList<Type>::Node *temp = pos.node_->next_node;
-		pos.node_ = temp;	//pos.node_->next_node;
-		head_ = *pos.node_;
-		delete temp;
-		--size_;
-		return Iterator { head_.next_node };
+		if (pos == before_begin()) {
+			pos.node_ = temp;
+			head_ = *pos.node_;
+			delete temp;
+			--size_;
+			return Iterator { head_.next_node };
+		} else {
+			pos.node_->next_node = temp->next_node;
+			delete temp;
+			--size_;
+			return Iterator { pos.node_->next_node };
+		}
 	}
 
 private:
@@ -365,7 +372,7 @@ void Test4() {
 		int *deletion_counter_ptr = nullptr;
 	};
 
-	// Проверка PopFront
+	//Проверка PopFront
 	/*{
 	 SingleLinkedList<int> numbers { 3, 14, 15, 92, 6 };
 	 numbers.PopFront();
@@ -396,79 +403,79 @@ void Test4() {
 	 }
 	 */
 	// Вставка элемента после указанной позиции
-	{  // Вставка в пустой список
-		{
-			SingleLinkedList<int> lst;
-			const auto inserted_item_pos = lst.InsertAfter(lst.before_begin(),
-					123);
-			assert((lst == SingleLinkedList<int> { 123 }));
-			assert(inserted_item_pos == lst.begin());
-			assert(*inserted_item_pos == 123);
-		}
+	/*{  // Вставка в пустой список
+	 {
+	 SingleLinkedList<int> lst;
+	 const auto inserted_item_pos = lst.InsertAfter(lst.before_begin(),
+	 123);
+	 assert((lst == SingleLinkedList<int> { 123 }));
+	 assert(inserted_item_pos == lst.begin());
+	 assert(*inserted_item_pos == 123);
+	 }
 
-		// Вставка в непустой список
-		{
-			SingleLinkedList<int> lst { 1, 2, 3 };
-			auto inserted_item_pos = lst.InsertAfter(lst.before_begin(), 123);
+	 // Вставка в непустой список
+	 {
+	 SingleLinkedList<int> lst { 1, 2, 3 };
+	 auto inserted_item_pos = lst.InsertAfter(lst.before_begin(), 123);
 
-			assert(inserted_item_pos == lst.begin());
-			assert(inserted_item_pos != lst.end());
-			assert(*inserted_item_pos == 123);
-			assert((lst == SingleLinkedList<int> { 123, 1, 2, 3 }));
+	 assert(inserted_item_pos == lst.begin());
+	 assert(inserted_item_pos != lst.end());
+	 assert(*inserted_item_pos == 123);
+	 assert((lst == SingleLinkedList<int> { 123, 1, 2, 3 }));
 
-			inserted_item_pos = lst.InsertAfter(lst.begin(), 555);
-			assert(
-					++SingleLinkedList<int>::Iterator(lst.begin())
-							== inserted_item_pos);
-			assert(*inserted_item_pos == 555);
-			assert((lst == SingleLinkedList<int> { 123, 555, 1, 2, 3 }));
-		};
-	}
+	 inserted_item_pos = lst.InsertAfter(lst.begin(), 555);
+	 assert(
+	 ++SingleLinkedList<int>::Iterator(lst.begin())
+	 == inserted_item_pos);
+	 assert(*inserted_item_pos == 555);
+	 assert((lst == SingleLinkedList<int> { 123, 555, 1, 2, 3 }));
+	 };
+	 }
 
-	// Вспомогательный класс, бросающий исключение после создания N-копии
-	struct ThrowOnCopy {
-		ThrowOnCopy() = default;
-		explicit ThrowOnCopy(int &copy_counter) noexcept :
-				countdown_ptr(&copy_counter) {
-		}
-		ThrowOnCopy(const ThrowOnCopy &other) :
-				countdown_ptr(other.countdown_ptr)  //
-		{
-			if (countdown_ptr) {
-				if (*countdown_ptr == 0) {
-					throw std::bad_alloc();
-				} else {
-					--(*countdown_ptr);
-				}
-			}
-		}
-		// Присваивание элементов этого типа не требуется
-		//	ThrowOnCopy& operator=(const ThrowOnCopy &rhs) = delete;
-		// Адрес счётчика обратного отсчёта. Если не равен nullptr, то уменьшается при каждом копировании.
-		// Как только обнулится, конструктор копирования выбросит исключение
-		int *countdown_ptr = nullptr;
-	};
+	 // Вспомогательный класс, бросающий исключение после создания N-копии
+	 struct ThrowOnCopy {
+	 ThrowOnCopy() = default;
+	 explicit ThrowOnCopy(int &copy_counter) noexcept :
+	 countdown_ptr(&copy_counter) {
+	 }
+	 ThrowOnCopy(const ThrowOnCopy &other) :
+	 countdown_ptr(other.countdown_ptr)  //
+	 {
+	 if (countdown_ptr) {
+	 if (*countdown_ptr == 0) {
+	 throw std::bad_alloc();
+	 } else {
+	 --(*countdown_ptr);
+	 }
+	 }
+	 }
+	 // Присваивание элементов этого типа не требуется
+	 //	ThrowOnCopy& operator=(const ThrowOnCopy &rhs) = delete;
+	 // Адрес счётчика обратного отсчёта. Если не равен nullptr, то уменьшается при каждом копировании.
+	 // Как только обнулится, конструктор копирования выбросит исключение
+	 int *countdown_ptr = nullptr;
+	 };
 
-	// Проверка обеспечения строгой гарантии безопасности исключений
-	{
-		bool exception_was_thrown = false;
-		for (int max_copy_counter = 10; max_copy_counter >= 0;
-				--max_copy_counter) {
-			SingleLinkedList<ThrowOnCopy> list { ThrowOnCopy { },
-					ThrowOnCopy { }, ThrowOnCopy { } };
-			try {
-				int copy_counter = max_copy_counter;
-				list.InsertAfter(list.cbegin(), ThrowOnCopy(copy_counter));
-				assert(list.GetSize() == 4u);
-			} catch (const std::bad_alloc&) {
-				exception_was_thrown = true;
-				assert(list.GetSize() == 3u);
-				break;
-			}
-		}
-		assert(exception_was_thrown);
-	}
-
+	 // Проверка обеспечения строгой гарантии безопасности исключений
+	 {
+	 bool exception_was_thrown = false;
+	 for (int max_copy_counter = 10; max_copy_counter >= 0;
+	 --max_copy_counter) {
+	 SingleLinkedList<ThrowOnCopy> list { ThrowOnCopy { },
+	 ThrowOnCopy { }, ThrowOnCopy { } };
+	 try {
+	 int copy_counter = max_copy_counter;
+	 list.InsertAfter(list.cbegin(), ThrowOnCopy(copy_counter));
+	 assert(list.GetSize() == 4u);
+	 } catch (const std::bad_alloc&) {
+	 exception_was_thrown = true;
+	 assert(list.GetSize() == 3u);
+	 break;
+	 }
+	 }
+	 assert(exception_was_thrown);
+	 }
+	 */
 	// Удаление элементов после указанной позиции
 	{
 		{
@@ -502,13 +509,14 @@ void Test4() {
 			assert(deletion_counter == 1u);
 		}
 	}
+
 }
 
 int main() {
-	//Test4();
-	SingleLinkedList<int> list;
-	auto pos = list.InsertAfter(list.cbefore_begin(), 1);
-	pos = list.InsertAfter(pos, 2);
-	list.InsertAfter(pos, 3);
-	// Список содержит {1, 2, 3}*/
+	Test4();
+	/*SingleLinkedList<int> list;
+	 auto pos = list.InsertAfter(list.cbefore_begin(), 1);
+	 pos = list.InsertAfter(pos, 2);
+	 list.InsertAfter(pos, 3);
+	 // Список содержит {1, 2, 3}*/
 }
