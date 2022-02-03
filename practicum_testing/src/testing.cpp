@@ -285,7 +285,9 @@ public:
 	}
 
 	void PopFront() noexcept {
-		// Реализуйте метод самостоятельно
+		SingleLinkedList<Type>::Node temp =this->head_;
+		this->head_=*this->head_.next_node;
+		delete temp.next_node;
 	}
 
 	/*
