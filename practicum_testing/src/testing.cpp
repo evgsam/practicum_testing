@@ -142,7 +142,7 @@ public:
 		}
 		return *this;
 	}
-
+	//Тут явно криво,нужна помощь
 	template<typename InputIterator>
 	void Assign(InputIterator from, InputIterator to) {
 		SingleLinkedList<Type> tmp;
