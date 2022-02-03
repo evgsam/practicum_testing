@@ -296,15 +296,12 @@ public:
 	 * Возвращает итератор на элемент, следующий за удалённым
 	 */
 	Iterator EraseAfter(ConstIterator pos) noexcept {
-		SingleLinkedList<Type>::Node* temp = pos.node_->next_node;
-	//	SingleLinkedList<Type>::Node temp = this->head_;
-	//	delete pos.node_->next_node;
-		pos.node_ = temp;//pos.node_->next_node;
-		head_=*pos.node_;
-
+		SingleLinkedList<Type>::Node *temp = pos.node_->next_node;
+		pos.node_ = temp;	//pos.node_->next_node;
+		head_ = *pos.node_;
+		delete temp;
 		--size_;
-		// Заглушка. Реализуйте метод самостоятельно
-		return Iterator{pos.node_->next_node};
+		return Iterator { head_.next_node };
 	}
 
 private:
