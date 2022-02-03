@@ -42,12 +42,12 @@ public:
 
 	// Возвращает ссылку на элемент массива с индексом index
 	Type& operator[](size_t index) noexcept {
-		// Реализуйте операцию самостоятельно
+		return raw_ptr_[index];
 	}
 
 	// Возвращает константную ссылку на элемент массива с индексом index
 	const Type& operator[](size_t index) const noexcept {
-		// Реализуйте операцию самостоятельно
+		return raw_ptr_[index];
 	}
 
 	// Возвращает true, если указатель ненулевой, и false в противном случае
