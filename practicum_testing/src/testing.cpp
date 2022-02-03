@@ -36,9 +36,8 @@ public:
 	// Прекращает владением массивом в памяти, возвращает значение адреса массива
 	// После вызова метода указатель на массив должен обнулиться
 	[[nodiscard]] Type* Release() noexcept {
-		Type* adr=new Type{raw_ptr_};
+		auto adr=new Type{raw_ptr_};
 		raw_ptr_=nullptr;
-		// Заглушка. Реализуйте метод самостоятельно
 		return adr;
 	}
 
@@ -78,6 +77,7 @@ int main() {
 	ArrayPtr<int> numbers(10);
 	const auto &const_numbers = numbers;
 
+	auto it=numbers.Release();
 	numbers[2] = 42;
 	assert(const_numbers[2] == 42);
 	assert(&const_numbers[2] == &numbers[2]);
