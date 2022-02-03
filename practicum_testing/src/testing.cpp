@@ -279,15 +279,16 @@ public:
 	 * Если при создании элемента будет выброшено исключение, список останется в прежнем состоянии
 	 */
 	Iterator InsertAfter(ConstIterator pos, const Type &value) {
-		Node *temp = new Node(value, pos.node_->next_node);
+		SingleLinkedList<Type>::Node *temp = new Node(value, pos.node_);
 		++size_;
-		return Iterator {&head_};
+		return Iterator { temp->next_node };
 	}
 
 	void PopFront() noexcept {
-		SingleLinkedList<Type>::Node temp =this->head_;
-		this->head_=*this->head_.next_node;
+		SingleLinkedList<Type>::Node temp = this->head_;
+		this->head_ = *this->head_.next_node;
 		delete temp.next_node;
+		--size_;
 	}
 
 	/*
