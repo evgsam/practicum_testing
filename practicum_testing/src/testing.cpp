@@ -19,13 +19,13 @@ public:
 
 	// Конструктор из сырого указателя, хранящего адрес массива в куче либо nullptr
 	explicit ArrayPtr(Type *raw_ptr) noexcept:raw_ptr_(raw_ptr) {
-		// Реализуйте конструктор самостоятельно
 	}
 
 	// Запрещаем копирование
 	ArrayPtr(const ArrayPtr&) = delete;
 
 	~ArrayPtr() {
+		delete[] raw_ptr_;
 		// Напишите деструктор самостоятельно
 	}
 
