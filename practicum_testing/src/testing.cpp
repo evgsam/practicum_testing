@@ -52,7 +52,9 @@ public:
 
 	// Возвращает true, если указатель ненулевой, и false в противном случае
 	explicit operator bool() const {
-		// Заглушка. Реализуйте операцию самостоятельно
+		if (raw_ptr_!=nullptr){
+			return true;
+		}
 		return false;
 	}
 
