@@ -142,28 +142,17 @@ public:
 		}
 		return *this;
 	}
-	//Тут явно криво,нужна помощь
 	template<typename InputIterator>
 	void Assign(InputIterator from, InputIterator to) {
 		SingleLinkedList<Type> tmp;
-		SingleLinkedList<Type> tmp2;
 		Node **node_ptr = &tmp.head_.next_node;
 		while (from != to) {
-			*node_ptr = new Node(*from, *node_ptr);
-			node_ptr = &*node_ptr;
+			*node_ptr=new Node (*from, *node_ptr);
+			node_ptr=&(*node_ptr)->next_node;
 			++tmp.size_;
 			++from;
 		}
-		auto from_ = tmp.begin();
-		auto to_ = tmp.end();
-		Node **node_ptr_ = &tmp2.head_.next_node;
-		while (from_ != to_) {
-			*node_ptr_ = new Node(*from_, *node_ptr_);
-			node_ptr_ = &*node_ptr_;
-			++tmp2.size_;
-			++from_;
-		}
-		swap(tmp2);
+		swap(tmp);
 	}
 
 	// Обменивает содержимое списков за время O(1)
