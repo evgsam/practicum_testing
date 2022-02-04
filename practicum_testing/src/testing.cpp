@@ -284,6 +284,7 @@ public:
 	 * Возвращает итератор на элемент, следующий за удалённым
 	 */
 	Iterator EraseAfter(ConstIterator pos) noexcept {
+		assert(pos.node_ != nullptr);
 		SingleLinkedList<Type>::Node *temp = pos.node_->next_node;
 		if (pos == before_begin()) {
 			pos.node_ = temp;
