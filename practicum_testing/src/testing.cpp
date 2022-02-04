@@ -272,6 +272,7 @@ public:
 	}
 
 	void PopFront() noexcept {
+		assert(size_ != 0);
 		SingleLinkedList<Type>::Node temp = this->head_;
 		this->head_ = *this->head_.next_node;
 		delete temp.next_node;
