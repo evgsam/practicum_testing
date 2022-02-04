@@ -264,8 +264,8 @@ public:
 	 * Если при создании элемента будет выброшено исключение, список останется в прежнем состоянии
 	 */
 	Iterator InsertAfter(ConstIterator pos, const Type &value) {
-		SingleLinkedList<Type>::Node *temp = new Node(value,
-				pos.node_->next_node);
+		assert(pos.node_ != nullptr);
+		SingleLinkedList<Type>::Node *temp = new Node(value, pos.node_->next_node);
 		pos.node_->next_node = temp;
 		++size_;
 		return Iterator { pos.node_->next_node };
