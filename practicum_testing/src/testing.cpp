@@ -57,29 +57,25 @@ class SingleLinkedList {
 
 		// Оператор сравнения итераторов (в роли второго аргумента выступает константный итератор)
 		// Два итератора равны, если они ссылаются на один и тот же элемент списка, либо на end()
-		[[nodiscard]] bool operator==(
-				const BasicIterator<const Type> &rhs) const noexcept {
+		[[nodiscard]] bool operator==(const BasicIterator<const Type> &rhs) const noexcept {
 			return this->node_ == rhs.node_;
 		}
 
 		// Оператор проверки итераторов на неравенство
 		// Противоположен !=
-		[[nodiscard]] bool operator!=(
-				const BasicIterator<const Type> &rhs) const noexcept {
+		[[nodiscard]] bool operator!=(const BasicIterator<const Type> &rhs) const noexcept {
 			return (!(this->node_ == rhs.node_));
 		}
 
 		// Оператор сравнения итераторов (в роли второго аргумента итератор)
 		// Два итератора равны, если они ссылаются на один и тот же элемент списка, либо на end()
-		[[nodiscard]] bool operator==(
-				const BasicIterator<Type> &rhs) const noexcept {
+		[[nodiscard]] bool operator==(const BasicIterator<Type> &rhs) const noexcept {
 			return this->node_ == rhs.node_;
 		}
 
 		// Оператор проверки итераторов на неравенство
 		// Противоположен !=
-		[[nodiscard]] bool operator!=(
-				const BasicIterator<Type> &rhs) const noexcept {
+		[[nodiscard]] bool operator!=(const BasicIterator<Type> &rhs) const noexcept {
 			return (!(this->node_ == rhs.node_));
 		}
 
@@ -147,8 +143,8 @@ public:
 		SingleLinkedList<Type> tmp;
 		Node **node_ptr = &tmp.head_.next_node;
 		while (from != to) {
-			*node_ptr=new Node (*from, *node_ptr);
-			node_ptr=&(*node_ptr)->next_node;
+			*node_ptr = new Node(*from, *node_ptr);
+			node_ptr = &(*node_ptr)->next_node;
 			++tmp.size_;
 			++from;
 		}
@@ -315,40 +311,32 @@ void swap(SingleLinkedList<Type> &lhs, SingleLinkedList<Type> &rhs) noexcept {
 }
 
 template<typename Type>
-bool operator==(const SingleLinkedList<Type> &lhs,
-		const SingleLinkedList<Type> &rhs) {
+bool operator==(const SingleLinkedList<Type> &lhs, const SingleLinkedList<Type> &rhs) {
 	return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template<typename Type>
-bool operator!=(const SingleLinkedList<Type> &lhs,
-		const SingleLinkedList<Type> &rhs) {
+bool operator!=(const SingleLinkedList<Type> &lhs, const SingleLinkedList<Type> &rhs) {
 	return !(std::equal(lhs.begin(), lhs.end(), rhs.begin()));
 }
 
 template<typename Type>
-bool operator<(const SingleLinkedList<Type> &lhs,
-		const SingleLinkedList<Type> &rhs) {
-	return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(),
-			rhs.end());
+bool operator<(const SingleLinkedList<Type> &lhs, const SingleLinkedList<Type> &rhs) {
+	return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template<typename Type>
-bool operator<=(const SingleLinkedList<Type> &lhs,
-		const SingleLinkedList<Type> &rhs) {
+bool operator<=(const SingleLinkedList<Type> &lhs, const SingleLinkedList<Type> &rhs) {
 	return !(lhs > rhs);
 }
 
 template<typename Type>
-bool operator>(const SingleLinkedList<Type> &lhs,
-		const SingleLinkedList<Type> &rhs) {
-	return std::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(),
-			lhs.end());
+bool operator>(const SingleLinkedList<Type> &lhs, const SingleLinkedList<Type> &rhs) {
+	return std::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
 }
 
 template<typename Type>
-bool operator>=(const SingleLinkedList<Type> &lhs,
-		const SingleLinkedList<Type> &rhs) {
+bool operator>=(const SingleLinkedList<Type> &lhs, const SingleLinkedList<Type> &rhs) {
 	return !(lhs < rhs);
 }
 
@@ -397,8 +385,7 @@ void Test4() {
 	{  // Вставка в пустой список
 		{
 			SingleLinkedList<int> lst;
-			const auto inserted_item_pos = lst.InsertAfter(lst.before_begin(),
-					123);
+			const auto inserted_item_pos = lst.InsertAfter(lst.before_begin(), 123);
 			assert((lst == SingleLinkedList<int> { 123 }));
 			assert(inserted_item_pos == lst.begin());
 			assert(*inserted_item_pos == 123);
@@ -415,9 +402,7 @@ void Test4() {
 			assert((lst == SingleLinkedList<int> { 123, 1, 2, 3 }));
 
 			inserted_item_pos = lst.InsertAfter(lst.begin(), 555);
-			assert(
-					++SingleLinkedList<int>::Iterator(lst.begin())
-							== inserted_item_pos);
+			assert(++SingleLinkedList<int>::Iterator(lst.begin()) == inserted_item_pos);
 			assert(*inserted_item_pos == 555);
 			assert((lst == SingleLinkedList<int> { 123, 555, 1, 2, 3 }));
 		};
@@ -450,10 +435,8 @@ void Test4() {
 	// Проверка обеспечения строгой гарантии безопасности исключений
 	{
 		bool exception_was_thrown = false;
-		for (int max_copy_counter = 10; max_copy_counter >= 0;
-				--max_copy_counter) {
-			SingleLinkedList<ThrowOnCopy> list { ThrowOnCopy { },
-					ThrowOnCopy { }, ThrowOnCopy { } };
+		for (int max_copy_counter = 10; max_copy_counter >= 0; --max_copy_counter) {
+			SingleLinkedList<ThrowOnCopy> list { ThrowOnCopy { }, ThrowOnCopy { }, ThrowOnCopy { } };
 			try {
 				int copy_counter = max_copy_counter;
 				list.InsertAfter(list.cbegin(), ThrowOnCopy(copy_counter));
@@ -472,8 +455,7 @@ void Test4() {
 		{
 			SingleLinkedList<int> lst { 1, 2, 3, 4 };
 			const auto &const_lst = lst;
-			const auto item_after_erased = lst.EraseAfter(
-					const_lst.cbefore_begin());
+			const auto item_after_erased = lst.EraseAfter(const_lst.cbefore_begin());
 			assert((lst == SingleLinkedList<int> { 2, 3, 4 }));
 			assert(item_after_erased == lst.begin());
 		}
@@ -490,8 +472,7 @@ void Test4() {
 			assert(item_after_erased == lst.end());
 		}
 		{
-			SingleLinkedList<DeletionSpy> list { DeletionSpy { },
-					DeletionSpy { }, DeletionSpy { } };
+			SingleLinkedList<DeletionSpy> list { DeletionSpy { }, DeletionSpy { }, DeletionSpy { } };
 			auto after_begin = ++list.begin();
 			int deletion_counter = 0;
 			after_begin->deletion_counter_ptr = &deletion_counter;
@@ -581,9 +562,7 @@ void Test3() {
 		SingleLinkedList<int> list { 1, 2, 3, 4, 5 };
 		assert(list.GetSize() == 5);
 		assert(!list.IsEmpty());
-		assert(
-				std::equal(list.begin(), list.end(),
-						std::begin( { 1, 2, 3, 4, 5 })));
+		assert(std::equal(list.begin(), list.end(), std::begin( { 1, 2, 3, 4, 5 })));
 	}
 
 	// Лексикографическое сравнение списков
@@ -689,6 +668,6 @@ void Test3() {
 }
 
 int main() {
-	Test3();
+	Test4();
 }
 
