@@ -11,12 +11,16 @@ void PrintRangeComma(It range_begin, It range_end) {
     if (range_begin == range_end) {
         return;
     }
-    for (auto it = range_begin;;) {
-        cout << *it;
-        if (it++ == range_end) {
-            break;
-        }
-        cout << ", "s;
+    bool first=true;
+    for (auto it = range_begin; it!=range_end;++it) {
+    	if (first){
+    		cout << *it;
+    		first=false;
+    	}else{
+            cout << ", "s;
+            cout << *it;
+    	}
+
     }
     cout << endl;
 }
@@ -30,7 +34,7 @@ void MergeSort(RandomIt range_begin, RandomIt range_end) {
     }
 
     // 2. Создаём вектор, содержащий все элементы текущего диапазона
-    vector<typename RandomIt::value_type> elements(range_end, range_begin);
+    vector<typename RandomIt::value_type> elements(range_begin,range_end);
 
     // 3. Разбиваем вектор на две равные части
     auto mid = elements.begin() + range_length / 2;
@@ -42,7 +46,11 @@ void MergeSort(RandomIt range_begin, RandomIt range_end) {
     // 5. С помощью алгоритма merge сливаем отсортированные половины
     // в исходный диапазон
     // merge -> http://ru.cppreference.com/w/cpp/algorithm/merge
-    merge(elements.begin(), elements.end(), mid, mid, range_begin);
+   // merge(__exec, __first1, __last1, __first2, __last2, __d_first)
+   merge(elements.begin(),mid, mid,elements.end(), range_begin);
+   // merge(elements.begin(), elements.end(), range_begin,range_end,mid);
+
+
 }
 
 int main() {
@@ -60,7 +68,7 @@ int main() {
     PrintRangeComma(test_vector.begin(), test_vector.end());
 
     // Сортируем вектор с помощью сортировки слиянием
-    MergeSort(test_vector.begin(), test_vector.end());
+   MergeSort(test_vector.begin(), test_vector.end());
 
     // Выводим результат
     PrintRangeComma(test_vector.begin(), test_vector.end());
