@@ -242,11 +242,16 @@ public:
 	}
 
 	void PopFront() noexcept {
-		assert(!IsEmpty());
-
-		delete head_.next_node;
+	/*	assert(!IsEmpty());
 		// Теперь "голова" списка ссылается на прежний второй узел
+		delete head_.next_node;
 		head_.next_node = head_.next_node->next_node;
+		--size_;
+*/
+		assert(size_ != 0);
+		SingleLinkedList<Type>::Node temp = this->head_;
+		this->head_ = *this->head_.next_node;
+		delete temp.next_node;
 		--size_;
 	}
 
