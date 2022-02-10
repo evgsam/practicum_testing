@@ -263,11 +263,13 @@ public:
 		assert(!IsEmpty());
 
 		Node *const node_to_erase = pos.node_->next_node;
-		delete node_to_erase;
-		--size_;
+        assert(node_to_erase != nullptr);
 
 		Node *const node_after_erased = node_to_erase->next_node;
 		pos.node_->next_node = node_after_erased;
+
+		delete node_to_erase;
+		--size_;
 
 		return Iterator { node_after_erased };
 	}
