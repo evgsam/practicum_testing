@@ -1,77 +1,68 @@
-#include <algorithm>
-#include <iostream>
-#include <numeric>
+#include "list.h"
+
+#include <cassert>
 #include <vector>
 
 using namespace std;
 
-// функция выводит элементы контейнера через запятую
-template <typename It>
-void PrintRangeComma(It range_begin, It range_end) {
-    if (range_begin == range_end) {
-        return;
-    }
-    bool first=true;
-    for (auto it = range_begin; it!=range_end;++it) {
-    	if (first){
-    		cout << *it;
-    		first=false;
-    	}else{
-            cout << ", "s;
-            cout << *it;
-    	}
-
-    }
-    cout << endl;
+// функция возвращает функциональный объект,
+// выполняющий вставку в выбранный список
+template<class Type>
+auto MakeInsertingFunction(vector<SingleLinkedList<Type>> &lists, int x) {
+	return [&](const Type &value) {
+		lists[x].PushFront(value);
+	};
 }
 
-template <typename RandomIt>
-void MergeSort(RandomIt range_begin, RandomIt range_end) {
-    // 1. Если диапазон содержит меньше 2 элементов, выходим из функции
-    int range_length = range_end - range_begin;
-    if (range_length < 2) {
-        return;
-    }
-
-    // 2. Создаём вектор, содержащий все элементы текущего диапазона
-    vector<typename RandomIt::value_type> elements(range_begin,range_end);
-
-    // 3. Разбиваем вектор на две равные части
-    auto mid = elements.begin() + range_length / 2;
-
-    // 4. Вызываем функцию MergeSort от каждой половины вектора
-    MergeSort(elements.begin(), mid);
-    MergeSort(mid, elements.end());
-
-    // 5. С помощью алгоритма merge сливаем отсортированные половины
-    // в исходный диапазон
-    // merge -> http://ru.cppreference.com/w/cpp/algorithm/merge
-   // merge(__exec, __first1, __last1, __first2, __last2, __d_first)
-   merge(elements.begin(),mid, mid,elements.end(), range_begin);
-   // merge(elements.begin(), elements.end(), range_begin,range_end,mid);
-
-
+template<class T>
+void InsertRange(int from, int to, T push_function) {
+	for (int i = from; i < to; ++i) {
+		push_function(i);
+	}
 }
 
 int main() {
-    vector<int> test_vector(10);
+	// main тестирует вектор, в нём нет ошибок.
+	// не меняйте код этой функции
+	// помимо этих тестов, список должен проходить все обычные тесты списка.
+	// Ищите ошибки в коде списка и
+	// других функциях этого файла
 
-    // iota             -> http://ru.cppreference.com/w/cpp/algorithm/iota
-    // Заполняет диапазон последовательно возрастающими значениями
-    iota(test_vector.begin(), test_vector.end(), 1);
+	vector<SingleLinkedList<int>> lists_a(10);
 
-    // random_shuffle   -> https://ru.cppreference.com/w/cpp/algorithm/random_shuffle
-    // Перемешивает элементы в случайном порядке
-    random_shuffle(test_vector.begin(), test_vector.end());
+	auto push_to_2a = MakeInsertingFunction(lists_a, 2);
+	auto push_to_5a = MakeInsertingFunction(lists_a, 5);
+	auto push_to_7a = MakeInsertingFunction(lists_a, 7);
 
-    // Выводим вектор до сортировки
-    PrintRangeComma(test_vector.begin(), test_vector.end());
+	InsertRange(10, 12, push_to_2a);
+	InsertRange(12, 14, push_to_5a);
+	InsertRange(14, 16, push_to_7a);
 
-    // Сортируем вектор с помощью сортировки слиянием
-   MergeSort(test_vector.begin(), test_vector.end());
+	assert(lists_a[2] == SingleLinkedList<int>( { 11, 10 }));
+	assert(lists_a[5] == SingleLinkedList<int>( { 13, 12 }));
+	assert(lists_a[7] == SingleLinkedList<int>( { 15, 14 }));
 
-    // Выводим результат
-    PrintRangeComma(test_vector.begin(), test_vector.end());
+	vector<SingleLinkedList<int>> lists_b = lists_a;
 
-    return 0;
+	auto push_to_2b = MakeInsertingFunction(lists_b, 2);
+	auto push_to_5b = MakeInsertingFunction(lists_b, 5);
+	auto push_to_7b = MakeInsertingFunction(lists_b, 7);
+
+	InsertRange(20, 22, push_to_2b);
+	InsertRange(22, 24, push_to_5b);
+	InsertRange(24, 26, push_to_7b);
+
+	assert(lists_b[2] == SingleLinkedList<int>( { 21, 20, 11, 10 }));
+	assert(lists_b[5] == SingleLinkedList<int>( { 23, 22, 13, 12 }));
+	assert(lists_b[7] == SingleLinkedList<int>( { 25, 24, 15, 14 }));
+
+	lists_a[2].PopFront();
+	lists_a[5].InsertAfter(lists_a[5].begin(), 100);
+	lists_b[5].EraseAfter(next(lists_b[5].begin()));
+	lists_b[7].Clear();
+
+	assert(lists_a[2] == SingleLinkedList<int>( { 10 }));
+	assert(lists_a[5] == SingleLinkedList<int>( { 13, 100, 12 }));
+	assert(lists_b[5] == SingleLinkedList<int>( { 23, 22, 12 }));
+	assert(lists_b[7] == SingleLinkedList<int>());
 }
