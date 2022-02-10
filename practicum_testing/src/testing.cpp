@@ -9,8 +9,7 @@ using namespace std;
 // выполняющий вставку в выбранный список
 template<class Type>
 auto MakeInsertingFunction(vector<SingleLinkedList<Type>> &lists, int x) {
-	return [&](const Type &value) {
-		//lists[x].PushFront(value);
+	return [&lists, x](const Type &value) {
 		lists.at(x).PushFront(value);
 	};
 }
