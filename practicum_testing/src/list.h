@@ -271,8 +271,9 @@ public:
 	void Clear() noexcept {
 		// Удаляем элементы начиная с головы списка, пока они не закончатся
 		while (head_.next_node != nullptr) {
+			Node *new_head = head_.next_node->next_node;
 			delete head_.next_node;
-			head_.next_node = head_.next_node->next_node;
+			head_.next_node = new_head;
 		}
 		size_ = 0;
 	}
