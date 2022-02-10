@@ -142,12 +142,19 @@ public:
 		Clear();
 	}
 
-	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
-		if (this != &rhs) {
-			Assign(rhs.begin(), rhs.end());
-		}
-		return *this;
-	}
+    SingleLinkedList& operator=(const SingleLinkedList& rhs) {
+        if (this != &rhs) {
+            if (rhs.IsEmpty()) {  // Оптимизируем присваивание пустого списка
+                Clear();
+            } else {
+                auto rhs_copy(rhs);  // может бросить исключение
+                swap(rhs_copy);
+            }
+        }
+        return *this;
+    }
+
+
 
 	// Возвращает итератор, ссылающийся на первый элемент
 	// Если список пустой, возвращённый итератор будет равен end()
