@@ -10,7 +10,8 @@ using namespace std;
 template<class Type>
 auto MakeInsertingFunction(vector<SingleLinkedList<Type>> &lists, int x) {
 	return [&](const Type &value) {
-		lists[x].PushFront(value);
+		//lists[x].PushFront(value);
+		lists.at(x).PushFront(value);
 	};
 }
 
