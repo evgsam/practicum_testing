@@ -38,9 +38,9 @@ int main() {
 	InsertRange(12, 14, push_to_5a);
 	InsertRange(14, 16, push_to_7a);
 
-	assert(lists_a[2] == SingleLinkedList<int>( { 11, 10 }));
-	assert(lists_a[5] == SingleLinkedList<int>( { 13, 12 }));
-	assert(lists_a[7] == SingleLinkedList<int>( { 15, 14 }));
+	assert(lists_a.at(2) == SingleLinkedList<int>( { 11, 10 }));
+	assert(lists_a.at(5) == SingleLinkedList<int>( { 13, 12 }));
+	assert(lists_a.at(7) == SingleLinkedList<int>( { 15, 14 }));
 
 	vector<SingleLinkedList<int>> lists_b = lists_a;
 
@@ -52,17 +52,17 @@ int main() {
 	InsertRange(22, 24, push_to_5b);
 	InsertRange(24, 26, push_to_7b);
 
-	assert(lists_b[2] == SingleLinkedList<int>( { 21, 20, 11, 10 }));
-	assert(lists_b[5] == SingleLinkedList<int>( { 23, 22, 13, 12 }));
-	assert(lists_b[7] == SingleLinkedList<int>( { 25, 24, 15, 14 }));
+	assert(lists_b.at(2) == SingleLinkedList<int>( { 21, 20, 11, 10 }));
+	assert(lists_b.at(5) == SingleLinkedList<int>( { 23, 22, 13, 12 }));
+	assert(lists_b.at(7) == SingleLinkedList<int>( { 25, 24, 15, 14 }));
 
-	lists_a[2].PopFront();
-	lists_a[5].InsertAfter(lists_a[5].begin(), 100);
-	lists_b[5].EraseAfter(next(lists_b[5].begin()));
-	lists_b[7].Clear();
+	lists_a.at(2).PopFront();
+	lists_a.at(5).InsertAfter(lists_a[5].begin(), 100);
+	lists_b.at(5).EraseAfter(next(lists_b[5].begin()));
+	lists_b.at(7).Clear();
 
-	assert(lists_a[2] == SingleLinkedList<int>( { 10 }));
-	assert(lists_a[5] == SingleLinkedList<int>( { 13, 100, 12 }));
-	assert(lists_b[5] == SingleLinkedList<int>( { 23, 22, 12 }));
-	assert(lists_b[7] == SingleLinkedList<int>());
+	assert(lists_a.at(2) == SingleLinkedList<int>( { 10 }));
+	assert(lists_a.at(5) == SingleLinkedList<int>( { 13, 100, 12 }));
+	assert(lists_b.at(5) == SingleLinkedList<int>( { 23, 22, 12 }));
+	assert(lists_b.at(7) == SingleLinkedList<int>());
 }

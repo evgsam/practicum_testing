@@ -135,7 +135,12 @@ public:
 	SingleLinkedList() = default;
 
 	SingleLinkedList(std::initializer_list<Type> values) {
+		assert(size_ == 0 && head_.next_node == nullptr);
 		Assign(values.begin(), values.end());  // Может бросить исключение
+	}
+	SingleLinkedList(const SingleLinkedList &other) {
+		assert(size_ == 0 && head_.next_node == nullptr);
+		Assign(other.begin(), other.end());  // Может бросить исключение
 	}
 
 	~SingleLinkedList() {
@@ -153,8 +158,6 @@ public:
         }
         return *this;
     }
-
-
 
 	// Возвращает итератор, ссылающийся на первый элемент
 	// Если список пустой, возвращённый итератор будет равен end()
