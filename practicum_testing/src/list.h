@@ -142,6 +142,13 @@ public:
 		Clear();
 	}
 
+	SingleLinkedList& operator=(const SingleLinkedList &rhs) {
+		if (this != &rhs) {
+			Assign(rhs.begin(), rhs.end());
+		}
+		return *this;
+	}
+
 	// Возвращает итератор, ссылающийся на первый элемент
 	// Если список пустой, возвращённый итератор будет равен end()
 	[[nodiscard]] Iterator begin() noexcept {
