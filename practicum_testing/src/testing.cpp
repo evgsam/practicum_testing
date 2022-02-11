@@ -13,14 +13,14 @@ public:
 	// сдвинуть курсор влево
 	void Left() {
 		if (it_ != text_.begin()) {
-			--*it_;
+			--it_;
 		}
 	}
 
 	// сдвинуть курсор вправо
 	void Right() {
 		if (it_ != text_.end()) {
-			++*it_;
+			++it_;
 		}
 	}
 	// вставить символ token
@@ -30,22 +30,23 @@ public:
 
 	// вырезать не более tokens символов, начиная с текущей позиции курсора
 	void Cut(size_t tokens = 1) {
-		std::list<char>::iterator end_it_1 = std::next(it_, tokens);
-		if (tokens>static_cast<size_t>(distance(it_, end_it_1))){
-			tokens=static_cast<size_t>(distance(it_, end_it_1));
+		std::list<char>::iterator end_it_ = it_;
+		if (tokens > static_cast<size_t>(distance(end_it_, text_.end()))) {
+			tokens = static_cast<size_t>(distance(end_it_, text_.end()));
 		}
-
-		std::list<char>::iterator end_it_ = std::next(it_, tokens);
+		advance(end_it_, tokens);
 		buffer_.insert(buffer_.begin(), it_, end_it_);
 		text_.erase(it_, end_it_);
+		it_ = text_.begin();
 	}
 
 	// cкопировать не более tokens символов, начиная с текущей позиции курсора
 	void Copy(size_t tokens = 1) {
-		if (tokens>static_cast<size_t>(distance(it_, text_.end()))){
-			tokens=static_cast<size_t>(distance(it_, text_.end()));
+		std::list<char>::iterator end_it_ = it_;
+		if (tokens > static_cast<size_t>(distance(end_it_, text_.end()))) {
+			tokens = static_cast<size_t>(distance(end_it_, text_.end()));
 		}
-		std::list<char>::iterator end_it_ = std::next(it_, tokens);
+		advance(end_it_, tokens);
 		buffer_.insert(buffer_.begin(), it_, end_it_);
 	}
 	// вставить содержимое буфера в текущую позицию курсора
@@ -58,9 +59,6 @@ public:
 		return {text_.begin(),text_.end()};
 	}
 
-	std::string GetBufText() const {
-		return {buffer_.begin(),buffer_.end()};
-	}
 private:
 	std::list<char> text_ { };
 	std::list<char> buffer_ { };
