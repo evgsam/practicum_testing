@@ -1,104 +1,116 @@
-#include <cassert>
-#include <vector>
-#include <string>
+#include "log_duration.h"
+#include "my_assert.h"
+#include "stack_vector.h"
+
 #include <iostream>
-#include <list>
+#include <random>
+#include <stdexcept>
 
 using namespace std;
 
-class Editor {
-public:
-	Editor() = default;
-	//Editor();
-	// сдвинуть курсор влево
-	void Left() {
-		if (it_ != text_.begin()) {
-			--it_;
-		}
-	}
+void TestConstruction() {
+    StackVector<int, 10> v;
+    assert(v.Size() == 0u);
+    assert(v.Capacity() == 10u);
 
-	// сдвинуть курсор вправо
-	void Right() {
-		if (it_ != text_.end()) {
-			++it_;
-		}
-	}
-	// вставить символ token
-	void Insert(char token) {
-		text_.insert(it_, token);
-	}
+    StackVector<int, 8> u(5);
+    assert(u.Size() == 5u);
+    assert(u.Capacity() == 8u);
 
-	// вырезать не более tokens символов, начиная с текущей позиции курсора
-	void Cut(size_t tokens = 1) {
-		std::list<char>::iterator end_it_ = it_;
+    try {
+        StackVector<int, 10> u(50);
+        cout << "Expect invalid_argument for too large size"s << endl;
+        assert(false);
+    } catch (invalid_argument&) {
+    } catch (...) {
+        cout << "Expect invalid_argument for too large size"s << endl;
+        assert(false);
+    }
+}
 
-		if (tokens > static_cast<size_t>(distance(end_it_, text_.end()))) {
-			tokens = static_cast<size_t>(distance(end_it_, text_.end()));
-		}
-		advance(end_it_, tokens);
-		buffer_.clear();
-		buffer_.insert(buffer_.begin(), it_, end_it_);
-		text_.erase(it_, end_it_);
-		it_=end_it_;
-	}
+void TestPushBack() {
+    StackVector<int, 5> v;
+    for (size_t i = 0; i < v.Capacity(); ++i) {
+        v.PushBack(i);
+    }
 
-	// cкопировать не более tokens символов, начиная с текущей позиции курсора
-	void Copy(size_t tokens = 1) {
-		std::list<char>::iterator end_it_ = it_;
-		if (tokens > static_cast<size_t>(distance(end_it_, text_.end()))) {
-			tokens = static_cast<size_t>(distance(end_it_, text_.end()));
-		}
-		advance(end_it_, tokens);
-		buffer_.clear();
-		buffer_.insert(buffer_.begin(), it_, end_it_);
-	}
-	// вставить содержимое буфера в текущую позицию курсора
-	void Paste() {
-		text_.insert(it_, buffer_.begin(), buffer_.end());
-	}
+    try {
+        v.PushBack(0);
+        cout << "Expect overflow_error for PushBack in full vector"s << endl;
+        assert(false);
+    } catch (overflow_error&) {
+    } catch (...) {
+        cout << "Unexpected exception for PushBack in full vector"s << endl;
+        assert(false);
+    }
+}
 
-	// получить текущее содержимое текстового редактора
-	std::string GetText() const {
-		return {text_.begin(),text_.end()};
-	}
+void TestPopBack() {
+    StackVector<int, 5> v;
+    for (size_t i = 1; i <= v.Capacity(); ++i) {
+        v.PushBack(i);
+    }
+    for (int i = v.Size(); i > 0; --i) {
+        assert(v.PopBack() == i);
+    }
 
-private:
-	std::list<char> text_ { };
-	std::list<char> buffer_ { };
-	std::list<char>::iterator it_ = text_.begin();
-};
+    try {
+        v.PopBack();
+        cout << "Expect underflow_error for PopBack from empty vector"s << endl;
+        assert(false);
+    } catch (underflow_error&) {
+    } catch (...) {
+        cout << "Unexpected exception for PopBack from empty vector"s << endl;
+        assert(false);
+    }
+}
 
 int main() {
-	Editor editor;
-	const string text = "hello, world"s;
-	for (char c : text) {
-		editor.Insert(c);
-	}
-	// Текущее состояние редактора: `hello, world|`
-	for (size_t i = 0; i < text.size(); ++i) {
-		editor.Left();
-	}
-	// Текущее состояние редактора: `|hello, world`
-	editor.Copy(7);
-	editor.Cut(7);
-	// Текущее состояние редактора: `|world`
-	// в буфере обмена находится текст `hello, `
-	for (size_t i = 0; i < 5; ++i) {
-		editor.Right();
-	}
-	// Текущее состояние редактора: `world|`
-	editor.Insert(',');
-	editor.Insert(' ');
-	// Текущее состояние редактора: `world, |`
-	editor.Paste();
-	// Текущее состояние редактора: `world, hello, |`
-	editor.Left();
-	editor.Left();
+    TestConstruction();
+    TestPushBack();
+    TestPopBack();
 
-	//Текущее состояние редактора: `world, hello|, `
-	editor.Cut(3);  // Будут вырезаны 2 символа
-	// Текущее состояние редактора: `world, hello|`
-	cout << editor.GetText();
-	return 0;
+    cerr << "Running benchmark..."s << endl;
+    const size_t max_size = 2500;
 
+    default_random_engine re;
+    uniform_int_distribution<int> value_gen(1, max_size);
+
+    vector<vector<int>> test_data(50000);
+    for (auto& cur_vec : test_data) {
+        cur_vec.resize(value_gen(re));
+        for (int& x : cur_vec) {
+            x = value_gen(re);
+        }
+    }
+
+    {
+        LOG_DURATION("vector w/o reserve");
+        for (auto& cur_vec : test_data) {
+            vector<int> v;
+            for (int x : cur_vec) {
+                v.push_back(x);
+            }
+        }
+    }
+    {
+        LOG_DURATION("vector with reserve");
+        for (auto& cur_vec : test_data) {
+            vector<int> v;
+            v.reserve(cur_vec.size());
+            for (int x : cur_vec) {
+                v.push_back(x);
+            }
+        }
+    }
+    {
+        LOG_DURATION("StackVector");
+        for (auto& cur_vec : test_data) {
+            StackVector<int, max_size> v;
+            for (int x : cur_vec) {
+                v.PushBack(x);
+            }
+        }
+    }
+    cerr << "Done"s << endl;
 }
