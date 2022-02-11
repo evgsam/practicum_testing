@@ -13,7 +13,13 @@
 template<typename T, size_t N>
 class StackVector {
 public:
-	explicit StackVector(size_t a_size = 0);
+    explicit StackVector(size_t a_size = 0) {
+        if (a_size > capacity_ ) {
+            throw std::invalid_argument("invalid_argument");
+        }
+
+        capacity_ = a_size;
+    }
 
 	T& operator[](size_t index);
 	const T& operator[](size_t index) const;
