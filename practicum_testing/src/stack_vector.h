@@ -18,6 +18,11 @@ public:
 	T& operator[](size_t index);
 	const T& operator[](size_t index) const;
 
+	typename std::array<T, N>::iterator begin();
+	typename std::array<T, N>::iterator end();
+	typename std::array<T, N>::iterator begin() const;
+	typename std::array<T, N>::iterator end() const;
+
 	//? ? ? begin();? ? ? end();? ? ? begin() const;? ? ? end() const;
 
 	size_t Size() const;
@@ -25,4 +30,8 @@ public:
 
 	void PushBack(const T &value);
 	T PopBack();
+private:
+	std::array<T, N> array_;
+	size_t size_ { };
+	size_t capacity_ { };
 };
