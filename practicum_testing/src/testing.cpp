@@ -15,7 +15,9 @@ public:
 	// сдвинуть курсор вправо
 	void Right();
 	// вставить символ token
-	void Insert(char token);
+	void Insert(char token){
+		text_.insert(it_, token);
+	};
 	// вырезать не более tokens символов, начиная с текущей позиции курсора
 	void Cut(size_t tokens = 1);
 	// cкопировать не более tokens символов, начиная с текущей позиции курсора
@@ -23,7 +25,9 @@ public:
 	// вставить содержимое буфера в текущую позицию курсора
 	void Paste();
 	// получить текущее содержимое текстового редактора
-	std::string GetText() const;
+	std::string GetText() const{
+		return {text_.begin(),text_.end()};
+	};
 private:
 	std::list<char> text_{};
 	std::list<char> buffer_{};
@@ -37,7 +41,7 @@ int main() {
 		editor.Insert(c);
 	}
 	// Текущее состояние редактора: `hello, world|`
-	for (size_t i = 0; i < text.size(); ++i) {
+	/*for (size_t i = 0; i < text.size(); ++i) {
 		editor.Left();
 	}
 	// Текущее состояние редактора: `|hello, world`
@@ -58,6 +62,9 @@ int main() {
 	//Текущее состояние редактора: `world, hello|, `
 	editor.Cut(3);  // Будут вырезаны 2 символа
 	// Текущее состояние редактора: `world, hello|`
+	 *
+	 */
 	std::cout << editor.GetText();
+
 	return 0;
 }
