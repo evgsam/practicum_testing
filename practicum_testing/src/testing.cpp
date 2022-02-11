@@ -2,12 +2,14 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <list>
 
 using namespace std;
 
 class Editor {
 public:
-	Editor();
+	Editor() = default;
+	//Editor();
 	// сдвинуть курсор влево
 	void Left();
 	// сдвинуть курсор вправо
@@ -22,6 +24,10 @@ public:
 	void Paste();
 	// получить текущее содержимое текстового редактора
 	std::string GetText() const;
+private:
+	std::list<char> text_{};
+	std::list<char> buffer_{};
+	std::list<char>::iterator it_ = text_.begin();
 };
 
 int main() {
