@@ -24,10 +24,19 @@ public:
 	T& operator[](size_t index);
 	const T& operator[](size_t index) const;
 
-	typename std::array<T, N>::iterator begin();
-	typename std::array<T, N>::iterator end();
-	typename std::array<T, N>::iterator begin() const;
-	typename std::array<T, N>::iterator end() const;
+	typename std::array<T, N>::iterator begin(){
+		return  array_.begin();
+	}
+	typename std::array<T, N>::iterator end(){
+		return  array_.end();
+	}
+	typename std::array<T, N>::const_iterator begin() const{
+		return  array_.begin();
+	}
+	typename std::array<T, N>::const_iterator end() const{
+		return  array_.end();
+	}
+
 
 	//? ? ? begin();? ? ? end();? ? ? begin() const;? ? ? end() const;
 

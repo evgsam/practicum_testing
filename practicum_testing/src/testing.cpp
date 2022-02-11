@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void TestConstruction() {
+/*void TestConstruction() {
     StackVector<int, 10> v;
     assert(v.Size() == 0u);
     assert(v.Capacity() == 10u);
@@ -64,11 +64,11 @@ void TestPopBack() {
         assert(false);
     }
 }
-
+*/
 int main() {
-    TestConstruction();
-    TestPushBack();
-    TestPopBack();
+   // TestConstruction();
+    //TestPushBack();
+    //TestPopBack();
 
     cerr << "Running benchmark..."s << endl;
     const size_t max_size = 2500;
@@ -103,7 +103,7 @@ int main() {
             }
         }
     }
-    {
+   /* {
         LOG_DURATION("StackVector");
         for (auto& cur_vec : test_data) {
             StackVector<int, max_size> v;
@@ -112,5 +112,6 @@ int main() {
             }
         }
     }
+    */
     cerr << "Done"s << endl;
 }
