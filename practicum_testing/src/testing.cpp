@@ -1,68 +1,57 @@
-#include "list.h"
-
 #include <cassert>
 #include <vector>
+#include <string>
+#include <iostream>
 
 using namespace std;
 
-// функция возвращает функциональный объект,
-// выполняющий вставку в выбранный список
-template<class Type>
-auto MakeInsertingFunction(vector<SingleLinkedList<Type>> &lists, int x) {
-	return [&lists, x](const Type &value) {
-		lists.at(x).PushFront(value);
-	};
-}
-
-template<class T>
-void InsertRange(int from, int to, T push_function) {
-	for (int i = from; i < to; ++i) {
-		push_function(i);
-	}
-}
+class Editor {
+public:
+	Editor();
+	// сдвинуть курсор влево
+	void Left();
+	// сдвинуть курсор вправо
+	void Right();
+	// вставить символ token
+	void Insert(char token);
+	// вырезать не более tokens символов, начиная с текущей позиции курсора
+	void Cut(size_t tokens = 1);
+	// cкопировать не более tokens символов, начиная с текущей позиции курсора
+	void Copy(size_t tokens = 1);
+	// вставить содержимое буфера в текущую позицию курсора
+	void Paste();
+	// получить текущее содержимое текстового редактора
+	std::string GetText() const;
+};
 
 int main() {
-	// main тестирует вектор, в нём нет ошибок.
-	// не меняйте код этой функции
-	// помимо этих тестов, список должен проходить все обычные тесты списка.
-	// Ищите ошибки в коде списка и
-	// других функциях этого файла
-
-	vector<SingleLinkedList<int>> lists_a(10);
-
-	auto push_to_2a = MakeInsertingFunction(lists_a, 2);
-	auto push_to_5a = MakeInsertingFunction(lists_a, 5);
-	auto push_to_7a = MakeInsertingFunction(lists_a, 7);
-
-	InsertRange(10, 12, push_to_2a);
-	InsertRange(12, 14, push_to_5a);
-	InsertRange(14, 16, push_to_7a);
-
-	assert(lists_a.at(2) == SingleLinkedList<int>( { 11, 10 }));
-	assert(lists_a.at(5) == SingleLinkedList<int>( { 13, 12 }));
-	assert(lists_a.at(7) == SingleLinkedList<int>( { 15, 14 }));
-
-	vector<SingleLinkedList<int>> lists_b = lists_a;
-
-	auto push_to_2b = MakeInsertingFunction(lists_b, 2);
-	auto push_to_5b = MakeInsertingFunction(lists_b, 5);
-	auto push_to_7b = MakeInsertingFunction(lists_b, 7);
-
-	InsertRange(20, 22, push_to_2b);
-	InsertRange(22, 24, push_to_5b);
-	InsertRange(24, 26, push_to_7b);
-
-	assert(lists_b.at(2) == SingleLinkedList<int>( { 21, 20, 11, 10 }));
-	assert(lists_b.at(5) == SingleLinkedList<int>( { 23, 22, 13, 12 }));
-	assert(lists_b.at(7) == SingleLinkedList<int>( { 25, 24, 15, 14 }));
-
-	lists_a.at(2).PopFront();
-	lists_a.at(5).InsertAfter(lists_a[5].begin(), 100);
-	lists_b.at(5).EraseAfter(next(lists_b[5].begin()));
-	lists_b.at(7).Clear();
-
-	assert(lists_a.at(2) == SingleLinkedList<int>( { 10 }));
-	assert(lists_a.at(5) == SingleLinkedList<int>( { 13, 100, 12 }));
-	assert(lists_b.at(5) == SingleLinkedList<int>( { 23, 22, 12 }));
-	assert(lists_b.at(7) == SingleLinkedList<int>());
+	Editor editor;
+	const string text = "hello, world"s;
+	for (char c : text) {
+		editor.Insert(c);
+	}
+	// Текущее состояние редактора: `hello, world|`
+	for (size_t i = 0; i < text.size(); ++i) {
+		editor.Left();
+	}
+	// Текущее состояние редактора: `|hello, world`
+	editor.Cut(7);
+	// Текущее состояние редактора: `|world`
+	// в буфере обмена находится текст `hello, `
+	for (size_t i = 0; i < 5; ++i) {
+		editor.Right();
+	}
+	// Текущее состояние редактора: `world|`
+	editor.Insert(',');
+	editor.Insert(' ');
+	// Текущее состояние редактора: `world, |`
+	editor.Paste();
+	// Текущее состояние редактора: `world, hello, |`
+	editor.Left();
+	editor.Left();
+	//Текущее состояние редактора: `world, hello|, `
+	editor.Cut(3);  // Будут вырезаны 2 символа
+	// Текущее состояние редактора: `world, hello|`
+	std::cout << editor.GetText();
+	return 0;
 }
