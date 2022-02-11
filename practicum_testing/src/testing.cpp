@@ -31,13 +31,15 @@ public:
 	// вырезать не более tokens символов, начиная с текущей позиции курсора
 	void Cut(size_t tokens = 1) {
 		std::list<char>::iterator end_it_ = it_;
+
 		if (tokens > static_cast<size_t>(distance(end_it_, text_.end()))) {
 			tokens = static_cast<size_t>(distance(end_it_, text_.end()));
 		}
 		advance(end_it_, tokens);
+		buffer_.clear();
 		buffer_.insert(buffer_.begin(), it_, end_it_);
 		text_.erase(it_, end_it_);
-		it_ = text_.begin();
+		it_=end_it_;
 	}
 
 	// cкопировать не более tokens символов, начиная с текущей позиции курсора
@@ -47,6 +49,7 @@ public:
 			tokens = static_cast<size_t>(distance(end_it_, text_.end()));
 		}
 		advance(end_it_, tokens);
+		buffer_.clear();
 		buffer_.insert(buffer_.begin(), it_, end_it_);
 	}
 	// вставить содержимое буфера в текущую позицию курсора
@@ -76,6 +79,7 @@ int main() {
 		editor.Left();
 	}
 	// Текущее состояние редактора: `|hello, world`
+	editor.Copy(7);
 	editor.Cut(7);
 	// Текущее состояние редактора: `|world`
 	// в буфере обмена находится текст `hello, `
@@ -90,6 +94,7 @@ int main() {
 	// Текущее состояние редактора: `world, hello, |`
 	editor.Left();
 	editor.Left();
+
 	//Текущее состояние редактора: `world, hello|, `
 	editor.Cut(3);  // Будут вырезаны 2 символа
 	// Текущее состояние редактора: `world, hello|`
