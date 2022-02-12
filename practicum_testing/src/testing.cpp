@@ -1,27 +1,29 @@
 #include "log_duration.h"
+#include "my_assert.h"
 #include <iostream>
 #include <random>
 #include <stdexcept>
 #include <vector>
 #include <map>
 
-using namespace std;
+using namespace std::literals::string_literals;
 
 class Translator {
 public:
-	void Add(string_view source, string_view target);
-	string_view TranslateForward(string_view source) const;
-	string_view TranslateBackward(string_view target) const;
+	void Add(std::string_view source, std::string_view target);
+	std::string_view TranslateForward(std::string_view source) const;
+	std::string_view TranslateBackward(std::string_view target) const;
 
 private:
-	map<string_view,string_view> lang1tolang2_;
-	map<string_view,string_view> lang2tolang1_;
+	std::map<std::string_view,std::string_view> lang1tolang2_;
+	std::map<std::string_view,std::string_view> lang2tolang1_;
+	std::vector<std::string> words;
 };
 
 void TestSimple() {
 	Translator translator;
-	translator.Add(string("okno"s), string("window"s));
-	translator.Add(string("stol"s), string("table"s));
+	translator.Add(std::string("okno"s), std::string("window"s));
+	translator.Add(std::string("stol"s), std::string("table"s));
 
 	assert(translator.TranslateForward("okno"s) == "window"s);
 	assert(translator.TranslateBackward("table"s) == "stol"s);
