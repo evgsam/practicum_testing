@@ -1,119 +1,92 @@
 #include "log_duration.h"
-#include "my_assert.h"
-#include "stack_vector.h"
-
 #include <iostream>
 #include <random>
 #include <stdexcept>
+#include <vector>
 
 using namespace std;
 
-void TestConstruction() {
-	StackVector<int, 10> v;
-
-    assert(v.Size() == 0u);
-    assert(v.Capacity() == 10u);
-
-    StackVector<int, 8> u(5);
-    assert(u.Size() == 5u);
-    assert(u.Capacity() == 8u);
-
-    try {
-        StackVector<int, 10> u(50);
-        cout << "Expect invalid_argument for too large size"s << endl;
-        assert(false);
-    } catch (invalid_argument&) {
-    } catch (...) {
-        cout << "Expect invalid_argument for too large size"s << endl;
-        assert(false);
+vector<string> SplitIntoWords(const string& text) {
+    vector<string> words;
+    string word;
+    for (const char c : text) {
+        if (c == ' ') {
+            if (!word.empty()) {
+                // обратите внимание на это место в коде
+                // здесь мы каждый раз копируем найденное слово
+                // в новый элемент в векторе
+                words.push_back(word);
+                word.clear();
+            }
+        } else {
+            word += c;
+        }
     }
+    if (!word.empty()) {
+        words.push_back(word);
+    }
+    return words;
 }
 
-
-void TestPushBack() {
-    StackVector<int, 5> v;
-    for (size_t i = 0; i < v.Capacity(); ++i) {
-        v.PushBack(i);
+/*vector<string_view> SplitIntoWordsView(const string& str) {
+    vector<string_view> result;
+    // 1
+    int64_t pos = 0;
+    // 2
+    const int64_t pos_end = str.npos;
+    // 3
+    while (true) {
+        // 4
+        int64_t space = str.find(' ', pos);
+        // 5
+        result.push_back(space == pos_end ? str.substr(pos) : str.substr(pos, space - pos));
+        // 6
+        if (space == pos_end) {
+            break;
+        } else {
+            pos = space + 1;
+        }
     }
 
-    try {
-        v.PushBack(0);
-        cout << "Expect overflow_error for PushBack in full vector"s << endl;
-        assert(false);
-    } catch (overflow_error&) {
-    } catch (...) {
-        cout << "Unexpected exception for PushBack in full vector"s << endl;
-        assert(false);
+    return result;
+}
+*/
+vector<string_view> SplitIntoWordsView(string_view str) {
+    vector<string_view> result;
+    while (true) {
+        auto space = str.find(' ');
+    	result.push_back(str.substr(0,space));
+        if (space == str.npos) {
+            break;
+        } else {
+            str.remove_prefix(space+1);
+        }
     }
+
+    return result;
 }
 
-void TestPopBack() {
-    StackVector<int, 5> v;
-    for (size_t i = 1; i <= v.Capacity(); ++i) {
-        v.PushBack(i);
+string GenerateText() {
+    const int SIZE = 10000000;
+    string text(SIZE, 'a');
+    for (int i = 100; i < SIZE; i += 100) {
+        text[i] = ' ';
     }
-    for (int i = v.Size(); i > 0; --i) {
-      assert(v.PopBack() == i);
-    }
-
-    try {
-        v.PopBack();
-        cout << "Expect underflow_error for PopBack from empty vector"s << endl;
-        assert(false);
-    } catch (underflow_error&) {
-    } catch (...) {
-        cout << "Unexpected exception for PopBack from empty vector"s << endl;
-        assert(false);
-    }
+    return text;
 }
 
 int main() {
-	TestConstruction();
-	TestPushBack();
-    TestPopBack();
-
-    cerr << "Running benchmark..."s << endl;
-    const size_t max_size = 2500;
-
-    default_random_engine re;
-    uniform_int_distribution<int> value_gen(1, max_size);
-
-    vector<vector<int>> test_data(50000);
-    for (auto& cur_vec : test_data) {
-        cur_vec.resize(value_gen(re));
-        for (int& x : cur_vec) {
-            x = value_gen(re);
-        }
-    }
-
+    const string text = "a b";
     {
-        LOG_DURATION("vector w/o reserve");
-        for (auto& cur_vec : test_data) {
-            vector<int> v;
-            for (int x : cur_vec) {
-                v.push_back(x);
-            }
-        }
+        LOG_DURATION("string");
+        const auto words = SplitIntoWords(text);
+        cout << words[0] << "\n";
     }
     {
-        LOG_DURATION("vector with reserve");
-        for (auto& cur_vec : test_data) {
-            vector<int> v;
-            v.reserve(cur_vec.size());
-            for (int x : cur_vec) {
-                v.push_back(x);
-            }
-        }
-    }
-    {
-        LOG_DURATION("StackVector");
-        for (auto& cur_vec : test_data) {
-            StackVector<int, max_size> v;
-            for (int x : cur_vec) {
-                v.PushBack(x);
-            }
-        }
+        LOG_DURATION("string_view");
+        const auto words = SplitIntoWordsView(text);
+        cout << words[0] << "\n";
     }
 
-    cerr << "Done"s << endl;
+    return 0;
 }
