@@ -13,37 +13,50 @@
 template<typename T, size_t N>
 class StackVector {
 public:
-    explicit StackVector(size_t a_size = 0) {
-        if (a_size > capacity_ ) {
-            throw std::invalid_argument("invalid_argument");
-        }
+	explicit StackVector(size_t a_size = 0) {
+		if (a_size > capacity_) {
+			throw std::invalid_argument("invalid_argument");
+		}
 
-        capacity_ = a_size;
-    }
-
-	T& operator[](size_t index);
-	const T& operator[](size_t index) const;
-
-	typename std::array<T, N>::iterator begin(){
-		return  array_.begin();
-	}
-	typename std::array<T, N>::iterator end(){
-		return  array_.end();
-	}
-	typename std::array<T, N>::const_iterator begin() const{
-		return  array_.begin();
-	}
-	typename std::array<T, N>::const_iterator end() const{
-		return  array_.end();
+		capacity_ = a_size;
 	}
 
+	T& operator[](size_t index){
+		return array_.at(index);
+	}
+	const T& operator[](size_t index) const{
 
-	//? ? ? begin();? ? ? end();? ? ? begin() const;? ? ? end() const;
+	}
 
-	size_t Size() const;
-	size_t Capacity() const;
+	typename std::array<T, N>::iterator begin() {
+		return array_.begin();
+	}
+	typename std::array<T, N>::iterator end() {
+		auto it_first = array_.begin();
+		auto it_last = size_;
+		auto nx = std::next(it_first, it_last);
+		return nx;
+	}
+	typename std::array<T, N>::const_iterator begin() const {
+		return array_.begin();
+	}
+	typename std::array<T, N>::const_iterator end() const {
+		auto it_first = array_.begin();
+		auto it_last = size_;
+		auto nx = std::next(it_first, it_last);
+		return nx;
+	}
 
-	void PushBack(const T &value);
+	size_t Size() const {
+		return size_;
+	}
+	size_t Capacity() const {
+		return array_.max_size();
+	}
+
+	void PushBack(const T &value) {
+
+	}
 	T PopBack();
 private:
 	std::array<T, N> array_;

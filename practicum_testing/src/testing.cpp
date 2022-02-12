@@ -8,8 +8,12 @@
 
 using namespace std;
 
-/*void TestConstruction() {
-    StackVector<int, 10> v;
+void TestConstruction() {
+	StackVector<int, 10> v;
+	auto s=v.Size();
+	auto c=v.Capacity();
+	v[3]=33;
+
     assert(v.Size() == 0u);
     assert(v.Capacity() == 10u);
 
@@ -28,6 +32,7 @@ using namespace std;
     }
 }
 
+/*
 void TestPushBack() {
     StackVector<int, 5> v;
     for (size_t i = 0; i < v.Capacity(); ++i) {
@@ -66,7 +71,7 @@ void TestPopBack() {
 }
 */
 int main() {
-   // TestConstruction();
+    TestConstruction();
     //TestPushBack();
     //TestPopBack();
 
