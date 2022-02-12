@@ -29,7 +29,8 @@ public:
 
 	// Создаёт вектор из std::initializer_list
 	SimpleVector(std::initializer_list<Type> init) :
-			symple_vector_(init.size()), size_(init.size()), capacity_(init.size()) {
+			symple_vector_(init.size()), size_(init.size()), capacity_(
+					init.size()) {
 		//std::fill(items_.Get(), items_.Get() + size, init.begin());
 	}
 
@@ -51,30 +52,35 @@ public:
 
 	// Возвращает ссылку на элемент с индексом index
 	Type& operator[](size_t index) noexcept {
-		return *(symple_vector_.Get()+index);
+		return *(symple_vector_.Get() + index);
 		// Напишите тело самостоятельно
 	}
 
 	// Возвращает константную ссылку на элемент с индексом index
 	const Type& operator[](size_t index) const noexcept {
-		// Напишите тело самостоятельно
+		return *(symple_vector_.Get() + index);
 	}
 
 	// Возвращает константную ссылку на элемент с индексом index
 	// Выбрасывает исключение std::out_of_range, если index >= size
 	Type& At(size_t index) {
-		// Напишите тело самостоятельно
+		if(index>=size_){
+			throw std::out_of_range("out_of_range");
+		}
+		else {
+			return *(symple_vector_.Get() + index);;
+		}
 	}
 
 	// Возвращает константную ссылку на элемент с индексом index
 	// Выбрасывает исключение std::out_of_range, если index >= size
 	const Type& At(size_t index) const {
-		// Напишите тело самостоятельно
+		return At(index);
 	}
 
 	// Обнуляет размер массива, не изменяя его вместимость
 	void Clear() noexcept {
-		size_=0;
+		size_ = 0;
 		// Напишите тело самостоятельно
 	}
 
@@ -85,26 +91,26 @@ public:
 	}
 
 	/*
-	  void Resize(size_t new_size) {
-        Type t{};
-        if (size_ < new_size) {
+	 void Resize(size_t new_size) {
+	 Type t{};
+	 if (size_ < new_size) {
 
-            if (new_size <= capacity_) {
-                std::fill(items_.Get() + size_, items_.Get() + new_size, t);
+	 if (new_size <= capacity_) {
+	 std::fill(items_.Get() + size_, items_.Get() + new_size, t);
 
-            } else if (new_size > capacity_) {
-                capacity_ *= 2;
-                ArrayPtr<Type> tmp_items = items_;
-                tmp_items = new ArrayPtr<Type>[capacity_];
+	 } else if (new_size > capacity_) {
+	 capacity_ *= 2;
+	 ArrayPtr<Type> tmp_items = items_;
+	 tmp_items = new ArrayPtr<Type>[capacity_];
 
-                std::copy(items_.Get(), items_.Get() + size_, tmp_items.Get());
-                std::fill(tmp_items.Get() + size_ + 1, tmp_items.Get() + new_size, t);
+	 std::copy(items_.Get(), items_.Get() + size_, tmp_items.Get());
+	 std::fill(tmp_items.Get() + size_ + 1, tmp_items.Get() + new_size, t);
 
-                delete[] items_;
-            }
-        }
-        size_ = new_size;
-    }
+	 delete[] items_;
+	 }
+	 }
+	 size_ = new_size;
+	 }
 	 */
 	// Возвращает итератор на начало массива
 	// Для пустого массива может быть равен (или не равен) nullptr
