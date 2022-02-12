@@ -21,10 +21,10 @@ public:
 		capacity_ = a_size;
 	}
 
-	T& operator[](size_t index){
+	T& operator[](size_t index) {
 		return array_.at(index);
 	}
-	const T& operator[](size_t index) const{
+	const T& operator[](size_t index) const {
 
 	}
 
@@ -55,8 +55,13 @@ public:
 	}
 
 	void PushBack(const T &value) {
-		array_.back()=value;
-		++size_;
+		if (Size() == Capacity()) {
+			throw std::invalid_argument("invalid_argument");
+		} else {
+			array_.back() = value;
+			++size_;
+		}
+
 	}
 	T PopBack();
 private:
