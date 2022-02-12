@@ -55,7 +55,8 @@ public:
 	}
 
 	void PushBack(const T &value) {
-
+		array_.back()=value;
+		++size_;
 	}
 	T PopBack();
 private:
