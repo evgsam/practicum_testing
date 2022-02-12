@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include <initializer_list>
+#include <array>
+#include "array_ptr.h"
 
 template<typename Type>
 class SimpleVector {
@@ -12,13 +14,16 @@ public:
 	SimpleVector() noexcept = default;
 
 	// Создаёт вектор из size элементов, инициализированных значением по умолчанию
-	explicit SimpleVector(size_t size) {
+	explicit SimpleVector(size_t size) :
+			SimpleVector(size, Type()) {
 		// Напишите тело конструктора самостоятельно
 	}
 
 	// Создаёт вектор из size элементов, инициализированных значением value
-	SimpleVector(size_t size, const Type &value) {
-		// Напишите тело конструктора самостоятельно
+	SimpleVector(size_t size, const Type &value) :
+			items_(size), size_(size), capacity_(size) {
+		std::fill(items_.Get(),items_.Get()+size, value);
+	
 	}
 
 	// Создаёт вектор из std::initializer_list
@@ -111,4 +116,8 @@ public:
 	ConstIterator cend() const noexcept {
 		// Напишите тело самостоятельно
 	}
+private:
+	size_t size_ { };
+	size_t capacity_ { };
+	ArrayPtr<Type> items_;
 };
