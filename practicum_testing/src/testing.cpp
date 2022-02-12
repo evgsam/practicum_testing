@@ -15,7 +15,8 @@ public:
 		/*lang1tolang2_.insert_or_assign(target, source);
 		lang2tolang1_.insert_or_assign(source, target);
 		*/
-
+		words_.push_back(std::string{source});
+		words_.push_back(std::string{target});
 	}
 	std::string_view TranslateForward(std::string_view source) const{
 		auto it =lang1tolang2_.find(source);
@@ -29,7 +30,7 @@ public:
 private:
 	std::map<std::string_view, std::string_view> lang1tolang2_;
 	std::map<std::string_view, std::string_view> lang2tolang1_;
-	std::vector<std::string> words;
+	std::vector<std::string> words_;
 };
 
 void TestSimple() {
