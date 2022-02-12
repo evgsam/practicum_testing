@@ -14,18 +14,19 @@ template<typename T, size_t N>
 class StackVector {
 public:
 	explicit StackVector(size_t a_size = 0) {
-		if (a_size > capacity_) {
+		if (a_size > Capacity()) {
 			throw std::invalid_argument("invalid_argument");
 		}
 
-		capacity_ = a_size;
+		size_ = a_size;
+		capacity_ = Capacity();
 	}
 
 	T& operator[](size_t index) {
 		return array_.at(index);
 	}
 	const T& operator[](size_t index) const {
-
+		return array_.at(index);
 	}
 
 	typename std::array<T, N>::iterator begin() {
@@ -56,14 +57,22 @@ public:
 
 	void PushBack(const T &value) {
 		if (Size() == Capacity()) {
-			throw std::invalid_argument("invalid_argument");
+			throw std::overflow_error("overflow_error");
 		} else {
-			array_.back() = value;
+			array_.at(size_)=value;
 			++size_;
 		}
 
 	}
-	T PopBack();
+	T PopBack() {
+		if (size_==0) {
+			throw std::underflow_error("underflow_error");
+		} else {
+			--size_;
+			return array_[size_];
+
+		}
+	}
 private:
 	std::array<T, N> array_;
 	size_t size_ { };
