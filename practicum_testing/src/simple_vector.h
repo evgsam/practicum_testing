@@ -3,6 +3,7 @@
 #include <cassert>
 #include <initializer_list>
 #include <array>
+#include <iterator>
 #include "array_ptr.h"
 
 template<typename Type>
@@ -21,14 +22,14 @@ public:
 
 	// Создаёт вектор из size элементов, инициализированных значением value
 	SimpleVector(size_t size, const Type &value) :
-			items_(size), size_(size), capacity_(size) {
-		std::fill(items_.Get(), items_.Get() + size, value);
+			symple_vector_(size), size_(size), capacity_(size) {
+		std::fill(symple_vector_.Get(), symple_vector_.Get() + size, value);
 
 	}
 
 	// Создаёт вектор из std::initializer_list
 	SimpleVector(std::initializer_list<Type> init) :
-			items_(init.size()), size_(init.size()), capacity_(init.size()) {
+			symple_vector_(init.size()), size_(init.size()), capacity_(init.size()) {
 		//std::fill(items_.Get(), items_.Get() + size, init.begin());
 	}
 
@@ -50,6 +51,7 @@ public:
 
 	// Возвращает ссылку на элемент с индексом index
 	Type& operator[](size_t index) noexcept {
+		return *(symple_vector_.Get()+index);
 		// Напишите тело самостоятельно
 	}
 
@@ -82,6 +84,28 @@ public:
 		// Напишите тело самостоятельно
 	}
 
+	/*
+	  void Resize(size_t new_size) {
+        Type t{};
+        if (size_ < new_size) {
+
+            if (new_size <= capacity_) {
+                std::fill(items_.Get() + size_, items_.Get() + new_size, t);
+
+            } else if (new_size > capacity_) {
+                capacity_ *= 2;
+                ArrayPtr<Type> tmp_items = items_;
+                tmp_items = new ArrayPtr<Type>[capacity_];
+
+                std::copy(items_.Get(), items_.Get() + size_, tmp_items.Get());
+                std::fill(tmp_items.Get() + size_ + 1, tmp_items.Get() + new_size, t);
+
+                delete[] items_;
+            }
+        }
+        size_ = new_size;
+    }
+	 */
 	// Возвращает итератор на начало массива
 	// Для пустого массива может быть равен (или не равен) nullptr
 	Iterator begin() noexcept {
@@ -120,5 +144,5 @@ public:
 private:
 	size_t size_ { };
 	size_t capacity_ { };
-	ArrayPtr<Type> items_;
+	ArrayPtr<Type> symple_vector_;
 };
