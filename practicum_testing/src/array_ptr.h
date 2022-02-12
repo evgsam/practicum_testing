@@ -9,6 +9,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <utility>
 
 template<typename Type>
 class ArrayPtr {
@@ -27,8 +28,7 @@ public:
 	}
 
 	// Конструктор из сырого указателя, хранящего адрес массива в куче либо nullptr
-	explicit ArrayPtr(Type *raw_ptr) noexcept :
-			raw_ptr_(raw_ptr) {
+	explicit ArrayPtr(Type *raw_ptr) noexcept:raw_ptr_(raw_ptr) {
 	}
 
 	// Запрещаем копирование
@@ -45,35 +45,37 @@ public:
 	// Прекращает владением массивом в памяти, возвращает значение адреса массива
 	// После вызова метода указатель на массив должен обнулиться
 	[[nodiscard]] Type* Release() noexcept {
-		// Заглушка. Реализуйте метод самостоятельно
-		return nullptr;
+		auto adr=Get();
+		raw_ptr_=nullptr;
+		return adr;
 	}
 
 	// Возвращает ссылку на элемент массива с индексом index
 	Type& operator[](size_t index) noexcept {
-		// Реализуйте операцию самостоятельно
+		return raw_ptr_[index];
 	}
 
 	// Возвращает константную ссылку на элемент массива с индексом index
 	const Type& operator[](size_t index) const noexcept {
-		// Реализуйте операцию самостоятельно
+		return raw_ptr_[index];
 	}
 
 	// Возвращает true, если указатель ненулевой, и false в противном случае
 	explicit operator bool() const {
-		// Заглушка. Реализуйте операцию самостоятельно
+		if (raw_ptr_!=nullptr){
+			return true;
+		}
 		return false;
 	}
 
 	// Возвращает значение сырого указателя, хранящего адрес начала массива
 	Type* Get() const noexcept {
-		// Заглушка. Реализуйте метод самостоятельно
-		return nullptr;
+		return raw_ptr_;
 	}
 
 	// Обменивается значениям указателя на массив с объектом other
 	void swap(ArrayPtr &other) noexcept {
-		// Реализуйте метод самостоятельно
+		std::swap(other.raw_ptr_, raw_ptr_);
 	}
 
 private:
