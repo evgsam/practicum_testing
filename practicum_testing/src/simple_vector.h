@@ -22,13 +22,14 @@ public:
 	// Создаёт вектор из size элементов, инициализированных значением value
 	SimpleVector(size_t size, const Type &value) :
 			items_(size), size_(size), capacity_(size) {
-		std::fill(items_.Get(),items_.Get()+size, value);
-	
+		std::fill(items_.Get(), items_.Get() + size, value);
+
 	}
 
 	// Создаёт вектор из std::initializer_list
-	SimpleVector(std::initializer_list<Type> init) {
-		// Напишите тело конструктора самостоятельно
+	SimpleVector(std::initializer_list<Type> init) :
+			items_(init.size()), size_(init.size()), capacity_(init.size()) {
+		//std::fill(items_.Get(), items_.Get() + size, init.begin());
 	}
 
 	// Возвращает количество элементов в массиве
