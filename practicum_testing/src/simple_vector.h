@@ -78,10 +78,9 @@ public:
 	// Возвращает константную ссылку на элемент с индексом index
 	// Выбрасывает исключение std::out_of_range, если index >= size
 	Type& At(size_t index) {
-		if(index>=size_){
+		if (index >= size_) {
 			throw std::out_of_range("out_of_range");
-		}
-		else {
+		} else {
 			return *(symple_vector_.Get() + index);;
 		}
 	}
@@ -100,69 +99,68 @@ public:
 
 	// Изменяет размер массива.
 	// При увеличении размера новые элементы получают значение по умолчанию для типа Type
+
 	void Resize(size_t new_size) {
-		// Напишите тело самостоятельно
+		Type t { };
+		if (size_ < new_size) {
+			if (new_size <= capacity_) {
+				std::fill(symple_vector_.Get() + size_, symple_vector_.Get() + new_size, t);
+			} else if (new_size > capacity_) {
+				capacity_ *= 2;
+
+				ArrayPtr<Type> tmp_symple_vector[capacity_];
+				/*= new ArrayPtr<Type> *[capacity_];*/
+
+				/*std::copy(symple_vector_.Get(), symple_vector_.Get() + size_, tmp_symple_vector.Get());
+				std::fill(tmp_symple_vector.Get() + size_ + 1,
+						tmp_symple_vector.Get() + new_size, t);
+
+				delete[] symple_vector_;
+				*/
+			}
+		}
+		size_ = new_size;
 	}
 
-	/*
-	 void Resize(size_t new_size) {
-	 Type t{};
-	 if (size_ < new_size) {
-
-	 if (new_size <= capacity_) {
-	 std::fill(items_.Get() + size_, items_.Get() + new_size, t);
-
-	 } else if (new_size > capacity_) {
-	 capacity_ *= 2;
-	 ArrayPtr<Type> tmp_items = items_;
-	 tmp_items = new ArrayPtr<Type>[capacity_];
-
-	 std::copy(items_.Get(), items_.Get() + size_, tmp_items.Get());
-	 std::fill(tmp_items.Get() + size_ + 1, tmp_items.Get() + new_size, t);
-
-	 delete[] items_;
-	 }
-	 }
-	 size_ = new_size;
-	 }
-	 */
 	// Возвращает итератор на начало массива
 	// Для пустого массива может быть равен (или не равен) nullptr
 	Iterator begin() noexcept {
-		// Напишите тело самостоятельно
+		return symple_vector_.Get();
 	}
 
 	// Возвращает итератор на элемент, следующий за последним
 	// Для пустого массива может быть равен (или не равен) nullptr
 	Iterator end() noexcept {
+		return symple_vector_.Get() + size_;
 		// Напишите тело самостоятельно
 	}
 
 	// Возвращает константный итератор на начало массива
 	// Для пустого массива может быть равен (или не равен) nullptr
 	ConstIterator begin() const noexcept {
-		// Напишите тело самостоятельно
+		return symple_vector_.Get();
 	}
 
 	// Возвращает итератор на элемент, следующий за последним
 	// Для пустого массива может быть равен (или не равен) nullptr
 	ConstIterator end() const noexcept {
-		// Напишите тело самостоятельно
+		return symple_vector_.Get() + size_;
 	}
 
 	// Возвращает константный итератор на начало массива
 	// Для пустого массива может быть равен (или не равен) nullptr
 	ConstIterator cbegin() const noexcept {
-		// Напишите тело самостоятельно
+		return symple_vector_.Get();
 	}
 
 	// Возвращает итератор на элемент, следующий за последним
 	// Для пустого массива может быть равен (или не равен) nullptr
 	ConstIterator cend() const noexcept {
-		// Напишите тело самостоятельно
+		return symple_vector_.Get() + size_;
 	}
 private:
 	size_t size_ { };
 	size_t capacity_ { };
 	ArrayPtr<Type> symple_vector_;
 };
+
