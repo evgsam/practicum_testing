@@ -4,6 +4,6 @@
 #include "tests.h"
 
 int main() {
-    Test1();
-    return 0;
+	Test1();
+	return 0;
 }

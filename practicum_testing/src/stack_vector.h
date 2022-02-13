@@ -59,13 +59,13 @@ public:
 		if (Size() == Capacity()) {
 			throw std::overflow_error("overflow_error");
 		} else {
-			array_.at(size_)=value;
+			array_.at(size_) = value;
 			++size_;
 		}
 
 	}
 	T PopBack() {
-		if (size_==0) {
+		if (size_ == 0) {
 			throw std::underflow_error("underflow_error");
 		} else {
 			--size_;

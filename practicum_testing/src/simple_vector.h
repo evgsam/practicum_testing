@@ -30,8 +30,7 @@ public:
 
 	// Создаёт вектор из std::initializer_list
 	SimpleVector(std::initializer_list<Type> init) :
-			symple_vector_(init.size()), size_(init.size()), capacity_(
-					init.size()) {
+			symple_vector_(init.size()), size_(init.size()), capacity_(init.size()) {
 		auto begin = symple_vector_.Get();
 		auto end = symple_vector_.Get() + 1;
 		auto value = init.begin();
@@ -116,8 +115,7 @@ public:
 		Type t { };
 		if (size_ < new_size) {
 			if (new_size <= capacity_) {
-				std::fill(symple_vector_.Get() + size_,
-						symple_vector_.Get() + new_size, t);
+				std::fill(symple_vector_.Get() + size_, symple_vector_.Get() + new_size, t);
 			} else if (new_size > capacity_) {
 				if (capacity_ * 2 < new_size) {
 					capacity_ = new_size;
@@ -125,10 +123,8 @@ public:
 					capacity_ *= 2;
 				}
 				ArrayPtr<Type> tmp_symple_vector(capacity_);
-				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,
-						tmp_symple_vector.Get());
-				std::fill(tmp_symple_vector.Get() + size_,
-						tmp_symple_vector.Get() + new_size, t);
+				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_, tmp_symple_vector.Get());
+				std::fill(tmp_symple_vector.Get() + size_, tmp_symple_vector.Get() + new_size, t);
 				symple_vector_.swap(tmp_symple_vector);
 			}
 		}
@@ -206,22 +202,19 @@ private:
 };
 
 template<typename Type>
-inline bool operator==(const SimpleVector<Type> &lhs,
-		const SimpleVector<Type> &rhs) {
+inline bool operator==(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
 	// Заглушка. Напишите тело самостоятельно
 	return true;
 }
 
 template<typename Type>
-inline bool operator!=(const SimpleVector<Type> &lhs,
-		const SimpleVector<Type> &rhs) {
+inline bool operator!=(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
 	// Заглушка. Напишите тело самостоятельно
 	return true;
 }
 
 template<typename Type>
-inline bool operator<(const SimpleVector<Type> &lhs,
-		const SimpleVector<Type> &rhs) {
+inline bool operator<(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
 	// Заглушка. Напишите тело самостоятельно
 	return true;
 }
