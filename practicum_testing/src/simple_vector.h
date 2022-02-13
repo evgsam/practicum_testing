@@ -42,9 +42,16 @@ public:
 			++value;
 			std::fill(begin, end, *value);
 		}
-		//std::fill(symple_vector_.Get(), symple_vector_.Get() + size_, 3);
 	}
 
+	SimpleVector(const SimpleVector &other) {
+		// Напишите тело конструктора самостоятельно
+	}
+
+	SimpleVector& operator=(const SimpleVector &rhs) {
+		// Напишите тело конструктора самостоятельно
+		return *this;
+	}
 	// Возвращает количество элементов в массиве
 	size_t GetSize() const noexcept {
 		return size_;
@@ -109,17 +116,19 @@ public:
 		Type t { };
 		if (size_ < new_size) {
 			if (new_size <= capacity_) {
-				std::fill(symple_vector_.Get() + size_,	symple_vector_.Get() + new_size, t);
+				std::fill(symple_vector_.Get() + size_,
+						symple_vector_.Get() + new_size, t);
 			} else if (new_size > capacity_) {
-				if (capacity_*2<new_size){
-					capacity_=new_size;
-				}
-				else {
+				if (capacity_ * 2 < new_size) {
+					capacity_ = new_size;
+				} else {
 					capacity_ *= 2;
 				}
-				ArrayPtr<Type> tmp_symple_vector (capacity_);
-				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,tmp_symple_vector.Get());
-				std::fill(tmp_symple_vector.Get() + size_,	tmp_symple_vector.Get() + new_size, t);
+				ArrayPtr<Type> tmp_symple_vector(capacity_);
+				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,
+						tmp_symple_vector.Get());
+				std::fill(tmp_symple_vector.Get() + size_,
+						tmp_symple_vector.Get() + new_size, t);
 				symple_vector_.swap(tmp_symple_vector);
 			}
 		}
@@ -162,8 +171,57 @@ public:
 	ConstIterator cend() const noexcept {
 		return symple_vector_.Get() + size_;
 	}
+	// Добавляет элемент в конец вектора
+	// При нехватке места увеличивает вдвое вместимость вектора
+	void PushBack(const Type &item) {
+		// Напишите тело самостоятельно
+	}
+
+	// Вставляет значение value в позицию pos.
+	// Возвращает итератор на вставленное значение
+	// Если перед вставкой значения вектор был заполнен полностью,
+	// вместимость вектора должна увеличиться вдвое, а для вектора вместимостью 0 стать равной 1
+	Iterator Insert(ConstIterator pos, const Type &value) {
+		// Напишите тело самостоятельно
+	}
+
+	// "Удаляет" последний элемент вектора. Вектор не должен быть пустым
+	void PopBack() noexcept {
+		// Напишите тело самостоятельно
+	}
+
+	// Удаляет элемент вектора в указанной позиции
+	Iterator Erase(ConstIterator pos) {
+		// Напишите тело самостоятельно
+	}
+
+	// Обменивает значение с другим вектором
+	void swap(SimpleVector &other) noexcept {
+		// Напишите тело самостоятельно
+	}
+
 private:
 	size_t size_ { };
 	size_t capacity_ { };
 };
 
+template<typename Type>
+inline bool operator==(const SimpleVector<Type> &lhs,
+		const SimpleVector<Type> &rhs) {
+	// Заглушка. Напишите тело самостоятельно
+	return true;
+}
+
+template<typename Type>
+inline bool operator!=(const SimpleVector<Type> &lhs,
+		const SimpleVector<Type> &rhs) {
+	// Заглушка. Напишите тело самостоятельно
+	return true;
+}
+
+template<typename Type>
+inline bool operator<(const SimpleVector<Type> &lhs,
+		const SimpleVector<Type> &rhs) {
+	// Заглушка. Напишите тело самостоятельно
+	return true;
+}
