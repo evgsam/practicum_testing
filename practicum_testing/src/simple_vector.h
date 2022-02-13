@@ -89,7 +89,11 @@ public:
 	// Возвращает константную ссылку на элемент с индексом index
 	// Выбрасывает исключение std::out_of_range, если index >= size
 	const Type& At(size_t index) const {
-		return At(index);
+		if (index >= size_) {
+			throw std::out_of_range("out_of_range");
+		} else {
+			return *(symple_vector_.Get() + index);;
+		}
 	}
 
 	// Обнуляет размер массива, не изменяя его вместимость
