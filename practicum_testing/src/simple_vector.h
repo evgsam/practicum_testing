@@ -11,6 +11,7 @@ class SimpleVector {
 public:
 	using Iterator = Type*;
 	using ConstIterator = const Type*;
+	ArrayPtr<Type> symple_vector_;
 
 	SimpleVector() noexcept = default;
 
@@ -31,11 +32,11 @@ public:
 	SimpleVector(std::initializer_list<Type> init) :
 			symple_vector_(init.size()), size_(init.size()), capacity_(
 					init.size()) {
-		auto begin=symple_vector_.Get();
-		auto end=symple_vector_.Get()+1;
-		auto value=init.begin();
+		auto begin = symple_vector_.Get();
+		auto end = symple_vector_.Get() + 1;
+		auto value = init.begin();
 		std::fill(begin, end, *value);
-		while (end!=symple_vector_.Get()+size_){
+		while (end != symple_vector_.Get() + size_) {
 			++begin;
 			++end;
 			++value;
@@ -57,7 +58,7 @@ public:
 
 	// Сообщает, пустой ли массив
 	bool IsEmpty() const noexcept {
-		if (size_==0){
+		if (size_ == 0) {
 			return true;
 		}
 		return false;
@@ -104,19 +105,25 @@ public:
 		Type t { };
 		if (size_ < new_size) {
 			if (new_size <= capacity_) {
-				std::fill(symple_vector_.Get() + size_, symple_vector_.Get() + new_size, t);
+				std::fill(symple_vector_.Get() + size_,
+						symple_vector_.Get() + new_size, t);
 			} else if (new_size > capacity_) {
-				capacity_ *= 2;
+				capacity_ = new_size * 2;
 
-				ArrayPtr<Type> tmp_symple_vector[capacity_];
-				/*= new ArrayPtr<Type> *[capacity_];*/
+				//ArrayPtr<Type> tmp_symple_vector=new Type[capacity_]{};
+				//ArrayPtr<Type> tmp_symple_vector = symple_vector_;
+				// ArrayPtr<Type> *tmp_symple_vector = &symple_vector_;
+				ArrayPtr<Type> *tmp_symple_vector =	new ArrayPtr<Type> [capacity_] { };
+				tmp_symple_vector = &symple_vector_;
 
-				/*std::copy(symple_vector_.Get(), symple_vector_.Get() + size_, tmp_symple_vector.Get());
-				std::fill(tmp_symple_vector.Get() + size_ + 1,
-						tmp_symple_vector.Get() + new_size, t);
+				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,
+						tmp_symple_vector->Get());
+				std::fill(tmp_symple_vector->Get() + size_ + 1,
+						tmp_symple_vector->Get() + new_size, t);
 
-				delete[] symple_vector_;
-				*/
+				//symple_vector_.~ArrayPtr();
+			//	&symple_vector_ = *tmp_symple_vector;
+
 			}
 		}
 		size_ = new_size;
@@ -161,6 +168,5 @@ public:
 private:
 	size_t size_ { };
 	size_t capacity_ { };
-	ArrayPtr<Type> symple_vector_;
 };
 
