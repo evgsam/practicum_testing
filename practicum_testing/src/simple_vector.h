@@ -117,11 +117,10 @@ public:
 				else {
 					capacity_ *= 2;
 				}
-				ArrayPtr<Type> *tmp_symple_vector =	new ArrayPtr<Type> [capacity_] { };
-				tmp_symple_vector = &symple_vector_;
-				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,
-						tmp_symple_vector->Get());
-				std::fill(tmp_symple_vector->Get() + size_ ,	tmp_symple_vector->Get() + new_size, t);
+				ArrayPtr<Type> tmp_symple_vector (capacity_);
+				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,tmp_symple_vector.Get());
+				std::fill(tmp_symple_vector.Get() + size_,	tmp_symple_vector.Get() + new_size, t);
+				symple_vector_.swap(tmp_symple_vector);
 			}
 		}
 		size_ = new_size;
