@@ -109,9 +109,7 @@ public:
 		Type t { };
 		if (size_ < new_size) {
 			if (new_size <= capacity_) {
-				std::fill(symple_vector_.Get() + size_,
-						symple_vector_.Get() + new_size, t);
-				size_=new_size;
+				std::fill(symple_vector_.Get() + size_,	symple_vector_.Get() + new_size, t);
 			} else if (new_size > capacity_) {
 				if (capacity_*2<new_size){
 					capacity_=new_size;
@@ -123,12 +121,7 @@ public:
 				tmp_symple_vector = &symple_vector_;
 				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,
 						tmp_symple_vector->Get());
-				std::fill(tmp_symple_vector->Get() + size_ + 1,
-						tmp_symple_vector->Get() + new_size, t);
-
-				//symple_vector_.~ArrayPtr();
-			//	&symple_vector_ = *tmp_symple_vector;
-
+				std::fill(tmp_symple_vector->Get() + size_ ,	tmp_symple_vector->Get() + new_size, t);
 			}
 		}
 		size_ = new_size;
