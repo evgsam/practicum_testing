@@ -31,7 +31,17 @@ public:
 	SimpleVector(std::initializer_list<Type> init) :
 			symple_vector_(init.size()), size_(init.size()), capacity_(
 					init.size()) {
-		//std::fill(items_.Get(), items_.Get() + size, init.begin());
+		auto begin=symple_vector_.Get();
+		auto end=symple_vector_.Get()+1;
+		auto value=init.begin();
+		std::fill(begin, end, *value);
+		while (end!=symple_vector_.Get()+size_){
+			++begin;
+			++end;
+			++value;
+			std::fill(begin, end, *value);
+		}
+		//std::fill(symple_vector_.Get(), symple_vector_.Get() + size_, 3);
 	}
 
 	// Возвращает количество элементов в массиве
