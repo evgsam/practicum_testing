@@ -111,15 +111,16 @@ public:
 			if (new_size <= capacity_) {
 				std::fill(symple_vector_.Get() + size_,
 						symple_vector_.Get() + new_size, t);
+				size_=new_size;
 			} else if (new_size > capacity_) {
-				capacity_ = new_size * 2;
-
-				//ArrayPtr<Type> tmp_symple_vector=new Type[capacity_]{};
-				//ArrayPtr<Type> tmp_symple_vector = symple_vector_;
-				// ArrayPtr<Type> *tmp_symple_vector = &symple_vector_;
+				if (capacity_*2<new_size){
+					capacity_=new_size;
+				}
+				else {
+					capacity_ *= 2;
+				}
 				ArrayPtr<Type> *tmp_symple_vector =	new ArrayPtr<Type> [capacity_] { };
 				tmp_symple_vector = &symple_vector_;
-
 				std::copy(symple_vector_.Get(), symple_vector_.Get() + size_,
 						tmp_symple_vector->Get());
 				std::fill(tmp_symple_vector->Get() + size_ + 1,
