@@ -170,11 +170,12 @@ public:
 	// Добавляет элемент в конец вектора
 	// При нехватке места увеличивает вдвое вместимость вектора
 	void PushBack(const Type &item) {
+		auto old_size=GetSize();
 		if (GetSize()== GetCapacity()) {
 			Resize(size_ == 0 ? 1 : size_ * 2);
 		}
-		symple_vector_[size_+1]=item;
-		size_++;
+		symple_vector_[old_size+1]=item;
+		size_=old_size+1;
 	}
 
 	// Вставляет значение value в позицию pos.
