@@ -18,14 +18,12 @@ public:
 	// Создаёт вектор из size элементов, инициализированных значением по умолчанию
 	explicit SimpleVector(size_t size) :
 			SimpleVector(size, Type()) {
-		// Напишите тело конструктора самостоятельно
 	}
 
 	// Создаёт вектор из size элементов, инициализированных значением value
 	SimpleVector(size_t size, const Type &value) :
 			symple_vector_(size), size_(size), capacity_(size) {
 		std::fill(symple_vector_.Get(), symple_vector_.Get() + size, value);
-
 	}
 
 	// Создаёт вектор из std::initializer_list
@@ -45,21 +43,24 @@ public:
 
 	SimpleVector(const SimpleVector &other) :
 			size_(other.size_), capacity_(other.capacity_) {
-		SimpleVector tmp(other.size_);
-		std::copy(other.begin(), other.end(), tmp.begin());
-		swap(tmp);
+		//SimpleVector tmp(other.size_);
+		ArrayPtr<Type> tmp(capacity_);
+		std::copy(other.begin(), other.end(), tmp.Get());
+		symple_vector_.swap(tmp);
+		//symple_vector_.swap(tmp);
+		//tmp.swap(other);
+		//other.swap(tmp);
 	}
 
-    SimpleVector& operator=(const SimpleVector& rhs) {
-        // Напишите тело конструктора самостоятельно
-        size_ = rhs.size_;
-        capacity_ = rhs.capacity_;
-        if (this != &rhs) {
-            auto rhs_copy(rhs);
-            swap(rhs_copy);
-        }
-        return *this;
-    }
+	SimpleVector& operator=(const SimpleVector &rhs) {
+		size_ = rhs.size_;
+		capacity_ = rhs.capacity_;
+		if (this != &rhs) {
+			auto rhs_copy(rhs);
+			swap(rhs_copy);
+		}
+		return *this;
+	}
 
 	// Возвращает количество элементов в массиве
 	size_t GetSize() const noexcept {
@@ -68,7 +69,6 @@ public:
 
 	// Возвращает вместимость массива
 	size_t GetCapacity() const noexcept {
-		// Напишите тело самостоятельно
 		return capacity_;
 	}
 
@@ -84,7 +84,6 @@ public:
 	// Возвращает ссылку на элемент с индексом index
 	Type& operator[](size_t index) noexcept {
 		return *(symple_vector_.Get() + index);
-		// Напишите тело самостоятельно
 	}
 
 	// Возвращает константную ссылку на элемент с индексом index
@@ -115,7 +114,6 @@ public:
 	// Обнуляет размер массива, не изменяя его вместимость
 	void Clear() noexcept {
 		size_ = 0;
-		// Напишите тело самостоятельно
 	}
 
 	// Изменяет размер массива.
@@ -177,6 +175,7 @@ public:
 	ConstIterator cend() const noexcept {
 		return symple_vector_.Get() + size_;
 	}
+
 	// Добавляет элемент в конец вектора
 	// При нехватке места увеличивает вдвое вместимость вектора
 	void PushBack(const Type &item) {
