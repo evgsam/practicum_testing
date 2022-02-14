@@ -206,7 +206,9 @@ public:
 
 	// "Удаляет" последний элемент вектора. Вектор не должен быть пустым
 	void PopBack() noexcept {
-		// Напишите тело самостоятельно
+		if (!(size_ == 0)) {
+			--size_;
+		}
 	}
 
 	// Удаляет элемент вектора в указанной позиции
@@ -240,4 +242,21 @@ template<typename Type>
 inline bool operator<(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
 	// Заглушка. Напишите тело самостоятельно
 	return true;
+}
+template<typename Type>
+inline bool operator<=(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
+	// Заглушка. Напишите тело самостоятельно
+	return (lhs < rhs || lhs == rhs);
+}
+
+template<typename Type>
+inline bool operator>(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
+	// Заглушка. Напишите тело самостоятельно
+	return !(lhs <= rhs);
+}
+
+template<typename Type>
+inline bool operator>=(const SimpleVector<Type> &lhs, const SimpleVector<Type> &rhs) {
+	// Заглушка. Напишите тело самостоятельно
+	return !(lhs < rhs);
 }
