@@ -183,7 +183,7 @@ public:
 		if (GetSize() == GetCapacity()) {
 			Resize(size_ == 0 ? 1 : size_ * 2);
 		}
-		symple_vector_[old_size + 1] = item;
+		symple_vector_[old_size] = item;
 		size_ = old_size + 1;
 	}
 
