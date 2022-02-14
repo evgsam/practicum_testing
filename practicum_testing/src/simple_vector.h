@@ -192,7 +192,16 @@ public:
 	// Если перед вставкой значения вектор был заполнен полностью,
 	// вместимость вектора должна увеличиться вдвое, а для вектора вместимостью 0 стать равной 1
 	Iterator Insert(ConstIterator pos, const Type &value) {
-		// Напишите тело самостоятельно
+		Type t { };
+		if (GetSize() == GetCapacity()) {
+			Resize(size_ == 0 ? 1 : size_ * 2);
+		}
+		size_t len = std::distance(begin(), Iterator(pos));
+		ArrayPtr<Type> tmp_symple_vector(size_);
+		std::copy(symple_vector_.Get(), symple_vector_.Get() + len, tmp_symple_vector.Get());
+		tmp_symple_vector[len + 1] = value;
+		std::copy(symple_vector_.Get() + len + 1, symple_vector_.Get() + size_, tmp_symple_vector.Get() + len + 1);
+		symple_vector_.swap(tmp_symple_vector);
 	}
 
 	// "Удаляет" последний элемент вектора. Вектор не должен быть пустым
